@@ -16,7 +16,6 @@ tasks for this week.
 
 -   [ ] Wire-frame diagrams
 -   [ ] API documentation
--   [ ] Project is deployed to Caprover (BE, DB) & GitLab-pages (FE)
 -   [ ] GitLab issue board is setup and in use (or project management tool of choice)
 -   [ ] Journals
 
@@ -105,12 +104,10 @@ a most successful project.
     **really** simple UI and FastAPI service. Add services
     (like a database) to this file as you did with previous
     projects in module #2.
--   `.gitlab-ci.yml`: This is your "ci/cd" file where you will
+-   `.gitlab-ci.yml`: This is your "ci" file where you will
     configure automated unit tests, code quality checks, and
-    the building and deployment of your production system.
-    Currently, all it does is deploy an "under construction"
-    page to your production UI on GitLab and a sample backend
-    to CapRover. We will learn much more about this file.
+    the building of your production system.
+    We will learn much more about this file.
 -   `.gitignore`: This is a file that prevents unwanted files
     from getting added to your repository, files like
     `pyc` files, `__pycache__`, etc. We've set it up so that
@@ -121,52 +118,4 @@ a most successful project.
     without fear of it being committed to git (see `.env`
     listed in `.gitignore`). You can also put team related
     environment variables in here, things like api and signing
-    keys that shouldn't be committed; these should be
-    duplicated in your deployed environments.
-
-## How to complete the initial deploy
-
-There will be further guidance on completing the initial
-deployment, but it just consists of these steps:
-
-### Setup GitLab repo/project
-
--   make sure this project is in a group. If it isn't, stop
-    now and move it to a GitLab group
--   remove the fork relationship: In GitLab go to:
-
-    Settings -> General -> Advanced -> Remove fork relationship
-
--   add these GitLab CI/CD variables:
-    -   PUBLIC_URL : this is your gitlab pages URL
-    -   VITE_APP_API_HOST: enter "blank" for now
-
-#### Your GitLab pages URL
-
-You can't find this in GitLab until after you've done a deploy
-but you can figure it out yourself from your GitLab project URL.
-
-If this is your project URL
-
-https://gitlab.com/GROUP_NAME/PROJECT_NAME
-
-then your GitLab pages URL will be
-
-https://GROUP_NAME.gitlab.io/PROJECT_NAME
-
-### Initialize CapRover
-
-1. Attain IP address and domain from an instructor
-1. Follow the steps in the CD Cookbook in Learn.
-
-### Update GitLab CI/CD variables
-
-Copy the service URL for your CapRover service and then paste
-that into the value for the REACT_APP_API_HOST CI/CD variable
-in GitLab.
-
-### Deploy it
-
-Merge a change into main to kick off the initial deploy. Once the build pipeline
-finishes you should be able to see an "under construction" page on your GitLab
-pages site.
+    keys that shouldn't be committed.
