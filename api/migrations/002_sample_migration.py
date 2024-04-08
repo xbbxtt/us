@@ -2,7 +2,7 @@ steps = [
     [
         # "Up" SQL statement
         """
-        CREATE TABLE dummy (
+        CREATE TABLE samples (
             id SERIAL PRIMARY KEY NOT NULL,
             required_limited_text VARCHAR(1000) NOT NULL,
             required_unlimited_text TEXT NOT NULL,
@@ -14,13 +14,13 @@ steps = [
         """,
         # "Down" SQL statement
         """
-        DROP TABLE dummy;
+        DROP TABLE samples;
         """
     ],
     [
         # "Up" SQL statement
         """
-        CREATE TABLE big_dummy (
+        CREATE TABLE other_samples (
             id SERIAL PRIMARY KEY NOT NULL,
             required_limited_text VARCHAR(1000) NOT NULL,
             required_unlimited_text TEXT NOT NULL,
@@ -32,7 +32,7 @@ steps = [
         """,
         # "Down" SQL statement
         """
-        DROP TABLE big_dummy;
+        DROP TABLE other_samples;
         """
     ]
 ]

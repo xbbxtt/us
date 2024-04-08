@@ -66,35 +66,6 @@ look like.
 The Dockerfile and Dockerfile.dev run your migrations
 for you automatically.
 
-### Installing python dependencies locally
-
-In order for VSCode's built in code completion and intelligence to
-work correctly, it needs the dependencies from the requirements.txt file
-installed. We do this inside docker, but not in the workspace.
-
-So we need to create a virtual environment and pip install the requirements.
-
-From inside the `api` folder:
-
-```bash
-python -m venv .venv
-```
-
-Then activate the virtual environment
-
-```bash
-source .venv/bin/activate
-```
-
-And finally install the dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-Then make sure the venv is selected in VSCode by checking the lower right of the
-VSCode status bar
-
 ### Other files
 
 The following project files have been created as a minimal
@@ -124,10 +95,34 @@ a most successful project.
     keys that shouldn't be committed; these should be
     duplicated in your deployed environments.
 
-## How to complete the initial deploy
+### Installing python dependencies locally
 
-There will be further guidance on completing the initial
-deployment, but it just consists of these steps:
+In order for VSCode's built in code completion and intelligence to
+work correctly, it needs the dependencies from the requirements.txt file
+installed. We do this inside docker, but not in the workspace.
+
+So we need to create a virtual environment and pip install the requirements.
+
+From inside the `api` folder:
+
+```bash
+python -m venv .venv
+```
+
+Then activate the virtual environment
+
+```bash
+source .venv/bin/activate
+```
+
+And finally install the dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+Then make sure the venv is selected in VSCode by checking the lower right of the
+VSCode status bar
 
 ### Setup GitLab repo/project
 
@@ -153,20 +148,3 @@ https://gitlab.com/GROUP_NAME/PROJECT_NAME
 then your GitLab pages URL will be
 
 https://GROUP_NAME.gitlab.io/PROJECT_NAME
-
-### Initialize CapRover
-
-1. Attain IP address and domain from an instructor
-1. Follow the steps in the CD Cookbook in Learn.
-
-### Update GitLab CI/CD variables
-
-Copy the service URL for your CapRover service and then paste
-that into the value for the REACT_APP_API_HOST CI/CD variable
-in GitLab.
-
-### Deploy it
-
-Merge a change into main to kick off the initial deploy. Once the build pipeline
-finishes you should be able to see an "under construction" page on your GitLab
-pages site.
