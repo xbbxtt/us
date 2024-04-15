@@ -29,7 +29,7 @@ services:
             - ./api:/app
 
     ghi:
-        image: node:lts-bullseye
+        image: node:latest
         command: /bin/bash run.sh
         working_dir: /app
         user: "1000:1000" # on macOS and Linux, replace this with your real user id and group id
