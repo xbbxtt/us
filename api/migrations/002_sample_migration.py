@@ -7,12 +7,10 @@ steps = [
             first_name VARCHAR(100) NOT NULL,
             last_name VARCHAR(100) NOT NULL,
             location VARCHAR(50) NOT NULL,
-            gender VARCHAR(10) NOT NULL,
+            gender SMALLSERIAL NOT NULL,
             age INTEGER NOT NULL,
-            interest VARCHAR(10) NOT NULL,
             description VARCHAR(1000) NOT NULL,
             picture_url VARCHAR(256) NOT NULL,
-            romantic_pref VARCHAR(10) NOT NULL,
             password VARCHAR(100) NOT NULL
 
         );
@@ -37,6 +35,47 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE matches;
+        """
+    ]
+    [
+        # "Up" SQL statement
+        """
+        CREATE TABLE interests (
+            id SERIAL PRIMARY KEY NOT NULL,
+            user_id SMALLSERIAL NOT NULL,
+            interest_name VARCHAR(30) NOT NULL,
+        );
+        """,
+        # "Down" SQL statement
+        """
+        DROP TABLE interests;
+        """
+    ]
+    [
+        # "Up" SQL statement
+        """
+        CREATE TABLE romantic_pref (
+            id SERIAL PRIMARY KEY NOT NULL,
+            user_id SMALLSERIAL NOT NULL,
+            gender_id SMALLSERIAL NOT NULL
+        );
+        """,
+        # "Down" SQL statement
+        """
+        DROP TABLE romantic_pref;
+        """
+    ]
+    [
+        # "Up" SQL statement
+        """
+        CREATE TABLE gender (
+            id SERIAL PRIMARY KEY NOT NULL,
+            gender_name VARCHAR(20) NOT NULL
+        );
+        """,
+        # "Down" SQL statement
+        """
+        DROP TABLE gender;
         """
     ]
 ]
