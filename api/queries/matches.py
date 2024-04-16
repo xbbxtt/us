@@ -4,6 +4,7 @@ from queries.pool import pool
 
 
 class UserIn(BaseModel):
+    username: str
     first_name: str
     last_name: str
     location: str
@@ -18,6 +19,7 @@ class UserIn(BaseModel):
 
 class UserOut(BaseModel):
     id: int
+    username: str
     first_name: str
     last_name: str
     location: str
@@ -77,13 +79,20 @@ class GenderOut(BaseModel):
 
 
 class UserRepository:
+    
+    def delete_user():
+        pass
+    
+    def update_user():
+        pass
 
     def create_user(self, user: UserIn) -> UserOut:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 result = cur.execute(
                     """
-                    INSERT INTO project_user (
+                    INSERT INTO users (
+                        username,
                         first_name,
                         last_name,
                         location,
@@ -93,11 +102,12 @@ class UserRepository:
                         picture_url,
                         password
                     ) VALUES (
-                        %s, %s, %s, %s, %s, %s, %s, %s
+                        %s, %s, %s, %s, %s, %s, %s, %s, %s
                     )
                     RETURNING id;
                     """,
                     [
+                        user.username,
                         user.first_name,
                         user.last_name,
                         user.location,
@@ -106,9 +116,34 @@ class UserRepository:
                         user.description,
                         user.picture_url,
                         user.password,
-                    ]
+                    ],
                 )
 
                 id = result.fetchone()[0]
                 old_data = user.dict()
                 return UserOut(**old_data, id=id)
+
+
+class GenderRepository:
+    def create_gender(self, gender: GenderIn) -> GenderOut:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                result = cur.execute(
+                    """
+                    INSERT INTO gender (
+                        gender_name
+                    ) VALUES (
+                        %s
+                    )
+                    RETURNING id;
+                    """,
+                    [gender.gender_name],
+                )
+
+                id = result.fetchone()[0]
+                old_data = gender.dict()
+                return GenderOut(**old_data, id=id)
+
+class LikesRepository:
+    def create_a_like():
+        pass
