@@ -2,37 +2,18 @@ steps = [
     [
         # "Up" SQL statement
         """
-        CREATE TABLE project_user (
-            id SERIAL PRIMARY KEY NOT NULL,
-            first_name VARCHAR(100) NOT NULL,
-            last_name VARCHAR(100) NOT NULL,
-            location VARCHAR(50) NOT NULL,
-            gender SMALLSERIAL NOT NULL,
-            age INTEGER NOT NULL,
-            description VARCHAR(1000) NOT NULL,
-            picture_url VARCHAR(256) NOT NULL,
-            password VARCHAR(100) NOT NULL
-        );
-        """,
-        # "Down" SQL statement
-        """
-        DROP TABLE project_user;
-        """
-    ],
-    [
-        # "Up" SQL statement
-        """
-        CREATE TABLE matches (
+        CREATE TABLE likes (
             id SERIAL PRIMARY KEY NOT NULL,
             user1_id SMALLSERIAL NOT NULL,
             user2_id SMALLSERIAL NOT NULL,
-            status VARCHAR(10) NOT NULL,
-            timestamp TIMESTAMP NOT NULL
+            status BOOLEAN NULL,
+            timestamp TIMESTAMP NOT NULL,
+            UNIQUE (user2_id)
         );
         """,
         # "Down" SQL statement
         """
-        DROP TABLE matches;
+        DROP TABLE likes;
         """
     ],
     [

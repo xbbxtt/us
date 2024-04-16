@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from typing import Optional
 from datetime import date
 from queries.pool import pool
 
@@ -13,6 +12,8 @@ class UserIn(BaseModel):
     description: str
     picture_url: str
     password: str
+    matches: list
+    likes: list
 
 
 class UserOut(BaseModel):
@@ -25,21 +26,23 @@ class UserOut(BaseModel):
     description: str
     picture_url: str
     password: str
+    matches: list
+    likes: list
 
 
-class MatchIn(BaseModel):
+class LikesIn(BaseModel):
     user1_id: int
     user2_id: int
-    status: str
-    timestamp: date 
+    timestamp: date
+    status: bool
 
 
-class MatchOut(BaseModel):
+class LikesOut(BaseModel):
     id: int
     user1_id: int
     user2_id: int
-    status: str
-    timestamp: date 
+    timestamp: date
+    status: bool
 
 
 class InterestIn(BaseModel):
