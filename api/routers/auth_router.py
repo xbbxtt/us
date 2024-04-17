@@ -14,7 +14,7 @@ from queries.user_queries import (
 )
 
 from utils.exceptions import UserDatabaseException
-from models.users import UserRequest, UserResponse, UserSignInRequest
+from models.users import UserRequest, UserResponse, UserSignInRequest, UserGender
 
 from utils.authentication import (
     try_get_jwt_user_data,
@@ -176,3 +176,14 @@ async def signout(
     # All that has to happen is the cookie header must come back
     # Which causes the browser to delete the cookie
     return "Signed out successfully"
+
+
+@router.get("/user/all")
+async def get_all_users(
+    queries: UserQueries = Depends(),
+) -> list[UserGender]:
+    """
+    Get all users
+    """
+    users = queries.get_all()
+    return [UserGender(**user.model_dump()) for user in users]

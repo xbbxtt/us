@@ -48,3 +48,11 @@ class UserWithPw(BaseModel):
     age: int
     description: str
     picture_url: str
+
+
+class UserGender(BaseModel):
+    id: int
+    username: str
+    first_name: str
+    last_name: str
+    gender: int

@@ -137,3 +137,23 @@ class UserQueries:
                 print(e),
             )
         return user
+    
+    def get_all(self):
+        """
+        Gets all users from the database
+        """
+        try:
+            with pool.connection() as conn:
+                with conn.cursor(row_factory=class_row(UserWithPw)) as cur:
+                    cur.execute(
+                        """
+                            SELECT
+                                *
+                            FROM users
+                            """
+                    )
+                    users = cur.fetchall()
+        except psycopg.Error as e:
+            print(e)
+            raise UserDatabaseException("Error getting all users")
+        return users
