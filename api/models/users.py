@@ -11,6 +11,14 @@ class UserRequest(BaseModel):
 
     username: str
     password: str
+    first_name: str
+    last_name: str
+    location: str
+    gender: int
+    age: int
+    description: str
+    picture_url: str
+    
 
 
 class UserResponse(BaseModel):
@@ -20,6 +28,13 @@ class UserResponse(BaseModel):
 
     id: int
     username: str
+    first_name: str
+    last_name: str
+    location: str
+    gender: int
+    age: int
+    description: str
+    picture_url: str
 
 
 class UserWithPw(BaseModel):
@@ -30,3 +45,10 @@ class UserWithPw(BaseModel):
     id: int
     username: str
     password: str
+    # first_name: str
+    # last_name: str
+    # location: str
+    # gender: int
+    # age: int
+    # description: str
+    # picture_url: str

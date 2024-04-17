@@ -79,7 +79,16 @@ class UserQueries:
 
         return user
 
-    def create_user(self, username: str, hashed_password: str) -> UserWithPw:
+    def create_user(self, username: str,
+                    hashed_password: str,
+                    first_name: str,
+                    last_name: str,
+                    location: str,
+                    gender: int,
+                    age: int,
+                    description: str,
+                    picture_url: str,
+                    ) -> UserWithPw:
         """
         Creates a new user in the database
 
@@ -92,24 +101,39 @@ class UserQueries:
                         """
                         INSERT INTO users (
                             username,
-                            password
+                            password,
+                            first_name,
+                            last_name,
+                            location,
+                            gender,
+                            age,
+                            description,
+                            picture_url
+                            
                         ) VALUES (
-                            %s, %s
+                            %s, %s, %s, %s, %s, %s, %s, %s, %s
                         )
-                        RETURNING *;
+                        RETURNING id;
                         """,
                         [
                             username,
                             hashed_password,
+                            first_name,
+                            last_name,
+                            location,
+                            gender,
+                            age,
+                            description,
+                            picture_url
                         ],
                     )
                     user = cur.fetchone()
                     if not user:
                         raise UserDatabaseException(
-                            f"Could not create user with username {username}"
+                            f"Could not create user with username {username} 1"
                         )
-        except psycopg.Error:
+        except psycopg.Error as e:
             raise UserDatabaseException(
-                f"Could not create user with username {username}"
+                print(e),
             )
         return user

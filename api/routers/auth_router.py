@@ -43,7 +43,17 @@ async def signup(
 
     # Create the user in the database
     try:
-        user = queries.create_user(new_user.username, hashed_password)
+        user = queries.create_user(
+                                    new_user.username,
+                                    hashed_password,
+                                    first_name=new_user.first_name, 
+                                    last_name=new_user.last_name, 
+                                    location = new_user.location, 
+                                    gender = new_user.gender, 
+                                    age =new_user.age, 
+                                    description = new_user.description, 
+                                    picture_url = new_user.picture_url
+                                    )
     except UserDatabaseException as e:
         print(e)
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
