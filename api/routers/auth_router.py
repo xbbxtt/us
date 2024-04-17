@@ -187,3 +187,21 @@ async def get_all_users(
     """
     users = queries.get_all()
     return [UserGender(**user.model_dump()) for user in users]
+
+@router.get("/users/gender")
+def filter_by_gender(
+    queries: UserQueries = Depends(),
+    user: UserResponse = Depends(try_get_jwt_user_data)
+) -> list[UserGender]:
+    """
+    Gets users by gender if a user is authenticated
+    """
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Not logged in"
+        )
+    get_all_users = queries.get_all()
+    filtered_users = [user for user in get_all_users if user.gender == 1]
+    
+    return filtered_users
