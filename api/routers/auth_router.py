@@ -14,7 +14,7 @@ from queries.user_queries import (
 )
 
 from utils.exceptions import UserDatabaseException
-from models.users import UserRequest, UserResponse
+from models.users import UserRequest, UserResponse, UserSignInRequest
 
 from utils.authentication import (
     try_get_jwt_user_data,
@@ -48,11 +48,11 @@ async def signup(
                                     hashed_password,
                                     first_name=new_user.first_name, 
                                     last_name=new_user.last_name, 
-                                    location = new_user.location, 
-                                    gender = new_user.gender, 
-                                    age =new_user.age, 
-                                    description = new_user.description, 
-                                    picture_url = new_user.picture_url
+                                    location=new_user.location, 
+                                    gender=new_user.gender, 
+                                    age=new_user.age, 
+                                    description=new_user.description, 
+                                    picture_url=new_user.picture_url
                                     )
     except UserDatabaseException as e:
         print(e)
@@ -80,7 +80,7 @@ async def signup(
 
 @router.post("/signin")
 async def signin(
-    user_request: UserRequest,
+    user_request: UserSignInRequest,
     request: Request,
     response: Response,
     queries: UserQueries = Depends(),
@@ -120,7 +120,18 @@ async def signin(
     )
 
     # Convert the UserWithPW to a UserOut
-    return UserResponse(id=user.id, username=user.username)
+    return UserResponse(
+        id=user.id, 
+        username=user.username, 
+        password=user.password, 
+        first_name=user.first_name, 
+        last_name=user.last_name, 
+        location=user.location, 
+        gender=user.gender, 
+        age=user.age, 
+        description=user.description, 
+        picture_url=user.picture_url
+        )
 
 
 @router.get("/authenticate")
@@ -164,4 +175,4 @@ async def signout(
     # There's no need to return anything in the response.
     # All that has to happen is the cookie header must come back
     # Which causes the browser to delete the cookie
-    return
+    return "Signed out successfully"

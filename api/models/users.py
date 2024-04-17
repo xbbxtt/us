@@ -18,23 +18,19 @@ class UserRequest(BaseModel):
     age: int
     description: str
     picture_url: str
-    
+
+
+class UserSignInRequest(BaseModel):
+    username: str
+    password: str
 
 
 class UserResponse(BaseModel):
     """
     Represents a user, with the password not included
     """
-
     id: int
     username: str
-    first_name: str
-    last_name: str
-    location: str
-    gender: int
-    age: int
-    description: str
-    picture_url: str
 
 
 class UserWithPw(BaseModel):
@@ -45,10 +41,10 @@ class UserWithPw(BaseModel):
     id: int
     username: str
     password: str
-    # first_name: str
-    # last_name: str
-    # location: str
-    # gender: int
-    # age: int
-    # description: str
-    # picture_url: str
+    first_name: str
+    last_name: str
+    location: str
+    gender: int
+    age: int
+    description: str
+    picture_url: str
