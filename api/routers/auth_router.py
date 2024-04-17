@@ -1,6 +1,7 @@
 """
 User Authentication API Router
 """
+
 from fastapi import (
     Depends,
     Request,
@@ -14,7 +15,12 @@ from queries.user_queries import (
 )
 
 from utils.exceptions import UserDatabaseException
-from models.users import UserRequest, UserResponse, UserSignInRequest, UserGender
+from models.users import (
+    UserRequest,
+    UserResponse,
+    UserSignInRequest,
+    UserGender,
+)
 
 from utils.authentication import (
     try_get_jwt_user_data,
@@ -44,18 +50,17 @@ async def signup(
     # Create the user in the database
     try:
         user = queries.create_user(
-                                    new_user.username,
-                                    hashed_password,
-                                    first_name=new_user.first_name, 
-                                    last_name=new_user.last_name, 
-                                    location=new_user.location, 
-                                    gender=new_user.gender, 
-                                    age=new_user.age, 
-                                    description=new_user.description, 
-                                    picture_url=new_user.picture_url
-                                    )
+            new_user.username,
+            hashed_password,
+            first_name=new_user.first_name,
+            last_name=new_user.last_name,
+            location=new_user.location,
+            gender=new_user.gender,
+            age=new_user.age,
+            description=new_user.description,
+            picture_url=new_user.picture_url,
+        )
     except UserDatabaseException as e:
-        print(e)
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
 
     # Generate a JWT token
@@ -65,7 +70,7 @@ async def signup(
     user_out = UserResponse(**user.model_dump())
 
     # Secure cookies only if running on something besides localhost
-    secure = True if request.headers.get("origin") == "localhost" else False
+    secure = request.headers.get("origin") == "localhost"
 
     # Set a cookie with the token in it
     response.set_cookie(
@@ -108,7 +113,7 @@ async def signin(
     token = generate_jwt(user)
 
     # Secure cookies only if running on something besides localhost
-    secure = True if request.headers.get("origin") == "localhost" else False
+    secure = request.headers.get("origin") == "localhost"
 
     # Set a cookie with the token in it
     response.set_cookie(
@@ -121,17 +126,17 @@ async def signin(
 
     # Convert the UserWithPW to a UserOut
     return UserResponse(
-        id=user.id, 
-        username=user.username, 
-        password=user.password, 
-        first_name=user.first_name, 
-        last_name=user.last_name, 
-        location=user.location, 
-        gender=user.gender, 
-        age=user.age, 
-        description=user.description, 
-        picture_url=user.picture_url
-        )
+        id=user.id,
+        username=user.username,
+        password=user.password,
+        first_name=user.first_name,
+        last_name=user.last_name,
+        location=user.location,
+        gender=user.gender,
+        age=user.age,
+        description=user.description,
+        picture_url=user.picture_url,
+    )
 
 
 @router.get("/authenticate")
@@ -165,7 +170,7 @@ async def signout(
     Signs the user out by deleting their JWT Cookie
     """
     # Secure cookies only if running on something besides localhost
-    secure = True if request.headers.get("origin") == "localhost" else False
+    secure = request.headers.get("origin") == "localhost"
 
     # Delete the cookie
     response.delete_cookie(
@@ -188,20 +193,23 @@ async def get_all_users(
     users = queries.get_all()
     return [UserGender(**user.model_dump()) for user in users]
 
+
 @router.get("/users/gender")
 def filter_by_gender(
     queries: UserQueries = Depends(),
-    user: UserResponse = Depends(try_get_jwt_user_data)
+    user: UserResponse = Depends(try_get_jwt_user_data),
 ) -> list[UserGender]:
     """
     Gets users by gender if a user is authenticated
     """
     if not user:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Not logged in"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
         )
     get_all_users = queries.get_all()
-    filtered_users = [user for user in get_all_users if user.gender == 1]
-    
-    return filtered_users
+
+    return [
+        username
+        for username in get_all_users
+        if username.gender == 0 and username.id != user.id
+    ]
