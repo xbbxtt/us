@@ -157,3 +157,4 @@ class UserQueries:
             print(e)
             raise UserDatabaseException("Error getting all users")
         return users
+    
