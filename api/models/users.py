@@ -55,4 +55,5 @@ class UserGender(BaseModel):
     username: str
     first_name: str
     last_name: str
+    age: int
     gender: int

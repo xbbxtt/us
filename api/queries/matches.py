@@ -70,12 +70,12 @@ class RomanticPreferenceOut(BaseModel):
 
 
 class GenderIn(BaseModel):
-    gender_name: str
+    gender_name: int
 
 
 class GenderOut(BaseModel):
     id: int
-    gender_name: str
+    gender_name: int
 
 
 class UserRepository:
@@ -103,9 +103,9 @@ class GenderRepository:
                     [gender.gender_name],
                 )
 
-                id = result.fetchone()[0]
+                gender_id = result.fetchone()[0]
                 old_data = gender.dict()
-                return GenderOut(**old_data, id=id)
+                return GenderOut(**old_data, id=gender_id)
 
 class LikesRepository:
     def create_a_like():
