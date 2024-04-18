@@ -183,7 +183,7 @@ async def signout(
     return "Signed out successfully"
 
 
-@router.get("/user/all")
+@router.get("api/users")
 async def get_all_users(
     queries: UserQueries = Depends(),
 ) -> list[UserGender]:
@@ -194,8 +194,11 @@ async def get_all_users(
     return [UserGender(**user.model_dump()) for user in users]
 
 
-@router.get("/users/gender")
+@router.get("api/users/gender")
 def filter_by_gender(
+    gender : int,
+    min_age: int,
+    max_age: int,
     queries: UserQueries = Depends(),
     user: UserResponse = Depends(try_get_jwt_user_data),
 ) -> list[UserGender]:
@@ -211,5 +214,8 @@ def filter_by_gender(
     return [
         username
         for username in get_all_users
-        if username.gender == 0 and username.id != user.id
+        if username.gender == gender and username.id != user.id and min_age <= username.age <= max_age
     ]
+
+
+# if where adding the user2 to the likes table of user that is authenticated its a post request
