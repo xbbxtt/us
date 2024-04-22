@@ -82,22 +82,22 @@ Contains API routes and database queries for user authentication.
 
     - Expected Input:
     {
-  "username": "string",
-  "password": "string"
+    "username": "string",
+    "password": "string"
     }
 
     Expected Output:
     {
-  "id": 0,
-  "username": "string"
+    "id": 0,
+    "username": "string"
     }   
 
 **GET** /api/auth/authenticate: Returns the user if the user is logged in
 
     - Expected Response:
     {
-  "id": 0,
-  "username": "string"
+    "id": 0,
+    "username": "string"
     }
 
 **DELETE** /api/auth/signout: Signs the user out by deleting their JWT Cookie
