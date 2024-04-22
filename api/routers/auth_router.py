@@ -29,6 +29,9 @@ from utils.authentication import (
     verify_password,
 )
 
+from queries.matches import LikesIn, LikesOut, LikesRepository
+
+
 # Note we are using a prefix here,
 # This saves us typing in all the routes below
 router = APIRouter(tags=["Authentication"], prefix="/api/auth")
@@ -219,3 +222,25 @@ def filter_by_gender(
 
 
 # if where adding the user2 to the likes table of user that is authenticated its a post request
+
+
+@router.post("/likes")
+def create_a_like(
+    likes: LikesIn,
+    queries: LikesRepository  = Depends(),
+    user: UserResponse = Depends(try_get_jwt_user_data),
+) -> LikesOut:
+    """
+    Create a like
+    """
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
+        )
+    likes.logged_in_user = user.id
+    likes = queries.create_a_like(
+        likes.logged_in_user,
+        likes.liked_by_user,
+        likes.status,
+    )
+    return LikesOut(**likes.model_dump())

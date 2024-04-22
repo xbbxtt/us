@@ -3,6 +3,7 @@ from datetime import date
 from queries.pool import pool
 
 
+
 class UserIn(BaseModel):
     username: str
     first_name: str
@@ -33,17 +34,15 @@ class UserOut(BaseModel):
 
 
 class LikesIn(BaseModel):
-    user1_id: int
-    user2_id: int
-    timestamp: date
+    logged_in_user: int
+    liked_by_user: int
     status: bool
 
 
 class LikesOut(BaseModel):
     id: int
-    user1_id: int
-    user2_id: int
-    timestamp: date
+    logged_in_user: int
+    liked_by_user: int
     status: bool
 
 
@@ -108,5 +107,51 @@ class GenderRepository:
                 return GenderOut(**old_data, id=gender_id)
 
 class LikesRepository:
-    def create_a_like():
-        pass
+    def create_a_like(self, likes: LikesIn) -> LikesOut:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                result = cur.execute(
+                    """
+                    INSERT INTO likes (
+                        logged_in_user,
+                        liked_by_user,
+                        status
+                    ) VALUES (
+                        %s,
+                        %s,
+                        %s
+                    )
+                    RETURNING id;
+                    """,
+                    [likes.logged_in_user, likes.liked_by_user, likes.status],
+                )
+
+                likes_id = result.fetchone()[0]
+                old_data = likes.dict()
+                return LikesOut(**old_data, id=likes_id)
+
+    def create_a_like(self, logged_in_user: int, liked_by_user: int, status: bool) -> LikesOut:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                result = cur.execute(
+                    """
+                    INSERT INTO likes (
+                        logged_in_user,
+                        liked_by_user,
+                        status
+                    ) VALUES (
+                        %s,
+                        %s,
+                        %s
+                    )
+                    RETURNING id;
+                    """,
+                    [logged_in_user, liked_by_user, status],
+                )
+                like_id = result.fetchone()[0]
+                return LikesOut(
+                    logged_in_user=logged_in_user,
+                    liked_by_user=liked_by_user,
+                    status=status,
+                    id=like_id,
+                )
