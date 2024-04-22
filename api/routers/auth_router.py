@@ -244,3 +244,64 @@ def create_a_like(
         likes.status,
     )
     return LikesOut(**likes.model_dump())
+
+
+@router.get("/likes/all")
+def get_all_likes(
+    user: UserResponse = Depends(try_get_jwt_user_data),
+    queries: LikesRepository = Depends(),
+) -> list[LikesOut]:
+    """
+    Get all users
+    """
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
+        )
+    likes = queries.get_all_likes()
+    likes.logged_in_user = user.id
+
+    return [like.liked_by_user for like in likes]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# def view_all_likes(
+#         likes: LikesOut,
+#         queries: LikesRepository = Depends(),
+#         user: UserResponse = Depends(try_get_jwt_user_data),
+#         ) -> LikesOut:
+
+#     if not user:
+#         raise HTTPException(
+#             status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
+#         )
+#     likes.logged_in_user = user.id
+#     likes = queries.get_all_likes()
+
+#     return [like.liked_by_user for like in likes]
+
+
+    # second column of the table, return [ user for user in likes.liked_by_user]

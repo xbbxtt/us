@@ -11,5 +11,5 @@ def create_a_like(like: LikesIn, repo: LikesRepository = Depends()):
 
 
 @router.get("api/likes/all", response_model=list[LikesOut])
-def get_all_likes(user_id: int, repo: LikesRepository = Depends()):
-    return repo.get_all_likes(user_id)
+def get_all_likes(repo: LikesRepository = Depends()):
+    return repo.get_all_likes()

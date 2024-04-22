@@ -24,19 +24,3 @@ We fixed our Databases and added a likes feature to our Wireframe where the user
 We are catching up on our documentation as well today.
 
 
-Match:
-
-Summary: Upon acceptance of a like, the user who sent the like is then moved to a matches array where there profile can be listed.
-User_1: This will be the column in which the user who sent the like will be stored.
-
-User Information Model
-Summary: A collection of information to be stored under a User table which will be used to create an User Profile where they can meet and match with other people that can lead to a potential romantic relationship.
-User ID: An unique identifier for each user instance created in the Database
-First_Name: First name of the user
-Last_Name: Last name of the user
-Password: A protected string known only to the user and administrators
-Location: The vicinity in which the user is located/would like to be shown
-Gender: A foreign key that organizes a user by their gender
-Picture_Url: A photo of the user
-Matches: A list of their matches
-Preferences: The gender that the user is interested in which will be used to display other potential users on the likes page.
