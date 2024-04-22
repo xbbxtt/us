@@ -31,6 +31,8 @@ from utils.authentication import (
 
 from queries.matches import LikesIn, LikesOut, LikesRepository
 
+from typing import Dict, List
+
 
 # Note we are using a prefix here,
 # This saves us typing in all the routes below
@@ -248,20 +250,20 @@ def create_a_like(
 
 @router.get("/likes/all")
 def get_all_likes(
-    user: UserResponse = Depends(try_get_jwt_user_data),
     queries: LikesRepository = Depends(),
-) -> list[LikesOut]:
+    user: UserResponse = Depends(try_get_jwt_user_data),
+) -> Dict[str, List[LikesOut]]:
     """
-    Get all users
+    Get all likes
     """
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
         )
-    likes = queries.get_all_likes()
-    likes.logged_in_user = user.id
 
-    return [like.liked_by_user for like in likes]
+    likes = queries.get_all_likes()
+    return {"likes": [LikesOut(**like.model_dump()) for like in likes
+            if like.logged_in_user == user.id]}
 
 
 
