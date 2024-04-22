@@ -32,6 +32,23 @@ steps = [
     [
         # "Up" SQL statement
         """
+        CREATE TABLE likes (
+            id SERIAL PRIMARY KEY NOT NULL,
+            user1_id INT NOT NULL,
+            user2_id INT NOT NULL,
+            CONSTRAINT fk_user1 FOREIGN KEY (user1_id) REFERENCES users(id),
+            CONSTRAINT fk_user2 FOREIGN KEY (user2_id) REFERENCES users(id)
+
+        );
+        """,
+        # "Down" SQL statement
+        """
+        DROP TABLE likes;
+        """
+    ],
+    [
+        # "Up" SQL statement
+        """
         ALTER TABLE users
             ADD first_name VARCHAR(100) NOT NULL,
             ADD last_name VARCHAR(100) NOT NULL,
