@@ -37,7 +37,7 @@ steps = [
             id SERIAL PRIMARY KEY NOT NULL,
             logged_in_user INT NOT NULL,
             liked_by_user INT NOT NULL,
-            status BOOLEAN,
+            status BOOLEAN DEFAULT NULL,
             CONSTRAINT fk_user1 FOREIGN KEY (logged_in_user) REFERENCES users(id),
             CONSTRAINT fk_user2 FOREIGN KEY (liked_by_user) REFERENCES users(id)
         );
