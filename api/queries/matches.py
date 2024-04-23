@@ -177,6 +177,48 @@ class LikesRepository:
                 }
                 return LikesOut(**old_data)
             
+    # create a match between two users
+    def create_a_match(self, liked_by_user: int) -> MatchOut:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                result = cur.execute(
+                    """
+                    INSERT INTO matches (
+                        liked_by_user
+                    ) VALUES (
+                        %s
+                    )
+                    RETURNING *;
+                    """,
+                    [liked_by_user],
+                )
+                match = cur.fetchone()
+                old_data = {
+                    "id": match[0],
+                    "liked_by_user": match[1],
+                }
+                return MatchOut(**old_data)
+            
     
 class MatchRepository:
-    pass
+    # create a match between two users
+    def create_a_match(self, liked_by_user: int) -> MatchOut:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                result = cur.execute(
+                    """
+                    INSERT INTO matches (
+                        liked_by_user
+                    ) VALUES (
+                        %s
+                    )
+                    RETURNING *;
+                    """,
+                    [liked_by_user],
+                )
+                match = cur.fetchone()
+                old_data = {
+                    "id": match[0],
+                    "liked_by_user": match[1],
+                }
+                return MatchOut(**old_data)

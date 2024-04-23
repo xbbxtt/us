@@ -285,6 +285,8 @@ def update_like_status(
         id,
         likes.status,
     )
+    if likes.status:
+        queries.create_a_match(likes.liked_by_user)
         
     return LikesOut(**likes.model_dump())
 
