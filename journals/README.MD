@@ -124,18 +124,47 @@ Contains API routes and database queries for user authentication.
     - Expected Output:
     [
         {
-            "id": 0,
-            "username": "string",
-            "first_name": "string",
-            "last_name": "string",
-            "age": 0,
-            "gender": 0
+        "id": 0,
+        "username": "string",
+        "first_name": "string",
+        "last_name": "string",
+        "age": 0,
+        "gender": 0
         }
     ]
 
 
 **POST** /api/auth/api/users/likes: Adds a like from one user to another
+
+    - Expected Input:
+    {
+    "logged_in_user": 1,
+    "liked_by_user": 2,
+    "status": true
+    }
+
+    - Expected Output:
+    {
+    "id": 1,
+    "logged_in_user": 1,
+    "liked_by_user": 2,
+    "status": true
+    }
+
+
 **GET** /api/auth/api/users/matches: Retrieves a list of matches for a user
+
+    - Expected Output:
+    
+    [
+        {
+        "id": 1,
+        "logged_in_user": 5,
+        "liked_by_user": 5,
+        "status": true
+        }
+    ]
+
 
 ## Database Queries
 

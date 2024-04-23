@@ -77,6 +77,13 @@ class GenderOut(BaseModel):
     id: int
     gender_name: str
 
+class MatchIn(BaseModel):
+    liked_by_user: int
+    
+class MatchOut(BaseModel):
+    id: int
+    liked_by_user: int
+
 
 class GenderRepository:
     def create_gender(self, gender: GenderIn) -> GenderOut:
@@ -169,3 +176,7 @@ class LikesRepository:
                     "status": like[3],
                 }
                 return LikesOut(**old_data)
+            
+    
+class MatchRepository:
+    pass
