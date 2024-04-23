@@ -70,12 +70,12 @@ class RomanticPreferenceOut(BaseModel):
 
 
 class GenderIn(BaseModel):
-    gender_name: int
+    gender_name: str
 
 
 class GenderOut(BaseModel):
     id: int
-    gender_name: int
+    gender_name: str
 
 
 class GenderRepository:

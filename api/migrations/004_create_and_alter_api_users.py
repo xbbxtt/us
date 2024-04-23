@@ -6,6 +6,7 @@ steps = [
             id SERIAL PRIMARY KEY NOT NULL,
             gender_name VARCHAR(20) NOT NULL
         );
+        INSERT INTO gender (gender_name) VALUES ('Male'), ('Female'), ('Non-Binary');
         """,
         # "Down" SQL statement
         """
@@ -75,19 +76,26 @@ steps = [
             ADD preferences INT,
             ADD CONSTRAINT fk_gender FOREIGN KEY (gender) REFERENCES gender(id),
             ADD CONSTRAINT fk_romantic_pref FOREIGN KEY (preferences) REFERENCES romantic_pref(id);
+
+        INSERT INTO users (username, password, first_name, last_name, location, gender, age, description, picture_url)
+        VALUES ('dangelodeniro', 'string', 'D''Angelo', 'DeNiro', 'Colorado', 1, 28, 'string', 'string'),
+               ('yadrielruiz', 'string', 'Yadriel', 'Ruiz', 'Texas', 1, 26, 'string', 'string'),
+               ('keygomez', 'string', 'Key', 'Gomez', 'Texas', 3, 25, 'string', 'string'),
+               ('michaelaarteberry', 'string', 'Michaela', 'Arteberry', 'Texas', 2, 25, 'string', 'string');
         """,
         # "Down" SQL statement
         """
-        DROP COLUMN first_name,
-        DROP COLUMN last_name,
-        DROP COLUMN location,
-        DROP COLUMN gender,
-        DROP CONSTRAINT fk_gender,
-        DROP COLUMN age,
-        DROP COLUMN description,
-        DROP COLUMN picture_url,
-        DROP COLUMN preferences,
-        DROP CONSTRAINT fk_romantic_pref;
+        ALTER TABLE users
+            DROP COLUMN first_name,
+            DROP COLUMN last_name,
+            DROP COLUMN location,
+            DROP COLUMN gender,
+            DROP CONSTRAINT fk_gender,
+            DROP COLUMN age,
+            DROP COLUMN description,
+            DROP COLUMN picture_url,
+            DROP COLUMN preferences,
+            DROP CONSTRAINT fk_romantic_pref;
         """
     ]
 ]
