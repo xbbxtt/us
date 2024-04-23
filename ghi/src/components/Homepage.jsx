@@ -5,7 +5,7 @@ function Homepage(props) {
 
     return (
         <>
-            <h1>US Homepage under construction</h1>
+            <h1>US Homepage under construction.. Future homepage</h1>
         </>
     )
 }
