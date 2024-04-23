@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from datetime import date
 from queries.pool import pool
-from typing import List
+from typing import List, Optional
 
 
 
@@ -37,14 +37,14 @@ class UserOut(BaseModel):
 class LikesIn(BaseModel):
     logged_in_user: int
     liked_by_user: int
-    status: bool
+    status: Optional[bool] = None
 
 
 class LikesOut(BaseModel):
     id: int
     logged_in_user: int
     liked_by_user: int
-    status: bool
+    status: Optional[bool] = None
 
 
 class InterestIn(BaseModel):
@@ -122,7 +122,8 @@ class LikesRepository:
                 return result
 
 
-    def create_a_like(self, logged_in_user: int, liked_by_user: int, status: bool) -> LikesOut:
+
+    def create_a_like(self, logged_in_user: int, liked_by_user: int, status: Optional[bool] = None) -> LikesOut:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 result = cur.execute(
@@ -132,18 +133,39 @@ class LikesRepository:
                         liked_by_user,
                         status
                     ) VALUES (
-                        %s,
-                        %s,
-                        %s
+                        %s, %s, %s
                     )
-                    RETURNING id;
+                    RETURNING *;
                     """,
                     [logged_in_user, liked_by_user, status],
                 )
-                like_id = result.fetchone()[0]
-                return LikesOut(
-                    logged_in_user=logged_in_user,
-                    liked_by_user=liked_by_user,
-                    status=status,
-                    id=like_id,
+                like = cur.fetchone()
+                old_data = {
+                    "id": like[0],
+                    "logged_in_user": like[1],
+                    "liked_by_user": like[2],
+                    "status": like[3],
+                }
+                return LikesOut(**old_data)
+            
+    # update likes status
+    def update_like_status(self, id: int, status: Optional[bool] = None) -> LikesOut:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                result = cur.execute(
+                    """
+                    UPDATE likes
+                    SET status = %s
+                    WHERE id = %s
+                    RETURNING *;
+                    """,
+                    [status, id],
                 )
+                like = cur.fetchone()
+                old_data = {
+                    "id": like[0],
+                    "logged_in_user": like[1],
+                    "liked_by_user": like[2],
+                    "status": like[3],
+                }
+                return LikesOut(**old_data)

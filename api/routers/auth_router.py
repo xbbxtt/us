@@ -265,6 +265,29 @@ def get_all_likes(
     return {"likes": [LikesOut(**like.model_dump()) for like in likes
             if like.logged_in_user == user.id]}
 
+# update the status of the like without the user having to like the user again
+@router.put("/likes/{id}")
+def update_like_status(
+    id: int,
+    likes: LikesIn,
+    queries: LikesRepository = Depends(),
+    user: UserResponse = Depends(try_get_jwt_user_data),
+) -> LikesOut:
+    """
+    Update the status of a like
+    """
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
+        )
+    likes.logged_in_user = user.id
+    likes = queries.update_like_status(
+        id,
+        likes.status,
+    )
+    return LikesOut(**likes.model_dump())
+
+
 
 
 
