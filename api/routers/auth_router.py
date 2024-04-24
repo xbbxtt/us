@@ -29,7 +29,7 @@ from utils.authentication import (
     verify_password,
 )
 
-from queries.matches import LikesIn, LikesOut, LikesRepository
+from queries.matches import LikesIn, LikesOut, LikesRepository, MatchOut
 
 from typing import Dict, List
 
@@ -286,9 +286,26 @@ def update_like_status(
         likes.status,
     )
     if likes.status:
-        queries.create_a_match(likes.liked_by_user)
+        queries.create_a_match(likes.logged_in_user, likes.liked_by_user)
         
     return LikesOut(**likes.model_dump())
+
+@router.get("user/matches")
+def get_user_matches(
+    queries: LikesRepository = Depends(),
+    user: UserResponse = Depends(try_get_jwt_user_data),
+) -> Dict[str, List[MatchOut]]:
+    """
+    Get all matches
+    """
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
+        )
+
+    matches = queries.get_all_matches(user.id)
+    return {"matches": [MatchOut(**match.model_dump()) for match in matches
+            if match.logged_in_user == user.id or match.liked_by_user == user.id]}
 
 
 
