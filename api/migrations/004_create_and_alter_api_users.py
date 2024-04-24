@@ -54,7 +54,9 @@ steps = [
         CREATE TABLE matches (
             id SERIAL PRIMARY KEY NOT NULL,
             liked_by_user INT NOT NULL,
-            CONSTRAINT fk_user1 FOREIGN KEY (liked_by_user) REFERENCES users(id)
+            logged_in_user INT NOT NULL,
+            CONSTRAINT fk_user1 FOREIGN KEY (liked_by_user) REFERENCES users(id),
+            CONSTRAINT fk_user2 FOREIGN KEY (logged_in_user) REFERENCES users(id)
         );
         """,
         # "Down" SQL statement
