@@ -54,7 +54,9 @@ steps = [
         CREATE TABLE matches (
             id SERIAL PRIMARY KEY NOT NULL,
             liked_by_user INT NOT NULL,
-            CONSTRAINT fk_user1 FOREIGN KEY (liked_by_user) REFERENCES users(id)
+            logged_in_user INT NOT NULL,
+            CONSTRAINT fk_user1 FOREIGN KEY (liked_by_user) REFERENCES users(id),
+            CONSTRAINT fk_user2 FOREIGN KEY (logged_in_user) REFERENCES users(id)
         );
         """,
         # "Down" SQL statement
@@ -74,8 +76,10 @@ steps = [
             ADD description VARCHAR(1000) NOT NULL,
             ADD picture_url VARCHAR(256) NOT NULL,
             ADD preferences INT,
+            ADD matches_id INT,
             ADD CONSTRAINT fk_gender FOREIGN KEY (gender) REFERENCES gender(id),
-            ADD CONSTRAINT fk_romantic_pref FOREIGN KEY (preferences) REFERENCES romantic_pref(id);
+            ADD CONSTRAINT fk_romantic_pref FOREIGN KEY (preferences) REFERENCES romantic_pref(id),
+            ADD CONSTRAINT fk_matches FOREIGN KEY (matches_id) REFERENCES matches(id);
 
         INSERT INTO users (username, password, first_name, last_name, location, gender, age, description, picture_url)
         VALUES ('dangelodeniro', 'string', 'D''Angelo', 'DeNiro', 'Colorado', 1, 28, 'string', 'string'),
