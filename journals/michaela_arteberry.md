@@ -25,4 +25,4 @@ I am starting the process of installing redux and gutting out our front end. Oth
 Started to gut out all of the front end auth stuff to be able to use Redux with our react front end.
 
 24 APril:
-Installed some Tailwind plugins in the tailwind config file.
+Installed some Tailwind plugins in the tailwind config file. Got the matches table to work and show the liked by user and the logged in user.
