@@ -1,4 +1,3 @@
-// @ts-check
 import { useState } from 'react'
 
 export default function SignInForm() {
@@ -26,7 +25,7 @@ export default function SignInForm() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter Password"
             />
-            <button type="submit">Sign In</button>
+            <button type="submit">Sign In!</button>
         </form>
     )
 }
