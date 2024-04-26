@@ -1,10 +1,21 @@
-from fastapi import APIRouter, Depends
-from queries.matches import GenderIn, GenderOut, GenderRepository
+from fastapi import (
+    Depends,
+    APIRouter,
+)
+from typing import List
+from queries.matches import GenderOut, GenderRepository
 
 
-router = APIRouter()
+router = APIRouter(tags=["Gender"], prefix="/api/gender")
 
 
-@router.post("/gender", response_model=GenderOut)
-def create_gender(user: GenderIn, repo: GenderRepository = Depends()):
-    return repo.create_gender(user)
+# get all the genders from the database
+@router.get("/all")
+async def get_all_gender(
+    queries:GenderRepository = Depends(),
+) -> List[GenderOut]:
+    """
+    Get all genders
+    """
+    genders = queries.get_all_gender()
+    return [GenderOut(**gender.model_dump())for gender in genders]
