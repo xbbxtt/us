@@ -6,16 +6,16 @@ from typing import List
 from queries.matches import GenderOut, GenderRepository
 
 
-router = APIRouter(tags=["Gender"], prefix="/api/gender")
+router = APIRouter(tags=["Gender"], prefix="/api")
 
 
 # get all the genders from the database
-@router.get("/all")
+@router.get("/genders")
 async def get_all_gender(
-    queries:GenderRepository = Depends(),
+    queries: GenderRepository = Depends(),
 ) -> List[GenderOut]:
     """
     Get all genders
     """
     genders = queries.get_all_gender()
-    return [GenderOut(**gender.model_dump())for gender in genders]
+    return [GenderOut(**gender.model_dump()) for gender in genders]
