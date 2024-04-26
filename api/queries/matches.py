@@ -87,24 +87,23 @@ class MatchOut(BaseModel):
 
 
 class GenderRepository:
-    def create_gender(self, gender: GenderIn) -> GenderOut:
+    # get all genders from the database
+    def get_all_gender(self) -> List[GenderOut]:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 result = cur.execute(
                     """
-                    INSERT INTO gender (
-                        gender_name
-                    ) VALUES (
-                        %s
-                    )
-                    RETURNING id;
-                    """,
-                    [gender.gender_name],
+                    SELECT
+                        *
+                    FROM gender
+                    """
                 )
-
-                gender_id = result.fetchone()[0]
-                old_data = gender.dict()
-                return GenderOut(**old_data, id=gender_id)
+                result = []
+                for record in cur:
+                    gender = GenderOut(id=record[0], gender_name=record[1])
+                    result.append(gender)
+                return result
+                    
 
 
 class LikesRepository:
@@ -114,7 +113,6 @@ class LikesRepository:
         """
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                print("anything")
                 result = cur.execute(
                     """
                     SELECT

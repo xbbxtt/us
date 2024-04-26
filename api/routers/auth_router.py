@@ -29,7 +29,7 @@ from utils.authentication import (
     verify_password,
 )
 
-from queries.matches import LikesIn, LikesOut, LikesRepository, MatchOut
+from queries.matches import LikesIn, LikesOut, LikesRepository, MatchOut, GenderRepository, GenderOut
 
 from typing import Dict, List
 
@@ -308,6 +308,16 @@ def get_user_matches(
             if match.logged_in_user == user.id or match.liked_by_user == user.id]}
 
 
+# get all gender from the database
+@router.get("/genders/all")
+async def get_all_gender(
+    queries:GenderRepository = Depends(),
+) -> list[GenderOut]:
+    """
+    Get all genders
+    """
+    genders = queries.get_all_gender()
+    return [GenderOut(**gender.model_dump()) for gender in genders]
 
 
 
