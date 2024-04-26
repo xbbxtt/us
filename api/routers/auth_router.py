@@ -195,7 +195,7 @@ async def signout(
     return "Signed out successfully"
 
 
-@router.get("api/users")
+@router.get("/users")
 async def get_all_users(
     queries: UserQueries = Depends(),
 ) -> list[UserGender]:
@@ -206,8 +206,8 @@ async def get_all_users(
     return [UserGender(**user.model_dump()) for user in users]
 
 
-@router.get("api/users/gender")
-def filter_by_gender(
+@router.get("/preferences")
+def filter_by_preferences(
     gender: int,
     min_age: int,
     max_age: int,
@@ -236,7 +236,7 @@ def filter_by_gender(
 
 
 # update the status of the like without the user having to like the user again
-@router.put("/likes/{id}")
+@router.put("/likes/<int:id>")
 def update_like_status(
     id: int,
     likes: LikesIn,
@@ -261,7 +261,7 @@ def update_like_status(
     return LikesOut(**likes.model_dump())
 
 
-@router.get("user/matches")
+@router.get("/matches")
 def get_user_matches(
     queries: LikesRepository = Depends(),
     user: UserResponse = Depends(try_get_jwt_user_data),
