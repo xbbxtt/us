@@ -32,6 +32,9 @@ export default function SignInForm() {
         const fetchConfig = {
             method: 'POST',
             body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+            },
         }
 
         const response = await fetch(url, fetchConfig)
