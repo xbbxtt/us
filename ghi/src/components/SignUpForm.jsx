@@ -68,7 +68,7 @@ export default function SignInForm() {
     }, [])
 
     return (
-        <form onSubmit={handleFormSubmit}>
+        <form className="text-black" onSubmit={handleFormSubmit}>
             <input
                 type="text"
                 name="username"
