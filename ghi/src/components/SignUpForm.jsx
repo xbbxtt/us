@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function SignInForm() {
     const [genders, setGenders] = useState([])
@@ -18,13 +18,17 @@ export default function SignInForm() {
     }
 
     const getGender = async () => {
-        const url = 'https://localhost:8000/api/genders'
+        const url = 'http://localhost:8000/api/genders/'
         const response = await fetch(url)
         if (response.ok) {
             const data = await response.json()
-            setGenders(data.genders)
+            setGenders(data)
         }
     }
+
+    useEffect(() => {
+        getGender()
+    }, [])
 
     return (
         <form onSubmit={handleFormSubmit}>
