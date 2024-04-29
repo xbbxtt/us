@@ -32,6 +32,9 @@ export default function SignInForm() {
         const fetchConfig = {
             method: 'POST',
             body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+            },
         }
 
         const response = await fetch(url, fetchConfig)
@@ -65,7 +68,7 @@ export default function SignInForm() {
     }, [])
 
     return (
-        <form onSubmit={handleFormSubmit}>
+        <form className="text-black" onSubmit={handleFormSubmit}>
             <input
                 type="text"
                 name="username"
