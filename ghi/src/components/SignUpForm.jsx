@@ -14,7 +14,41 @@ export default function SignInForm() {
 
     async function handleFormSubmit(e) {
         e.preventDefault()
-        await signup({ username, password })
+        const data = {}
+
+        data.username = username
+        data.password = password
+        data.first_name = first_name
+        data.last_name = last_name
+        data.location = location
+        data.gender = parseInt(gender)
+        data.age = parseInt(age)
+        data.description = description
+        data.picture_url = picture_url
+
+        console.log(data)
+
+        const url = 'http://localhost:8000/api/auth/signup/'
+        const fetchConfig = {
+            method: 'POST',
+            body: JSON.stringify(data),
+        }
+
+        const response = await fetch(url, fetchConfig)
+        const responseData = await response.json()
+        console.log(responseData)
+
+        if (response.ok) {
+            setUsername('')
+            setPassword('')
+            setFirst_name('')
+            setLast_name('')
+            setLocation('')
+            setGender('')
+            setAge('')
+            setDescription('')
+            setPicture_url('')
+        }
     }
 
     const getGender = async () => {
@@ -38,6 +72,7 @@ export default function SignInForm() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Enter Username"
+                className="mx-2"
             />
             <input
                 type="text"
@@ -45,6 +80,7 @@ export default function SignInForm() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter Password"
+                className="mx-2"
             />
             <input
                 type="text"
@@ -52,6 +88,7 @@ export default function SignInForm() {
                 value={first_name}
                 onChange={(e) => setFirst_name(e.target.value)}
                 placeholder="First Name"
+                className="mx-2"
             />
             <input
                 type="text"
@@ -59,6 +96,7 @@ export default function SignInForm() {
                 value={last_name}
                 onChange={(e) => setLast_name(e.target.value)}
                 placeholder="Last Name"
+                className="mx-2"
             />
             <input
                 type="text"
@@ -66,16 +104,18 @@ export default function SignInForm() {
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 placeholder="Enter Your Location"
+                className="mx-2"
             />
             <select value={gender} onChange={(e) => setGender(e.target.value)}>
                 <option value="">Select your gender</option>
-                {genders.map((gender) => {
-                    return (
-                        <option key={gender.id} value={gender.id}>
-                            {gender.gender_name}
-                        </option>
-                    )
-                })}
+                {genders.length > 0 &&
+                    genders.map((gender) => {
+                        return (
+                            <option key={gender.id} value={gender.id}>
+                                {gender.gender_name}
+                            </option>
+                        )
+                    })}
             </select>
 
             <input
@@ -83,6 +123,7 @@ export default function SignInForm() {
                 name="age"
                 value={age}
                 onChange={(e) => setAge(e.target.value)}
+                className="mx-2"
             />
             <input
                 type="text"
@@ -90,6 +131,7 @@ export default function SignInForm() {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Describe of Yourself"
+                className="mx-2"
             />
             <input
                 type="url"
@@ -97,6 +139,7 @@ export default function SignInForm() {
                 value={picture_url}
                 onChange={(e) => setPicture_url(e.target.value)}
                 placeholder="Enter Picture URL"
+                className="mx-2"
             />
             <button type="submit">Sign Up!</button>
         </form>
