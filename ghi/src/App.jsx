@@ -1,11 +1,14 @@
 import { Outlet } from 'react-router-dom'
 
+import Nav from './components/Nav'
 import './App.css'
 
 function App() {
     return (
         <div className="App">
-            <header className="App-header">{/* <Nav /> */}</header>
+            <header className="App-header">
+                <Nav />
+            </header>
             <h1 className="text-3xl font-bold underline">Hello world!</h1>
             <Outlet />
             <footer>

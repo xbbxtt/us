@@ -29,7 +29,14 @@ from utils.authentication import (
     verify_password,
 )
 
-from queries.matches import LikesIn, LikesOut, LikesRepository
+from queries.matches import (
+    LikesIn,
+    LikesOut,
+    LikesRepository,
+    MatchOut,
+    GenderRepository,
+    GenderOut,
+)
 
 from typing import Dict, List
 
@@ -188,7 +195,7 @@ async def signout(
     return "Signed out successfully"
 
 
-@router.get("api/users")
+@router.get("/users")
 async def get_all_users(
     queries: UserQueries = Depends(),
 ) -> list[UserGender]:
@@ -199,9 +206,9 @@ async def get_all_users(
     return [UserGender(**user.model_dump()) for user in users]
 
 
-@router.get("api/users/gender")
-def filter_by_gender(
-    gender : int,
+@router.get("/preferences")
+def filter_by_preferences(
+    gender: int,
     min_age: int,
     max_age: int,
     queries: UserQueries = Depends(),
@@ -219,54 +226,17 @@ def filter_by_gender(
     return [
         username
         for username in get_all_users
-        if username.gender == gender and username.id != user.id and min_age <= username.age <= max_age
+        if username.gender == gender
+        and username.id != user.id
+        and min_age <= username.age <= max_age
     ]
 
 
 # if where adding the user2 to the likes table of user that is authenticated its a post request
 
 
-@router.post("/likes")
-def create_a_like(
-    likes: LikesIn,
-    queries: LikesRepository  = Depends(),
-    user: UserResponse = Depends(try_get_jwt_user_data),
-) -> LikesOut:
-    """
-    Create a like
-    """
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
-        )
-    likes.logged_in_user = user.id
-    likes = queries.create_a_like(
-        likes.logged_in_user,
-        likes.liked_by_user,
-        likes.status,
-    )
-    return LikesOut(**likes.model_dump())
-
-
-@router.get("/likes/all")
-def get_all_likes(
-    queries: LikesRepository = Depends(),
-    user: UserResponse = Depends(try_get_jwt_user_data),
-) -> Dict[str, List[LikesOut]]:
-    """
-    Get all likes
-    """
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
-        )
-
-    likes = queries.get_all_likes()
-    return {"likes": [LikesOut(**like.model_dump()) for like in likes
-            if like.logged_in_user == user.id]}
-
 # update the status of the like without the user having to like the user again
-@router.put("/likes/{id}")
+@router.put("/likes/<int:id>")
 def update_like_status(
     id: int,
     likes: LikesIn,
@@ -286,52 +256,30 @@ def update_like_status(
         likes.status,
     )
     if likes.status:
-        queries.create_a_match(likes.liked_by_user)
-        
+        queries.create_a_match(likes.logged_in_user, likes.liked_by_user)
+
     return LikesOut(**likes.model_dump())
 
 
+@router.get("/matches")
+def get_user_matches(
+    queries: LikesRepository = Depends(),
+    user: UserResponse = Depends(try_get_jwt_user_data),
+) -> Dict[str, List[MatchOut]]:
+    """
+    Get all matches
+    """
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
+        )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# def view_all_likes(
-#         likes: LikesOut,
-#         queries: LikesRepository = Depends(),
-#         user: UserResponse = Depends(try_get_jwt_user_data),
-#         ) -> LikesOut:
-
-#     if not user:
-#         raise HTTPException(
-#             status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
-#         )
-#     likes.logged_in_user = user.id
-#     likes = queries.get_all_likes()
-
-#     return [like.liked_by_user for like in likes]
-
-
-    # second column of the table, return [ user for user in likes.liked_by_user]
+    matches = queries.get_all_matches(user.id)
+    return {
+        "matches": [
+            MatchOut(**match.model_dump())
+            for match in matches
+            if match.logged_in_user == user.id
+            or match.liked_by_user == user.id
+        ]
+    }
