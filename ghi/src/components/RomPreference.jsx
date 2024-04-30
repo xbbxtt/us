@@ -1,71 +1,23 @@
 import { useState, useEffect } from 'react'
 
-export default function SignInForm() {
-    const [genders, setGenders] = useState([])
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const [first_name, setFirst_name] = useState('')
-    const [last_name, setLast_name] = useState('')
-    const [location, setLocation] = useState('')
-    const [gender, setGender] = useState('')
-    const [age, setAge] = useState('')
-    const [description, setDescription] = useState('')
-    const [picture_url, setPicture_url] = useState('')
+export default function RomanticPreferences() {
+    const [users, setUsers] = useState([])
 
-    async function handleFormSubmit(e) {
-        e.preventDefault()
-        const data = {}
-
-        data.username = username
-        data.password = password
-        data.first_name = first_name
-        data.last_name = last_name
-        data.location = location
-        data.gender = parseInt(gender)
-        data.age = parseInt(age)
-        data.description = description
-        data.picture_url = picture_url
-
-        console.log(data)
-
-        const url = 'http://localhost:8000/api/auth/signup/'
-        const fetchConfig = {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        }
-
-        const response = await fetch(url, fetchConfig)
-        const responseData = await response.json()
-        console.log(responseData)
-
-        if (response.ok) {
-            setUsername('')
-            setPassword('')
-            setFirst_name('')
-            setLast_name('')
-            setLocation('')
-            setGender('')
-            setAge('')
-            setDescription('')
-            setPicture_url('')
-        }
-    }
-
-    const getGender = async () => {
-        const url = 'http://localhost:8000/api/genders/'
-        const response = await fetch(url)
-        if (response.ok) {
-            const data = await response.json()
-            setGenders(data)
-        }
-    }
-
+// get all users
     useEffect(() => {
-        getGender()
-    }, [])
+        const fetchUsers = async () => {
+            try {
+                const response = await fetch(
+                    "http://localhost:8000/api/auth/preferences/"
+                );
+                if (!response.ok) throw new Error("Try lowering your standards!");
+                const data = await response.json();
+                setUsers(data.users);
+            }
+        }
+    })
+
+
 
     return (
         <form className="text-black" onSubmit={handleFormSubmit}>
