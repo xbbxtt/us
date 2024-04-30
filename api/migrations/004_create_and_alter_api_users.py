@@ -92,9 +92,7 @@ steps = [
             DROP CONSTRAINT fk_gender,
             DROP COLUMN age,
             DROP COLUMN description,
-            DROP COLUMN picture_url,
-            DROP COLUMN preferences,
-            DROP CONSTRAINT fk_romantic_pref;
+            DROP COLUMN picture_url
         """
     ]
 ]
