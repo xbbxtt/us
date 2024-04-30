@@ -10,7 +10,7 @@ function Slider() {
         <div>
             <div>
                 {/* slider min age */}
-                <h1>Slider</h1>
+                <h1>What's your age preference?</h1>
                 <input
                     type="range"
                     value={value}
