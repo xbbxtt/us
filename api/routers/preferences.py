@@ -66,9 +66,5 @@ def update_a_preference(
         preferences.max_age,
         preferences.gender_id,
     )
-    # adds the romantic preference id to the user table
-    if updated_preference:
-        queries.add_romantic_pref_id(user.id, updated_preference.id)
-    
     
     return PreferencesOut(**updated_preference.model_dump())

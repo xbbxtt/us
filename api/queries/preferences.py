@@ -73,27 +73,4 @@ class PreferencesRepository:
                 }
                 return PreferencesOut(**data_dict)
             
-    # add the romantic_pref id to the user table
-    def add_romantic_pref_id(self, user1_id: int, pref_id: int) -> PreferencesOut:
-        with pool.connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute(
-                    """
-                    UPDATE users
-                    SET preferences = %s
-                    WHERE id = %s
-                    RETURNING *;
-                    """,
-                    [pref_id, user1_id]
-                )
-                result = cur.fetchone()
-                data_dict = {
-                    "id": result[0],
-                    "user1_id": result[1],
-                    "min_age": result[2],
-                    "max_age": result[3],
-                    "gender_id": result[4],
-                }
-                return PreferencesOut(**data_dict)
-            
-            
+    
