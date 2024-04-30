@@ -1,6 +1,7 @@
 """
 User Authentication API Router
 """
+
 from fastapi import (
     Depends,
     Request,
@@ -14,7 +15,12 @@ from queries.user_queries import (
 )
 
 from utils.exceptions import UserDatabaseException
-from models.users import UserRequest, UserResponse
+from models.users import (
+    UserRequest,
+    UserResponse,
+    UserSignInRequest,
+    UserGender,
+)
 
 from utils.authentication import (
     try_get_jwt_user_data,
@@ -22,6 +28,18 @@ from utils.authentication import (
     generate_jwt,
     verify_password,
 )
+
+from queries.matches import (
+    LikesIn,
+    LikesOut,
+    LikesRepository,
+    MatchOut,
+    GenderRepository,
+    GenderOut,
+)
+
+from typing import Dict, List
+
 
 # Note we are using a prefix here,
 # This saves us typing in all the routes below
@@ -43,9 +61,18 @@ async def signup(
 
     # Create the user in the database
     try:
-        user = queries.create_user(new_user.username, hashed_password)
+        user = queries.create_user(
+            new_user.username,
+            hashed_password,
+            first_name=new_user.first_name,
+            last_name=new_user.last_name,
+            location=new_user.location,
+            gender=new_user.gender,
+            age=new_user.age,
+            description=new_user.description,
+            picture_url=new_user.picture_url,
+        )
     except UserDatabaseException as e:
-        print(e)
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
 
     # Generate a JWT token
@@ -55,7 +82,7 @@ async def signup(
     user_out = UserResponse(**user.model_dump())
 
     # Secure cookies only if running on something besides localhost
-    secure = True if request.headers.get("origin") == "localhost" else False
+    secure = request.headers.get("origin") == "localhost"
 
     # Set a cookie with the token in it
     response.set_cookie(
@@ -70,7 +97,7 @@ async def signup(
 
 @router.post("/signin")
 async def signin(
-    user_request: UserRequest,
+    user_request: UserSignInRequest,
     request: Request,
     response: Response,
     queries: UserQueries = Depends(),
@@ -98,7 +125,7 @@ async def signin(
     token = generate_jwt(user)
 
     # Secure cookies only if running on something besides localhost
-    secure = True if request.headers.get("origin") == "localhost" else False
+    secure = request.headers.get("origin") == "localhost"
 
     # Set a cookie with the token in it
     response.set_cookie(
@@ -110,7 +137,18 @@ async def signin(
     )
 
     # Convert the UserWithPW to a UserOut
-    return UserResponse(id=user.id, username=user.username)
+    return UserResponse(
+        id=user.id,
+        username=user.username,
+        password=user.password,
+        first_name=user.first_name,
+        last_name=user.last_name,
+        location=user.location,
+        gender=user.gender,
+        age=user.age,
+        description=user.description,
+        picture_url=user.picture_url,
+    )
 
 
 @router.get("/authenticate")
@@ -144,7 +182,7 @@ async def signout(
     Signs the user out by deleting their JWT Cookie
     """
     # Secure cookies only if running on something besides localhost
-    secure = True if request.headers.get("origin") == "localhost" else False
+    secure = request.headers.get("origin") == "localhost"
 
     # Delete the cookie
     response.delete_cookie(
@@ -154,4 +192,103 @@ async def signout(
     # There's no need to return anything in the response.
     # All that has to happen is the cookie header must come back
     # Which causes the browser to delete the cookie
-    return
+    return "Signed out successfully"
+
+
+@router.get("/users")
+async def get_all_users(
+    queries: UserQueries = Depends(),
+) -> list[UserGender]:
+    """
+    Get all users
+    """
+    users = queries.get_all()
+    return [UserGender(**user.model_dump()) for user in users]
+
+
+@router.get("/preferences")
+def filter_by_preferences(
+    gender: int,
+    min_age: int,
+    max_age: int,
+    queries: UserQueries = Depends(),
+    user: UserResponse = Depends(try_get_jwt_user_data),
+) -> list[UserGender]:
+    """
+    Gets users by gender if a user is authenticated
+    """
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
+        )
+    get_all_users = queries.get_all()
+    
+    if gender == 4:
+        return [
+            username
+            for username in get_all_users
+            if username.id != user.id
+            and min_age <= username.age <= max_age
+        ]
+
+    # if the user preferences is 0 then return all users else return users if user.gender == gender id
+    return [
+        username
+        for username in get_all_users
+        if username.gender == gender
+        and username.id != user.id
+        and min_age <= username.age <= max_age
+    ]
+
+
+# if where adding the user2 to the likes table of user that is authenticated its a post request
+
+
+# update the status of the like without the user having to like the user again
+@router.put("/likes/<int:id>")
+def update_like_status(
+    id: int,
+    likes: LikesIn,
+    queries: LikesRepository = Depends(),
+    user: UserResponse = Depends(try_get_jwt_user_data),
+) -> LikesOut:
+    """
+    Update the status of a like
+    """
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
+        )
+    likes.logged_in_user = user.id
+    likes = queries.update_like_status(
+        id,
+        likes.status,
+    )
+    if likes.status:
+        queries.create_a_match(likes.logged_in_user, likes.liked_by_user)
+
+    return LikesOut(**likes.model_dump())
+
+
+@router.get("/matches")
+def get_user_matches(
+    queries: LikesRepository = Depends(),
+    user: UserResponse = Depends(try_get_jwt_user_data),
+) -> Dict[str, List[MatchOut]]:
+    """
+    Get all matches
+    """
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
+        )
+
+    matches = queries.get_all_matches(user.id)
+    return {
+        "matches": [
+            MatchOut(**match.model_dump())
+            for match in matches
+            if match.logged_in_user == user.id
+            or match.liked_by_user == user.id
+        ]
+    }

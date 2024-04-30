@@ -1,12 +1,14 @@
-//@ts-check
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
 
 import SignInForm from './components/SignInForm'
 import SignUpForm from './components/SignUpForm'
 import App from './App'
-import AuthProvider from './components/AuthProvider'
+import Homepage from './components/Homepage.jsx'
+
+import { store } from './app/store.js'
 
 import './index.css'
 
@@ -21,6 +23,10 @@ const router = createBrowserRouter(
             path: '/',
             element: <App />,
             children: [
+                {
+                    index: true,
+                    element: <Homepage />,
+                },
                 {
                     path: 'signup',
                     element: <SignUpForm />,
@@ -49,8 +55,8 @@ console.table(import.meta.env)
 const root = ReactDOM.createRoot(rootElement)
 root.render(
     <React.StrictMode>
-        <AuthProvider>
+        <Provider store={store}>
             <RouterProvider router={router} />
-        </AuthProvider>
+        </Provider>
     </React.StrictMode>
 )
