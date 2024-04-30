@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import Slider from './ReactSlider'
 
 export default function SignInForm() {
     const [genders, setGenders] = useState([])
@@ -11,6 +12,13 @@ export default function SignInForm() {
     const [age, setAge] = useState('')
     const [description, setDescription] = useState('')
     const [picture_url, setPicture_url] = useState('')
+
+    const [values, setValues] = useState([18, 100])
+
+    const handleChange = (newValues) => {
+        setValues(newValues)
+    }
+
 
     async function handleFormSubmit(e) {
         e.preventDefault()
@@ -145,6 +153,9 @@ export default function SignInForm() {
                 className="mx-2"
             />
             <button type="submit">Sign Up!</button>
+             <div>
+                <Slider values={values} onChange={handleChange} />
+            </div>
         </form>
     )
 }
