@@ -153,9 +153,22 @@ export default function SignInForm() {
                 className="mx-2"
             />
             <button type="submit">Sign Up!</button>
-             <div>
+
+            <div>
                 <Slider values={values} onChange={handleChange} />
             </div>
+
+            <select value={gender} onChange={(e) => setGender(e.target.value)}>
+                <option value="">Select your gender preference</option>
+                {genders.length > 0 &&
+                    genders.map((gender) => {
+                        return (
+                            <option key={gender.id} value={gender.id}>
+                                {gender.gender_name}
+                            </option>
+                        )
+                    })}
+            </select>
         </form>
     )
 }
