@@ -74,9 +74,7 @@ steps = [
             ADD age INTEGER NOT NULL,
             ADD description VARCHAR(1000) NOT NULL,
             ADD picture_url VARCHAR(256) NOT NULL,
-            ADD preferences INT,
-            ADD CONSTRAINT fk_gender FOREIGN KEY (gender) REFERENCES gender(id),
-            ADD CONSTRAINT fk_romantic_pref FOREIGN KEY (preferences) REFERENCES romantic_pref(id);
+            ADD CONSTRAINT fk_gender FOREIGN KEY (gender) REFERENCES gender(id);
 
         INSERT INTO users (username, password, first_name, last_name, location, gender, age, description, picture_url)
         VALUES ('dangelodeniro', 'string', 'D''Angelo', 'DeNiro', 'Colorado', 1, 28, 'string', 'string'),
