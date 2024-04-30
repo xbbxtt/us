@@ -68,3 +68,18 @@ def update_a_preference(
     )
     
     return PreferencesOut(**updated_preference.model_dump())
+
+@router.get("/preferences")
+def get_all_preferences(
+    queries: PreferencesRepository = Depends(),
+    user: UserResponse = Depends(try_get_jwt_user_data),
+) -> List[PreferencesOut]:
+    """
+    Get all preferences
+    """
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
+        )
+    preferences = queries.get_all_preferences()
+    return [preference.model_dump() for preference in preferences]
