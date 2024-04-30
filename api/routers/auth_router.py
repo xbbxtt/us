@@ -222,7 +222,16 @@ def filter_by_preferences(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
         )
     get_all_users = queries.get_all()
+    
+    if gender == 4:
+        return [
+            username
+            for username in get_all_users
+            if username.id != user.id
+            and min_age <= username.age <= max_age
+        ]
 
+    # if the user preferences is 0 then return all users else return users if user.gender == gender id
     return [
         username
         for username in get_all_users

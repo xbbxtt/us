@@ -22,7 +22,6 @@ steps = [
             min_age INT NOT NULL,
             max_age INT NOT NULL,
             gender_id INT NOT NULL,
-            CONSTRAINT fk_gender FOREIGN KEY (gender_id) REFERENCES gender(id),
             CONSTRAINT fk_user1 FOREIGN KEY (user1_id) REFERENCES users(id)
         );
         """,
