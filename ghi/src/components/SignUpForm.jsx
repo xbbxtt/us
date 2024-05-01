@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import Slider from './ReactSlider'
 
 export default function SignInForm() {
     const [genders, setGenders] = useState([])
@@ -18,7 +17,6 @@ export default function SignInForm() {
     const handleChange = (newValues) => {
         setValues(newValues)
     }
-
 
     async function handleFormSubmit(e) {
         e.preventDefault()
@@ -73,6 +71,7 @@ export default function SignInForm() {
 
     useEffect(() => {
         getGender()
+        handleChange()
     }, [])
 
     return (
@@ -153,22 +152,6 @@ export default function SignInForm() {
                 className="mx-2"
             />
             <button type="submit">Sign Up!</button>
-
-            <div>
-                <Slider values={values} onChange={handleChange} />
-            </div>
-
-            <select value={gender} onChange={(e) => setGender(e.target.value)}>
-                <option value="">Select your gender preference</option>
-                {genders.length > 0 &&
-                    genders.map((gender) => {
-                        return (
-                            <option key={gender.id} value={gender.id}>
-                                {gender.gender_name}
-                            </option>
-                        )
-                    })}
-            </select>
         </form>
     )
 }

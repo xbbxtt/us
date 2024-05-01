@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 
 import SignInForm from './components/SignInForm'
 import SignUpForm from './components/SignUpForm'
+import RomanticPref from './components/RomPreference'
 import App from './App'
 import Homepage from './components/Homepage.jsx'
 
@@ -34,6 +35,10 @@ const router = createBrowserRouter(
                 {
                     path: 'signin',
                     element: <SignInForm />,
+                },
+                {
+                    path: 'romantic-pref',
+                    element: <RomanticPref />,
                 },
             ],
         },
