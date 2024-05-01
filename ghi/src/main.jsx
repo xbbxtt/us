@@ -7,6 +7,7 @@ import SignInForm from './components/SignInForm'
 import SignUpForm from './components/SignUpForm'
 import App from './App'
 import Homepage from './components/Homepage.jsx'
+import GetAllLikes from './components/GetAllLikes.jsx'
 
 import { store } from './app/store.js'
 
@@ -34,6 +35,10 @@ const router = createBrowserRouter(
                 {
                     path: 'signin',
                     element: <SignInForm />,
+                },
+                {
+                    path: 'likes',
+                    element: <GetAllLikes />,
                 },
             ],
         },

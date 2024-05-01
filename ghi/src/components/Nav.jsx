@@ -1,6 +1,11 @@
 import { NavLink } from 'react-router-dom'
+import { useAuthenticateQuery, useGetAllLikesQuery } from '../app/apiSlice'
+
 
 const Nav = () => {
+    const { data: user, isLoading } = useAuthenticateQuery()
+    const { likesData } = useGetAllLikesQuery()
+    console.log(user, isLoading)
     return (
         <>
             <nav>
@@ -13,6 +18,9 @@ const Nav = () => {
                     </li>
                     <li>
                         <NavLink to={'/signin'}>Sign In</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to={'/likes'}>Likes</NavLink>
                     </li>
                 </ul>
             </nav>
