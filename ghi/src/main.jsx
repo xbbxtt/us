@@ -8,6 +8,7 @@ import SignUpForm from './components/SignUpForm'
 import RomanticPref from './components/RomPreference'
 import App from './App'
 import Homepage from './components/Homepage.jsx'
+import GetAllLikes from './components/GetAllLikes.jsx'
 
 import { store } from './app/store.js'
 
@@ -39,6 +40,10 @@ const router = createBrowserRouter(
                 {
                     path: 'romantic-pref',
                     element: <RomanticPref />,
+                },
+                {
+                    path: 'likes',
+                    element: <GetAllLikes />,
                 },
             ],
         },

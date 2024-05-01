@@ -39,6 +39,9 @@ const Nav = () => {
                             Romantic Preferences
                         </NavLink>
                     </li>
+                    <li>
+                        <NavLink to={'/likes'}>Likes</NavLink>
+                    </li>
                 </ul>
             </nav>
         </>

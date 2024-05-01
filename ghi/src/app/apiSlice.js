@@ -28,7 +28,14 @@ export const usApi = createApi({
             }),
             invalidatesTags: ['User'],
         }),
+
+        getAllLikes: builder.query({
+            query: () => ({
+                url: '/api/likes',
+                credentials: 'include',
+            }),
+        }),
     }),
 })
 
-export const { useAuthenticateQuery, useSigninMutation } = usApi
+export const { useAuthenticateQuery, useSigninMutation, useGetAllLikesQuery } = usApi
