@@ -16,15 +16,22 @@ export default function RomanticPref() {
         setMaxAge(newValues[1])
     }
 
+    const updateSliderValues = (newValues) => {
+        setMinAge(newValues[0])
+        setMaxAge(newValues[1])
+    }
+
     async function handleFormSubmit(e) {
         e.preventDefault()
 
         const data = {}
-        data.min_age = minAge
-        data.max_age = maxAge
+        data.user1_id = 1
+        data.min_age = parseInt(minAge)
+        data.max_age = parseInt(maxAge)
         data.gender_pref = parseInt(genderPref)
 
         console.log(data)
+
         const response = await fetch('http://localhost:8000/api/preferences/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -32,6 +39,10 @@ export default function RomanticPref() {
         })
 
         if (response.ok) {
+            setMinAge('')
+            setMaxAge('')
+            setGenderPref('')
+
             console.log('Preferences created successfully!')
         } else {
             console.error('Error creating preferences:', response.statusText)
@@ -54,7 +65,10 @@ export default function RomanticPref() {
     return (
         <form className="text-black" onSubmit={handleFormSubmit}>
             <div>
-                <Slider values={[minAge, maxAge]} onChange={handleChange} />{' '}
+                <Slider
+                    updateSliderValues={updateSliderValues}
+                    onChange={handleChange}
+                />{' '}
             </div>
 
             <select

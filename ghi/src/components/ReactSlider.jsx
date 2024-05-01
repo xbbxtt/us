@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-function Slider() {
+function Slider({ updateSliderValues }) {
     const [values, setValues] = useState([18, 95])
 
     const handleChange = (event) => {
@@ -15,13 +15,15 @@ function Slider() {
         }
 
         setValues(newValues)
+        if (updateSliderValues) {
+            updateSliderValues(newValues)
+        }
     }
-    console.log(values)
 
     return (
         <div>
+            <h1>What's your age preference?</h1>
             <div>
-                <h1>What's your age preference?</h1>
                 <input
                     type="range"
                     data-id="min"
