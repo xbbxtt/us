@@ -298,7 +298,9 @@ def get_user_matches(
         ]
     }
 
+
 # if the user id matches the user1_id in the romantic_pref table filter all users using the romatic_pref table
+
 
 @router.get("/preferences")
 def filter_by_preferences(
@@ -328,9 +330,18 @@ def filter_by_preferences(
         return [
             username
             for username in get_all_users
-            if username.id != user.id
-            and min_age <= username.age <= max_age
+            if username.id != user.id and min_age <= username.age <= max_age
         ]
 
+<<<<<<< HEAD
     return [username for username in get_all_users if username.gender == gender
             and username.id != user.id and min_age <= username.age <= max_age]
+=======
+    return [
+        username
+        for username in get_all_users
+        if username.gender == gender
+        and username.id != user.id
+        and min_age <= username.age <= max_age
+    ]
+>>>>>>> 424bab96292a8f9e03c3ed267c211ac39195efe7

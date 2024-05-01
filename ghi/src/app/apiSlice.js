@@ -11,9 +11,24 @@ export const usApi = createApi({
             query: () => ({
                 url: '/api/auth/authenticate/',
             }),
-            providesTags: ["User"]
+            providesTags: ['User'],
+        }),
+        // signout: builder.mutation({
+        //     query: () => ({
+        //         url: '/api/auth/signout/',
+        //         method: 'DELETE',
+        //     }),
+        //     invalidatesTags: ['User'],
+        // }),
+        signin: builder.mutation({
+            query: (body) => ({
+                url: '/api/auth/signin/',
+                method: 'POST',
+                body,
+            }),
+            invalidatesTags: ['User'],
         }),
     }),
 })
 
-export const { useAuthenticateQuery } = usApi
+export const { useAuthenticateQuery, useSigninMutation } = usApi

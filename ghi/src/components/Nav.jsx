@@ -1,9 +1,22 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuthenticateQuery } from '../app/apiSlice'
+// import { useSignoutMutation } from '../app/apiSlice'
+// import { useEffect } from 'react'
 
 const Nav = () => {
-    const {data: user, isLoading} = useAuthenticateQuery()
-    console.log({user, isLoading});
+    const navigate = useNavigate()
+    const { data: user, isLoading } = useAuthenticateQuery()
+    // const [signout, signoutStatus] = useSignoutMutation()
+
+    // useEffect(() => {
+    //     if (signoutStatus.isSuccess) {
+    //         navigate('/')
+    //     }
+    // }, [signoutStatus])
+
+    // const onSignoutClick = (e) => {
+    //     signout()
+    // }
 
     return (
         <>
@@ -18,8 +31,13 @@ const Nav = () => {
                     <li>
                         <NavLink to={'/signin'}>Sign In</NavLink>
                     </li>
+                    {/* <li>
+                        <NavLink to={'/signout'}>Sign Out</NavLink>
+                    </li> */}
                     <li>
-                        <NavLink to={'/1234'}>Get Liking</NavLink>
+                        <NavLink to={'/romantic-pref'}>
+                            Romantic Preferences
+                        </NavLink>
                     </li>
                 </ul>
             </nav>
