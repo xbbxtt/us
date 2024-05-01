@@ -159,7 +159,7 @@ async def signin(
 @router.get("/authenticate")
 async def authenticate(
     user: UserResponse = Depends(try_get_jwt_user_data),
-) -> UserResponse:
+) -> UserResponse | None:
     """
     This function returns the user if the user is logged in.
 
@@ -171,10 +171,10 @@ async def authenticate(
     This can be used in your frontend to determine if a user
     is logged in or not
     """
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Not logged in"
-        )
+    # if not user:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_404_NOT_FOUND, detail="Not logged in"
+    #     )
     return user
 
 
@@ -227,7 +227,7 @@ async def get_all_users(
 #             status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
 #         )
 #     get_all_users = queries.get_all()
-    
+
 #     if gender == 4:
 #         return [
 #             username
@@ -323,7 +323,7 @@ def filter_by_preferences(
             gender = pref.gender_id
             min_age = pref.min_age
             max_age = pref.max_age
-    
+
     if gender == 4:
         return [
             username
@@ -331,7 +331,6 @@ def filter_by_preferences(
             if username.id != user.id
             and min_age <= username.age <= max_age
         ]
-        
+
     return [username for username in get_all_users if username.gender == gender
             and username.id != user.id and min_age <= username.age <= max_age]
-    
