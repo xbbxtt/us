@@ -42,10 +42,16 @@ const Nav = () => {
                     <li>
                         <NavLink to={'/likes'}>Likes</NavLink>
                     </li>
+                    <li>
+                        <NavLink to={'/romantic-preferences'}>
+                            Get to swiping!
+                        </NavLink>
+                    </li>
                 </ul>
             </nav>
         </>
     )
 }
+
 
 export default Nav
