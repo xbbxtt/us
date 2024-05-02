@@ -1,48 +1,62 @@
 import { NavLink, useNavigate } from 'react-router-dom'
-import { useAuthenticateQuery } from '../app/apiSlice'
+import { useAuthenticateQuery, useSignoutMutation } from '../app/apiSlice'
+import { useEffect } from 'react'
+// import { useNavigate } from 'react-router-dom'
 // import { useSignoutMutation } from '../app/apiSlice'
 // import { useEffect } from 'react'
 
 const Nav = () => {
     const navigate = useNavigate()
-    const { data: user, isLoading } = useAuthenticateQuery()
-    // const [signout, signoutStatus] = useSignoutMutation()
+    const { data: user } = useAuthenticateQuery()
+    // const navigate = useNavigate()
+    // const [ signin, signinStatus ] = useSigninMutation()
 
     // useEffect(() => {
-    //     if (signoutStatus.isSuccess) {
-    //         navigate('/')
-    //     }
-    // }, [signoutStatus])
+    //     if (signinStatus.isSuccess) navigate('/')
+    // }, [signinStatus])
 
-    // const onSignoutClick = (e) => {
-    //     signout()
+    // const onSigninClick = (e) => {
+    //     signin()
     // }
+
+    const [signout, signoutStatus] = useSignoutMutation()
+
+    useEffect(() => {
+        if (signoutStatus.isSuccess) {
+            navigate('/')
+        }
+    }, [signoutStatus])
+
+    const onSignoutClick = (e) => {
+        signout()
+    }
 
     return (
         <>
             <nav>
                 <ul>
-                    <li>
+                    {!user && <li>
                         <NavLink to={'/'}>Home</NavLink>
-                    </li>
-                    <li>
+                    </li>}
+                    {!user && <li>
                         <NavLink to={'/signup'}>Sign Up</NavLink>
-                    </li>
-                    <li>
+                    </li>}
+                    {!user &&<li>
                         <NavLink to={'/signin'}>Sign In</NavLink>
-                    </li>
+                    </li>}
                     {/* <li>
                         <NavLink to={'/signout'}>Sign Out</NavLink>
                     </li> */}
-                    <li>
+                    {user &&<li>
                         <NavLink to={'/romantic-pref'}>
                             Romantic Preferences
                         </NavLink>
-                    </li>
-                    <li>
+                    </li>}
+                    {user &&<li>
                         <NavLink to={'/likes'}>Likes</NavLink>
-                    </li>
+                    </li>}
                 </ul>
+                {user && <button className='btn btn-outline-danger' onClick={onSignoutClick}>Logout</button>}
             </nav>
         </>
     )

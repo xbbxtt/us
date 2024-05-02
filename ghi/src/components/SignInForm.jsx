@@ -1,32 +1,21 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSigninMutation } from '../app/apiSlice'
+import { useNavigate } from 'react-router-dom'
 
 export default function SignInForm() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const [signin, signinStatus] = useSigninMutation()
+    const navigate = useNavigate()
+    const [ signin, signinStatus ] = useSigninMutation()
+
+    useEffect(() => {
+         if (signinStatus.isSuccess) navigate('/')
+    }, [signinStatus, navigate])
+
 
     const handleFormSubmit = async (e) => {
         e.preventDefault()
-        const data = {}
-        data.username = username
-        data.password = password
-
-        const url = 'http://localhost:8000/api/auth/signin'
-        const response = await fetch(url, {
-            credentials: 'include',
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        if (response.ok) {
-            const data = await response.json()
-            console.log(data)
-        } else {
-            console.log('Failed to sign in')
-        }
+        signin({username, password})
     }
 
     return (
@@ -48,4 +37,5 @@ export default function SignInForm() {
             <button type="submit">Sign In!</button>
         </form>
     )
+// }
 }

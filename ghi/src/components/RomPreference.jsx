@@ -31,26 +31,11 @@ export default function RomanticPref() {
         data.user1_id = 1
         data.min_age = parseInt(minAge)
         data.max_age = parseInt(maxAge)
-        data.gender_pref = parseInt(genderPref)
+        data.gender_id = parseInt(genderPref)
 
         console.log(data)
 
-        const response = await fetch('http://localhost:8000/api/preferences/', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-        })
 
-        if (response.ok) {
-            setMinAge('')
-            setMaxAge('')
-            setGenderPref('')
-
-            console.log('Preferences created successfully!')
-        } else {
-            console.error('Error creating preferences:', response.statusText)
-        }
-    }
 
     const getGender = async () => {
         const url = 'http://localhost:8000/api/genders/'
@@ -93,4 +78,4 @@ export default function RomanticPref() {
             </button>
         </form>
     )
-}
+} }
