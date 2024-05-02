@@ -25,7 +25,6 @@ export default function GetAllLikes() {
         fetchLikes()
     }, [])
 
-    // Log the currently signed-in user
     useEffect(() => {
         console.log('Current user:', user)
     }, [user])
