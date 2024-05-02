@@ -54,12 +54,18 @@ const Nav = () => {
                     </li>}
                     {user &&<li>
                         <NavLink to={'/likes'}>Likes</NavLink>
-                    </li>}
+                    </li>
+                    <li>
+                        <NavLink to={'/romantic-preferences'}>
+                            Get to swiping!
+                        </NavLink>
+                    </li>
                 </ul>
                 {user && <button className='btn btn-outline-danger' onClick={onSignoutClick}>Logout</button>}
             </nav>
         </>
     )
 }
+
 
 export default Nav

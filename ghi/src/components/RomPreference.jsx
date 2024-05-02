@@ -1,13 +1,7 @@
 import { useState, useEffect } from 'react'
 import Slider from './ReactSlider'
-import { useRomPrefMutation } from '../app/apiSlice'
 
 export default function RomanticPref() {
-    let defaultMinAge = 18
-    let defaultMaxAge = 100
-
-    const RomanticPref = useRomPrefMutation()
-
     const [minAge, setMinAge] = useState('')
     const [maxAge, setMaxAge] = useState('')
     const [genderPref, setGenderPref] = useState('')
@@ -33,8 +27,12 @@ export default function RomanticPref() {
         data.max_age = parseInt(maxAge)
         data.gender_id = parseInt(genderPref)
 
-        console.log(data)
-
+        const response = await fetch('http://localhost:8000/api/preferences/', {
+            credentials: 'include',
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        })
 
 
     const getGender = async () => {
@@ -58,7 +56,6 @@ export default function RomanticPref() {
                     onChange={handleChange}
                 />{' '}
             </div>
-
             <select
                 value={genderPref}
                 onChange={(e) => setGenderPref(e.target.value)}

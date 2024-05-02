@@ -26,3 +26,6 @@ Started to gut out all of the front end auth stuff to be able to use Redux with 
 
 24 APril:
 Installed some Tailwind plugins in the tailwind config file. Got the matches table to work and show the liked by user and the logged in user.
+
+week of 29 April - 2 May:
+updated the api slice, and the store js. Working on getting the pages done and authenticated. Running into errors being 401 and 422 as we are going. We are able to login now through the front end.

@@ -1,84 +1,48 @@
 import { useState, useEffect } from 'react'
 
-
-function LikesColumn(potentialLikes){
-  return (
-    <div className="col">
-      {potentialLikes.list.map(data => {
-        const user = data.user.id;
-        return (
-          <div key={user.id} className="card mb-3 shadow">
-            <img src={user.picture_url} className="card-img-top" />
-            <div className="card-body">
-              <h5 className="card-title">{user.first_name}</h5>
-              <h6 className="card-subtitle mb-2 text-muted">
-                {user.last_name}
-              </h6>
-              <p className="card-text">
-                {user.description}
-              </p>
-            </div>
-            <div className="card-footer">
-            <p className="card-text">
-                {user.age}
-                {user.gender}
-            </p>
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
 export default function RomanticPreferences() {
-    const [potentialLikes, setPotentialLikes] = useState([])
+  const [potentialLikes, setPotentialLikes] = useState([])
 
-    useEffect(() => {
-        const fetchRomanticPreferences = async () => {
-          const url = "http://localhost:8000/api/auth/preferences/"
-            try {
-                const response = await fetch(url);
-                if (response.ok) {
-                  const data = await response.json();
-                  
-                }
-                if (!response.ok) throw new Error("Try lowering your standards!");
-                const data = await response.json();
-                setPotentialLikes(data.username);
-            } catch (error) {
-                console.error(error.message);
-            }
-        };
-        fetchRomanticPreferences();
+
+  // fetch users by preferences according to the user that is logged in
+
+  const fetchPotentialLikes = async () => {
+    const url = 'http://localhost:8000/api/auth/preferences/'
+    const response = await fetch(url, {
+      method: 'GET',
+      credentials: 'include'
     })
+    if (response.ok) {
+      const data = await response.json()
+      setPotentialLikes(data)
+      console.log(data)
+    }
+  }
+
+
+  useEffect(() => {
+    fetchPotentialLikes()
+  }
+  , [])
+
 
 
     return (
-    <div className="col">
-      {potentialLikes.list.map(data => {
-        const user = data.user.id;
-        return (
-          <div key={user.id} className="card mb-3 shadow">
-            <img src={user.picture_url} className="card-img-top" />
-            <div className="card-body">
-              <h5 className="card-title">{user.first_name}</h5>
-              <h6 className="card-subtitle mb-2 text-muted">
-                {user.last_name}
-              </h6>
-              <p className="card-text">
-                {user.description}
-              </p>
-            </div>
-            <div className="card-footer">
-            <p className="card-text">
-                {user.age}
-                {user.gender}
-            </p>
-            </div>
-          </div>
-        );
-      })}
-    </div>
+        <div>
+            <h1>Get to swiping!</h1>
+            <ul>
+                {potentialLikes.map((like) => (
+                    <li key={like.id}>
+                        <p>{like.username}</p>
+                        <p>{like.description}</p>
+                        <p>{like.age}</p>
+                        <p>{like.gender}</p>
+                        <p>{like.first_name}</p>
+                        <p>{like.last_name}</p>
+                    </li>
+                ))}
+            </ul>
+        </div>
+
   );
 }
