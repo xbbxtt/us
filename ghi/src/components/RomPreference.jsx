@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
 import Slider from './ReactSlider'
+import { useRomPrefMutation } from '../app/apiSlice'
 
 export default function RomanticPref() {
     let defaultMinAge = 18
     let defaultMaxAge = 100
+
+    const RomanticPref = useRomPrefMutation()
 
     const [minAge, setMinAge] = useState('')
     const [maxAge, setMaxAge] = useState('')

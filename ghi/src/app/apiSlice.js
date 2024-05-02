@@ -32,10 +32,21 @@ export const usApi = createApi({
         getAllLikes: builder.query({
             query: () => ({
                 url: '/api/likes',
-                credentials: 'include',
+            }),
+        }),
+        romPref: builder.mutation({
+            query: (body) => ({
+                url: '/api/preferences/',
+                method: 'POST',
+                body,
             }),
         }),
     }),
 })
 
-export const { useAuthenticateQuery, useSigninMutation, useGetAllLikesQuery } = usApi
+export const {
+    useAuthenticateQuery,
+    useSigninMutation,
+    useGetAllLikesQuery,
+    useRomPrefMutation,
+} = usApi
