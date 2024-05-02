@@ -24,3 +24,5 @@ async def get_all_users(
     """
     users = queries.get_all()
     return [UserGender(**user.model_dump()) for user in users]
+
+
