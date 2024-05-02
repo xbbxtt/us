@@ -34,6 +34,16 @@ export default function RomanticPref() {
             body: JSON.stringify(data),
         })
 
+        if (response.ok) {
+            setMinAge('')
+            setMaxAge('')
+            setGenderPref('')
+
+            console.log('Preferences created successfully!')
+        } else {
+            console.error('Error creating preferences:', response.statusText)
+        }
+    }
 
     const getGender = async () => {
         const url = 'http://localhost:8000/api/genders/'
@@ -75,4 +85,4 @@ export default function RomanticPref() {
             </button>
         </form>
     )
-} }
+}
