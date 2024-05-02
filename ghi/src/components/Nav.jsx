@@ -1,23 +1,12 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuthenticateQuery, useSignoutMutation } from '../app/apiSlice'
 import { useEffect } from 'react'
-// import { useNavigate } from 'react-router-dom'
-// import { useSignoutMutation } from '../app/apiSlice'
-// import { useEffect } from 'react'
+
 
 const Nav = () => {
     const navigate = useNavigate()
     const { data: user } = useAuthenticateQuery()
-    // const navigate = useNavigate()
-    // const [ signin, signinStatus ] = useSigninMutation()
 
-    // useEffect(() => {
-    //     if (signinStatus.isSuccess) navigate('/')
-    // }, [signinStatus])
-
-    // const onSigninClick = (e) => {
-    //     signin()
-    // }
 
     const [signout, signoutStatus] = useSignoutMutation()
 
@@ -54,12 +43,12 @@ const Nav = () => {
                     </li>}
                     {user &&<li>
                         <NavLink to={'/likes'}>Likes</NavLink>
-                    </li>
-                    <li>
+                    </li>}
+                    {user &&<li>
                         <NavLink to={'/romantic-preferences'}>
                             Get to swiping!
                         </NavLink>
-                    </li>
+                    </li>}
                 </ul>
                 {user && <button className='btn btn-outline-danger' onClick={onSignoutClick}>Logout</button>}
             </nav>
