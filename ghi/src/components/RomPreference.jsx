@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Slider from './ReactSlider'
+import { useRomPrefMutation } from '../app/apiSlice'
 
 export default function RomanticPref() {
     const [minAge, setMinAge] = useState('')
@@ -7,8 +8,10 @@ export default function RomanticPref() {
     const [genderPref, setGenderPref] = useState('')
     const [genders, setGenders] = useState([])
 
+    const [updatePost, result] = useRomPrefMutation()
+    const [isLoading, setIsLoading] = useState(false)
+
     const handleChange = (newValues) => {
-        setValues(newValues)
         setMinAge(newValues[0])
         setMaxAge(newValues[1])
     }
@@ -21,28 +24,26 @@ export default function RomanticPref() {
     async function handleFormSubmit(e) {
         e.preventDefault()
 
-        const data = {}
-        data.user1_id = 1
-        data.min_age = parseInt(minAge)
-        data.max_age = parseInt(maxAge)
-        data.gender_id = parseInt(genderPref)
-
-        const response = await fetch('http://localhost:8000/api/preferences/', {
-            credentials: 'include',
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-        })
-
-        if (response.ok) {
-            setMinAge('')
-            setMaxAge('')
-            setGenderPref('')
-
-            console.log('Preferences created successfully!')
-        } else {
-            console.error('Error creating preferences:', response.statusText)
+        const data = {
+            user1_id: 1,
+            min_age: parseInt(minAge),
+            max_age: parseInt(maxAge),
+            gender_id: parseInt(genderPref),
         }
+
+        setIsLoading(true)
+        try {
+            const response = await updatePost(data)
+            console.log('Response:', response)
+            if (response.data && response.data.id) {
+                console.log('Success')
+            } else {
+                console.log('Error sending preferences')
+            }
+        } catch (error) {
+            console.error('Catch Error:', error)
+        }
+        setIsLoading(false)
     }
 
     const getGender = async () => {

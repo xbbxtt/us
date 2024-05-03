@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-
 export const usApi = createApi({
     reducerPath: 'usApi',
     baseQuery: fetchBaseQuery({
@@ -37,21 +36,18 @@ export const usApi = createApi({
         }),
         romPref: builder.mutation({
             query: (body) => ({
-            url: '/api/preferences/',
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-        })
+                url: '/api/preferences/',
+                method: 'POST',
+                body,
+            }),
+        }),
     }),
-    })
 })
-
-
 
 export const {
     useAuthenticateQuery,
     useSigninMutation,
     useGetAllLikesQuery,
     useRomPrefMutation,
-    useSignoutMutation
+    useSignoutMutation,
 } = usApi
