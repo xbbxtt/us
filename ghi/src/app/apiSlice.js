@@ -63,6 +63,13 @@ export const usApi = createApi({
                 url: '/api/auth/preferences',
             }),
         }),
+        createLike: builder.mutation({
+            query: (body) => ({
+                url: '/api/likes',
+                method: 'POST',
+                body
+            }),
+        }),
     }),
 })
 
@@ -75,5 +82,6 @@ export const {
     useSignupMutation,
     useGendersQuery,
     useGetAllUsersQuery,
-    useGetAllPotentialLikesQuery
+    useGetAllPotentialLikesQuery,
+    useCreateLikeMutation,
 } = usApi
