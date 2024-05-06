@@ -6,6 +6,7 @@ export default function RomanticPreferences() {
     const [genders, setGenders] = useState([])
     const gendersQuery = useGendersQuery()
     const potentialLikesQuery = useGetAllPotentialLikesQuery()
+    console.log(potentialLikesQuery.data)
 
     // fetch users by preferences according to the user that is logged in
 
@@ -17,7 +18,7 @@ export default function RomanticPreferences() {
 
     useEffect(() => {
         if (potentialLikesQuery.data) {
-            setPotentialLikes(potentialLikesQuery)
+            setPotentialLikes(potentialLikesQuery.data)
         }
     }, [potentialLikesQuery.data])
 
