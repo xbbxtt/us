@@ -36,10 +36,14 @@ export const usApi = createApi({
             }),
             invalidatesTags: ['User'],
         }),
-
         getAllLikes: builder.query({
             query: () => ({
                 url: '/api/likes',
+            }),
+        }),
+        getAllUsers: builder.query({
+            query: () => ({
+                url: '/api/auth/users',
             }),
         }),
         romPref: builder.mutation({
@@ -65,4 +69,5 @@ export const {
     useSignoutMutation,
     useSignupMutation,
     useGendersQuery,
+    useGetAllUsersQuery,
 } = usApi

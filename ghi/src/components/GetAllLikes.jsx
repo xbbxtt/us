@@ -1,45 +1,33 @@
 import { useState, useEffect } from 'react'
-import { useGetAllLikesQuery } from '../app/apiSlice'
+import { useGetAllLikesQuery, useGetAllUsersQuery } from '../app/apiSlice'
 
 export default function GetAllLikes() {
     const [likes, setLikes] = useState([])
     const [users, setUsers] = useState([])
-
-
-
-
-    const fetchUsers = async () => {
-        const url = 'http://localhost:8000/api/auth/users'
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        })
-
-        if (response.ok) {
-            const data = await response.json()
-            setUsers(data)
-        }
-    }
-
-    useEffect(() => {
-        fetchUsers()
-    }, [])
+    const allLikes = useGetAllLikesQuery()
+    const allUsers = useGetAllUsersQuery()
 
     useEffect(() => {
         if (allLikes.data) {
-            setLikes(allLikes.data)
+            setLikes(allLikes.data.likes)
         }
     }, [allLikes.data])
 
-
+    useEffect(() => {
+        if (allUsers.data) {
+            setUsers(allUsers)
+        }
+    }, [allUsers.data])
 
     function filterUsers() {
         if (likes.length === 0 || users.length === 0) {
             return []
         }
 
-        const likedUserIds = allLikes.map((like) => like.liked_by_user)
-        const filteredUsers = users.filter((user) =>
+        const standingLikes = allLikes.data.likes        
+        const standingUsers = allUsers.data
+        const likedUserIds = standingLikes.map((like) => like.liked_by_user)
+        const filteredUsers = standingUsers.filter((user) =>
             likedUserIds.includes(user.id)
         )
 
