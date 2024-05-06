@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useSignupMutation, useSigninMutation } from '../app/apiSlice'
 
 export default function SignInForm() {
     const [genders, setGenders] = useState([])
@@ -12,6 +13,9 @@ export default function SignInForm() {
     const [age, setAge] = useState('')
     const [description, setDescription] = useState('')
     const [picture_url, setPicture_url] = useState('')
+    const navigate = useNavigate()
+    const [signup, signupStatus] = useSignupMutation()
+    const [signin, signinStatus] = useSigninMutation()
 
     const [values, setValues] = useState([18, 100])
 
@@ -19,46 +23,14 @@ export default function SignInForm() {
         setValues(newValues)
     }
 
+
     async function handleFormSubmit(e) {
+        console.log("**********************")
         e.preventDefault()
-        const data = {}
-
-        data.username = username
-        data.password = password
-        data.first_name = first_name
-        data.last_name = last_name
-        data.location = location
-        data.gender = parseInt(gender)
-        data.age = parseInt(age)
-        data.description = description
-        data.picture_url = picture_url
-
-        console.log(data)
-
-        const url = 'http://localhost:8000/api/auth/signup/'
-        const fetchConfig = {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        }
-
-        const response = await fetch(url, fetchConfig)
-        const responseData = await response.json()
-        console.log(responseData)
-
-        if (response.ok) {
-            setUsername('')
-            setPassword('')
-            setFirst_name('')
-            setLast_name('')
-            setLocation('')
-            setGender('')
-            setAge('')
-            setDescription('')
-            setPicture_url('')
-        }
+        signup({
+            username, password, first_name, last_name,
+            location, gender, age, description, picture_url,
+        })
     }
 
     const getGender = async () => {
@@ -73,7 +45,12 @@ export default function SignInForm() {
     useEffect(() => {
         getGender()
         handleChange()
-    }, [])
+        if (signupStatus.isSuccess){
+            console.log("success")
+            signin({username, password})
+            navigate('/romantic-pref')}
+    }, [signupStatus, navigate])
+
 
     return (
         <form className="text-black" onSubmit={handleFormSubmit}>

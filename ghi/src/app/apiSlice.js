@@ -13,6 +13,14 @@ export const usApi = createApi({
             }),
             providesTags: ['User'],
         }),
+        signup: builder.mutation({
+            query: (body) => ({
+                url: '/api/auth/signup/',
+                method: 'POST',
+                body,
+            }),
+            invalidatesTags: ['User']
+        }),
         signout: builder.mutation({
             query: () => ({
                 url: '/api/auth/signout/',
@@ -50,4 +58,5 @@ export const {
     useGetAllLikesQuery,
     useRomPrefMutation,
     useSignoutMutation,
+    useSignupMutation
 } = usApi
