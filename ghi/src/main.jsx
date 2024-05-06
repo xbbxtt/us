@@ -9,6 +9,7 @@ import RomanticPref from './components/RomPreference'
 import App from './App'
 import GetAllLikes from './components/GetAllLikes.jsx'
 import RomanticPreferences from './components/Likes'
+import Matches from './components/Matches'
 
 import { store } from './app/store.js'
 
@@ -49,6 +50,10 @@ const router = createBrowserRouter(
                 {
                     path: 'romantic-preferences',
                     element: <RomanticPreferences />,
+                },
+                {
+                    path: 'matches',
+                    element: <Matches />,
                 },
             ],
         },
