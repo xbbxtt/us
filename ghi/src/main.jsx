@@ -8,7 +8,7 @@ import SignUpForm from './components/SignUpForm'
 import RomanticPref from './components/RomPreference'
 import App from './App'
 import GetAllLikes from './components/GetAllLikes.jsx'
-import RomanticPreferences from './components/Likes'
+import RomanticPreferences from './components/Swiping'
 import Matches from './components/Matches'
 
 import { store } from './app/store.js'

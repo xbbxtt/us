@@ -1,47 +1,52 @@
 import { useState, useEffect } from 'react'
+import { useGetAllMatchesQuery, useGetAllUsersQuery } from '../app/apiSlice'
 
 export default function Matches() {
-    const [likes, setLikes] = useState([])
+
+    const {
+        data: matchData = {},
+        isLoading: isLoadingMatches,
+        isError: isErrorMatches,
+    } = useGetAllMatchesQuery()
+    const [matches, setMatches] = useState([])
+
+
+    const {
+        data: userData = [],
+        isLoading: isLoadingUsers,
+        isError: isErrorUsers,
+    } = useGetAllUsersQuery()
     const [users, setUsers] = useState([])
 
-    const fetchLikes = async () => {
-        const url = 'http://localhost:8000/api/likes'
-        const response = await fetch(url, {
-            credentials: 'include',
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        })
-
-        if (response.ok) {
-            const data = await response.json()
-            setLikes(data.likes)
-        }
-    }
-
-    const fetchUsers = async () => {
-        const url = 'http://localhost:8000/api/auth/users'
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        })
-
-        if (response.ok) {
-            const data = await response.json()
-            setUsers(data)
-        }
-    }
 
     useEffect(() => {
-        fetchLikes()
-        fetchUsers()
-    }, [])
+        if (Array.isArray(matchData.matches)) {
+            setMatches(matchData.matches)
+        } else {
+            setMatches([])
+        }
+    }, [matchData])
 
-    function filterUsers() {
-        if (likes.length === 0 || users.length === 0) {
+
+    useEffect(() => {
+        if (Array.isArray(userData)) {
+            setUsers(userData)
+        } else {
+            setUsers([])
+        }
+    }, [userData])
+
+
+    console.log('users:', users)
+    console.log('matches:', matches)
+
+
+    function getLikedByUsers() {
+        if (matches.length === 0 || users.length === 0) {
             return []
         }
 
-        const likedUserIds = likes.map((like) => like.liked_by_user)
+        const likedUserIds = matches.map((match) => match.logged_in_user)
         const filteredUsers = users.filter((user) =>
             likedUserIds.includes(user.id)
         )
@@ -49,20 +54,28 @@ export default function Matches() {
         return filteredUsers
     }
 
-    const filteredUsers = filterUsers()
+    const likedByUsers = getLikedByUsers()
+    console.log(likedByUsers)
+
+
+
+    if (isLoadingMatches || isLoadingUsers) {
+        return <p>Loading...</p>
+    }
+
+    if (isErrorMatches || isErrorUsers) {
+        return <p>Error loading data. Please try again later.</p>
+    }
 
     return (
         <div>
-            {filteredUsers.length === 0 ? (
-                <p>No likes yet, get to swiping!</p>
+            {matches.length === 0 ? (
+                <p>No matches yet, get to swiping!</p>
             ) : (
                 <div>
-                    {filteredUsers.map((user) => (
+                    {likedByUsers.map((user) => (
                         <div key={user.id}>
-                            <h2>{user.first_name}</h2>
-                            <h2>{user.last_name}</h2>
-                            <p>{user.picture_url}</p>
-                            <p>{user.bio}</p>
+                            <h2>{user.username}</h2>
                         </div>
                     ))}
                 </div>

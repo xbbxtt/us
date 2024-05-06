@@ -1,3 +1,7 @@
+06MAY2024:
+I was able to create hooks for the GetAllLikes component for fetching the users, and likes as opposed to using fetches. These hooks will be able to used elsewhere in the application.
+
+
 02MAY2024:
 The authentication issue was solved with the simple line: 
 "credentials: 'include'" 
