@@ -1,39 +1,25 @@
 import { useState, useEffect } from 'react'
+import { useGendersQuery, useGetAllPotentialLikesQuery } from '../app/apiSlice'
 
 export default function RomanticPreferences() {
     const [potentialLikes, setPotentialLikes] = useState([])
     const [genders, setGenders] = useState([])
+    const gendersQuery = useGendersQuery()
+    const potentialLikesQuery = useGetAllPotentialLikesQuery()
 
     // fetch users by preferences according to the user that is logged in
 
-    const fetchPotentialLikes = async () => {
-        const url = 'http://localhost:8000/api/auth/preferences/'
-        const response = await fetch(url, {
-            method: 'GET',
-            credentials: 'include',
-        })
-        if (response.ok) {
-            const data = await response.json()
-            setPotentialLikes(data)
-            console.log(data)
+    useEffect(() => {
+        if (gendersQuery.data) {
+            setGenders(gendersQuery.data)
         }
-    }
-
-    const fetchAllGenders = async () => {
-        const url = 'http://localhost:8000/api/genders/'
-        const response = await fetch(url, {
-            method: 'GET',
-        })
-        if (response.ok) {
-            const data = await response.json()
-            setGenders(data)
-            console.log(data)
-        }
-    }
+    }, [gendersQuery.data])
 
     useEffect(() => {
-        fetchPotentialLikes(), fetchAllGenders()
-    }, [])
+        if (potentialLikesQuery.data) {
+            setPotentialLikes(potentialLikesQuery)
+        }
+    }, [potentialLikesQuery.data])
 
     return (
         <div>
@@ -49,7 +35,7 @@ export default function RomanticPreferences() {
                                 if (gender.id === like.gender) {
                                     return gender.gender_name
                                 }
-                                return null 
+                                return null
                             })}
                         </p>
                         <p>{like.first_name}</p>
