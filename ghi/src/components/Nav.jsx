@@ -19,62 +19,87 @@ const Nav = () => {
     }
 
     return (
-        <>
-            <nav>
-                <ul>
+        <nav className="bg-pink-300 py-4 fixed top-0 left-0 w-full">
+            <div className="mx-auto max-w-7xl px-4">
+                <ul className="flex justify-between">
                     {!user && (
                         <li>
-                            <NavLink to={'/'}>Home</NavLink>
+                            <NavLink
+                                to={'/'}
+                                className="text-white hover:text-gray-300"
+                            >
+                                Home
+                            </NavLink>
                         </li>
                     )}
                     {!user && (
                         <li>
-                            <NavLink to={'/signup'}>Sign Up</NavLink>
+                            <NavLink
+                                to={'/signup'}
+                                className="text-white hover:text-gray-300"
+                            >
+                                Sign Up
+                            </NavLink>
                         </li>
                     )}
                     {!user && (
                         <li>
-                            <NavLink to={'/signin'}>Sign In</NavLink>
+                            <NavLink
+                                to={'/signin'}
+                                className="text-white hover:text-gray-300"
+                            >
+                                Sign In
+                            </NavLink>
                         </li>
                     )}
-                    {/* <li>
-                        <NavLink to={'/signout'}>Sign Out</NavLink>
-                    </li> */}
                     {user && (
                         <li>
-                            <NavLink to={'/romantic-pref'}>
+                            <NavLink
+                                to={'/romantic-pref'}
+                                className="text-white hover:text-gray-300"
+                            >
                                 Romantic Preferences
                             </NavLink>
                         </li>
                     )}
                     {user && (
                         <li>
-                            <NavLink to={'/likes'}>Likes</NavLink>
+                            <NavLink
+                                to={'/likes'}
+                                className="text-white hover:text-gray-300"
+                            >
+                                Likes
+                            </NavLink>
                         </li>
                     )}
                     {user && (
                         <li>
-                            <NavLink to={'/romantic-preferences'}>
+                            <NavLink
+                                to={'/romantic-preferences'}
+                                className="text-white hover:text-gray-300"
+                            >
                                 Get to swiping!
                             </NavLink>
                         </li>
                     )}
                     {user && (
                         <li>
-                            <NavLink to={'/matches'}>Matches</NavLink>
+                            <NavLink
+                                to={'/matches'}
+                                className="text-white hover:text-gray-300"
+                            >
+                                Matches
+                            </NavLink>
                         </li>
                     )}
                 </ul>
                 {user && (
-                    <button
-                        className="btn btn-outline-danger"
-                        onClick={onSignoutClick}
-                    >
+                    <button className="btn mt-4" onClick={onSignoutClick}>
                         Logout
                     </button>
                 )}
-            </nav>
-        </>
+            </div>
+        </nav>
     )
 }
 
