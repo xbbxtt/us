@@ -24,3 +24,7 @@ We fixed our Databases and added a likes feature to our Wireframe where the user
 We are catching up on our documentation as well today.
 
 
+05/06/2024
+
+We changed all of our components to have hooks through redux, cleared up ubiquitous language with the likes. The logged_in_user will always be the one who sees the like, the liked_by_user will always be the person who sends the like whether or not they are logged in or not.
+

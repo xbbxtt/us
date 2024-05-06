@@ -70,6 +70,13 @@ export const usApi = createApi({
                 body
             }),
         }),
+        acceptLike: builder.mutation({
+            query: (body) => ({
+                url: '/api/auth/likes/<int:id>',
+                method: 'PUT',
+                body
+            }),
+        }),
     }),
 })
 
@@ -84,4 +91,5 @@ export const {
     useGetAllUsersQuery,
     useGetAllPotentialLikesQuery,
     useCreateLikeMutation,
+    useAcceptLikeMutation
 } = usApi
