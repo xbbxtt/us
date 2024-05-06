@@ -19,7 +19,7 @@ export const usApi = createApi({
                 method: 'POST',
                 body,
             }),
-            invalidatesTags: ['User']
+            invalidatesTags: ['User'],
         }),
         signout: builder.mutation({
             query: () => ({
@@ -49,6 +49,11 @@ export const usApi = createApi({
                 body,
             }),
         }),
+        genders: builder.query({
+            query: (body) => ({
+                url: '/api/genders/',
+            }),
+        }),
     }),
 })
 
@@ -58,5 +63,6 @@ export const {
     useGetAllLikesQuery,
     useRomPrefMutation,
     useSignoutMutation,
-    useSignupMutation
+    useSignupMutation,
+    useGendersQuery,
 } = usApi

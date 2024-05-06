@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react'
 import Slider from './ReactSlider'
-import { useRomPrefMutation } from '../app/apiSlice'
+import { useRomPrefMutation, useGendersQuery } from '../app/apiSlice'
 
 export default function RomanticPref() {
     const [minAge, setMinAge] = useState('')
     const [maxAge, setMaxAge] = useState('')
     const [genderPref, setGenderPref] = useState('')
     const [genders, setGenders] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
 
     const [updatePost, result] = useRomPrefMutation()
-    const [isLoading, setIsLoading] = useState(false)
+
+    const gendersQuery = useGendersQuery()
 
     const handleChange = (newValues) => {
         setMinAge(newValues[0])
@@ -46,18 +48,11 @@ export default function RomanticPref() {
         setIsLoading(false)
     }
 
-    const getGender = async () => {
-        const url = 'http://localhost:8000/api/genders/'
-        const response = await fetch(url)
-        if (response.ok) {
-            const data = await response.json()
-            setGenders(data)
-        }
-    }
-
     useEffect(() => {
-        getGender()
-    }, [])
+        if (gendersQuery.data) {
+            setGenders(gendersQuery.data)
+        }
+    }, [gendersQuery.data])
 
     return (
         <form className="text-black" onSubmit={handleFormSubmit}>
