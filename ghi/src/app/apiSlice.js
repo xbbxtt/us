@@ -46,6 +46,11 @@ export const usApi = createApi({
                 url: '/api/auth/users',
             }),
         }),
+        getAllMatches: builder.query({
+            query: () => ({
+                url: '/api/auth/matches',
+            }),
+        }),
         romPref: builder.mutation({
             query: (body) => ({
                 url: '/api/preferences/',
@@ -89,6 +94,7 @@ export const {
     useSignupMutation,
     useGendersQuery,
     useGetAllUsersQuery,
+    useGetAllMatchesQuery,
     useGetAllPotentialLikesQuery,
     useCreateLikeMutation,
     useAcceptLikeMutation
