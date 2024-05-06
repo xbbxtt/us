@@ -148,7 +148,7 @@ export default function SignInForm() {
                 </div>
                 <button
                     type="submit"
-                    className="mx-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full md:w-auto"
+                    className="mx-2 bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded w-full md:w-auto"
                 >
                     Sign Up!
                 </button>

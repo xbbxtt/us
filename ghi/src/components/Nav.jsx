@@ -19,7 +19,7 @@ const Nav = () => {
     }
 
     return (
-        <nav className="bg-gray-800 py-4 fixed top-0 left-0 w-full">
+        <nav className="bg-pink-300 py-4 fixed top-0 left-0 w-full">
             <div className="mx-auto max-w-7xl px-4">
                 <ul className="flex justify-between">
                     {!user && (
