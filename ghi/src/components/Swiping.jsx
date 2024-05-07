@@ -47,28 +47,43 @@ export default function RomanticPreferences() {
 
     return (
         <div>
-            <div className="tinder--cards">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {potentialLikes.map((like) => (
-                    <div className="tinder--card" key={like.id}>
-                        <img src={like.picture} alt="profile" />
-                        <h2>
-                            {like.first_name} {like.last_name}
-                        </h2>
-                        <h3>{like.age}</h3>
-                        <h3>
-                            {genders.map((gender) => {
-                                if (gender.id === like.gender) {
-                                    return gender.gender_name
-                                }
-                                return null
-                            })}
-                        </h3>
-                        <h4>{like.description}</h4>
+                    <div
+                        className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700"
+                        key={like.id}
+                    >
+                        <img
+                            src={like.picture}
+                            alt={like.username}
+                            className="rounded-t-lg"
+                        />
+                        <div className="p-5">
+                            <h2 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                {like.first_name} - {like.age}
+                            </h2>
+                            <h3>
+                                {genders.map((gender) => {
+                                    if (gender.id === like.gender) {
+                                        return gender.gender_name
+                                    }
+                                    return null
+                                })}
+                            </h3>
+                            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                                {like.description}
+                            </p>
 
-                        <button onClick={() => handleLike(like.id)}>
-                            Like
-                        </button>
-                        <button>Dislike</button>
+                            <button
+                                className="flex-1 inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-center text-white bg-green-500 rounded-lg hover:bg-green-600 focus:outline-none"
+                                onClick={() => handleLike(like.id)}
+                            >
+                                Like
+                            </button>
+                            <button className="flex-1 inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-center text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none">
+                                Dislike
+                            </button>
+                        </div>
                     </div>
                 ))}
             </div>
