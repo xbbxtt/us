@@ -6,11 +6,13 @@ import './App.css'
 
 function App() {
     return (
-        <div className="App">
+        <div className="App flex flex-col min-h-screen">
             <header className="App-header">
                 <Nav />
             </header>
-            <Outlet />
+            <div className="main-content flex-grow">
+                <Outlet />
+            </div>
             <footer>
                 <Footer />
             </footer>
