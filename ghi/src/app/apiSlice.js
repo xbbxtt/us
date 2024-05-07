@@ -72,15 +72,23 @@ export const usApi = createApi({
             query: (body) => ({
                 url: '/api/likes',
                 method: 'POST',
-                body
+                body,
             }),
         }),
         acceptLike: builder.mutation({
             query: (body) => ({
                 url: '/api/auth/likes/<int:id>',
                 method: 'PUT',
-                body
+                body,
             }),
+        }),
+        breakUp: builder.mutation({
+            query: ({ body, id }) => ({
+                url: `/api/auth/likes/${id}`,
+                method: 'DELETE',
+                body,
+            }),
+            invalidatesTags: ['Matches'],
         }),
     }),
 })
@@ -97,5 +105,6 @@ export const {
     useGetAllMatchesQuery,
     useGetAllPotentialLikesQuery,
     useCreateLikeMutation,
-    useAcceptLikeMutation
+    useAcceptLikeMutation,
+    useBreakUpMutation,
 } = usApi
