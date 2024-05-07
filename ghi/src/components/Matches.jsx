@@ -35,7 +35,9 @@ export default function Matches() {
         }
     }, [userData])
 
-    usseEf
+    useEffect(() => {
+        console.log('Matches:', matches)
+    }, [matches])
 
     function getLikedByUsers() {
         if (matches.length === 0 || users.length === 0) {
@@ -60,8 +62,11 @@ export default function Matches() {
 
     const likedByUsers = getLikedByUsers()
 
-    function handleDislike(matchesId) {
-        console.log('Dislike:', matchesId)
+    function handleBreakup(matchId) {
+        breakUp({ id: matchId })
+        const updatedMatches = matches.filter((match) => match.id !== matchId)
+        setMatches(updatedMatches)
+        console.log('Dislike:', matchId)
     }
 
     return (
@@ -69,28 +74,45 @@ export default function Matches() {
             {matches.length === 0 ? (
                 <p>No matches yet, get to swiping!</p>
             ) : (
-                <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
-                    {likedByUsers.map((user) => (
-                        <div key={user.id}>
-                            <h2>
-                                {user.first_name} - {user.age}
-                            </h2>
-                            <img
-                                src={user.picture_url}
-                                alt={user.first_name}
-                                className="rounded-t-lg"
-                            />
-                        </div>
-                    ))}
-                    <div className="flex space-x-4">
-                        <button
-                            onClick={() => handleDislike(matches.id)}
-                            className="flex-1 inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-center text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none"
-                        >
-                            Break Up
-                        </button>
-                    </div>
-                </div>
+                matches.map((match) => {
+                    console.log('match', match)
+                    if (match.status === match.status) {
+                        console.log('match', match)
+                        console.log('match.status', match.status)
+                        console.log('Rendering match:', match.id)
+                        return (
+                            <div
+                                key={match.id}
+                                className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700"
+                            >
+                                {likedByUsers.map((user) => (
+                                    <div key={user.id}>
+                                        <h2>
+                                            {user.first_name} - {user.age}
+                                        </h2>
+                                        <img
+                                            src={user.picture_url}
+                                            alt={user.first_name}
+                                            className="rounded-t-lg"
+                                        />
+                                        <div className="flex space-x-4">
+                                            <button
+                                                onClick={() =>
+                                                    handleBreakup(match.id)
+                                                }
+                                                className="flex-1 inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-center text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none"
+                                            >
+                                                Break Up
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )
+                    } else {
+                        return null
+                    }
+                })
             )}
         </div>
     )

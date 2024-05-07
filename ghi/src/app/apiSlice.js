@@ -84,7 +84,7 @@ export const usApi = createApi({
         }),
         breakUp: builder.mutation({
             query: ({ body, id }) => ({
-                url: `/api/auth/likes/${id}`,
+                url: `/api/user/matches/${id}`,
                 method: 'DELETE',
                 body,
             }),
