@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
-import { useGetAllLikesQuery, useGetAllUsersQuery, useAcceptLikeMutation } from '../app/apiSlice'
+import { useGetAllLikesQuery, useGetAllUsersQuery, useUpdateLikeMutation } from '../app/apiSlice'
 
 export default function GetAllLikes() {
     const [likes, setLikes] = useState([])
     const [users, setUsers] = useState([])
     const allLikes = useGetAllLikesQuery()
     const allUsers = useGetAllUsersQuery()
+    const [updateLike, updateLikeStatus] = useUpdateLikeMutation()
 
     useEffect(() => {
         if (allLikes.data) {
@@ -19,6 +20,8 @@ export default function GetAllLikes() {
             setUsers(allUsers)
         }
     }, [allUsers.data])
+
+
     function filterUsers() {
         if (likes.length === 0 || users.length === 0) {
             return []
@@ -28,26 +31,27 @@ export default function GetAllLikes() {
         const standingUsers = allUsers.data
         console.log(standingUsers)
 
-        
+
         const likedUserIds = standingLikes.map((like) => like.liked_by_user)
         const filteredUsers = standingUsers.filter((user) =>
             likedUserIds.includes(user.id)
-        
+
         )
 
         return filteredUsers
     }
 
-/*     async function acceptLike(likedUserId) {
-        setIsLoading(true)
+    async function acceptLike(likeId) {
         try {
             const data = {
-                logged_in_user: likedUserId,
-                liked_by_user: 1,
-                status: null,
+                logged_in_user: 5,
+                liked_by_user: 6,
+                status: true,
             }
             console.log('Data:', data)
-            const response = await createLike(data)
+            console.log(likeId)
+            const response = await updateLike({id: 1, body: data})
+            console.log(updateLikeStatus.isSuccess)
             console.log('Response:', response)
             if (response.data && response.data.id) {
                 console.log('Success')
@@ -58,13 +62,13 @@ export default function GetAllLikes() {
             console.error('Catch Error:', error)
         }
         setIsLoading(false)
-    } */
+    }
 
     const filteredUsers = filterUsers()
     console.log(filteredUsers)
 
     for (let user in filteredUsers) {
-        console.log(user.picture_url)
+        // console.log(user.picture_url)
     }
 
 
@@ -101,7 +105,7 @@ export default function GetAllLikes() {
                     </p>
                     <div className="flex space-x-4">
                       <button
-                        onClick={() => handleLike(like.id)}
+                        onClick={() => acceptLike(like.id)}
                         className="flex-1 inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-center text-white bg-green-500 rounded-lg hover:bg-green-600 focus:outline-none"
                       >
                         Like
