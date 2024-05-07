@@ -6,7 +6,6 @@ export default function RomanticPreferences() {
     const [genders, setGenders] = useState([])
     const gendersQuery = useGendersQuery()
     const potentialLikesQuery = useGetAllPotentialLikesQuery()
-    const [liked, setLiked] = useState('')
     const [createLike] = useCreateLikeMutation()
     const [isLoading, setIsLoading] = useState(false)
 

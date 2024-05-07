@@ -268,6 +268,9 @@ def update_like_status(
     )
     if likes.status:
         queries.create_a_match(likes.logged_in_user, likes.liked_by_user)
+        queries.delete_a_like(likes.id)
+    else:
+        queries.delete_a_like(likes.id)
 
     return LikesOut(**likes.model_dump())
 

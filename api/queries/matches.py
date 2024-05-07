@@ -173,6 +173,26 @@ class LikesRepository:
                     "status": like[3],
                 }
                 return LikesOut(**old_data)
+            
+    def delete_a_like(self, id: int) -> LikesOut:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                result = cur.execute(
+                    """
+                    DELETE FROM likes
+                    WHERE id = %s
+                    RETURNING *;
+                    """,
+                    [id],
+                )
+                like = cur.fetchone()
+                old_data = {
+                    "id": like[0],
+                    "logged_in_user": like[1],
+                    "liked_by_user": like[2],
+                    "status": like[3],
+                }
+                return LikesOut(**old_data)
 
     # create a match between two users
     def create_a_match(
@@ -222,6 +242,25 @@ class LikesRepository:
                     )
                     result.append(match)
                 return result
+            
+    def delete_a_match(self, id: int) -> MatchOut:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                result = cur.execute(
+                    """
+                    DELETE FROM matches
+                    WHERE id = %s
+                    RETURNING *;
+                    """,
+                    [id],
+                )
+                match = cur.fetchone()
+                old_data = {
+                    "id": match[0],
+                    "logged_in_user": match[1],
+                    "liked_by_user": match[2],
+                }
+                return MatchOut(**old_data)
 
 
 # class MatchRepository:
