@@ -1,5 +1,9 @@
+07MAY2024:
+I finished the cards for the GetAllLikes page however the buttons are not functional, nor connected to any kind of EventListener.
+
+
 06MAY2024:
-I was able to create hooks for the GetAllLikes component for fetching the users, and likes as opposed to using fetches. These hooks will be able to used elsewhere in the application.
+I was able to create hooks for the GetAllLikes component for fetching the users, and likes as opposed to using fetches. These hooks will be able to used elsewhere in the application. I also started and finished Matches.jsx which gets all the users, and all the likes, filters the likes to return only the people who have liked our logged in users to display them on the screen for our user.
 
 
 02MAY2024:
