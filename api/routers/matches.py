@@ -1,36 +1,21 @@
 from fastapi import (
     Depends,
-    Request,
     Response,
     HTTPException,
     status,
     APIRouter,
 )
-from queries.user_queries import (
-    UserQueries,
-)
-
-from utils.exceptions import UserDatabaseException
-from models.users import (
-    UserRequest,
-    UserResponse,
-    UserSignInRequest,
-    UserGender,
-)
+from models.users import UserResponse
 
 from utils.authentication import (
-    try_get_jwt_user_data,
-    hash_password,
-    generate_jwt,
-    verify_password,
+    try_get_jwt_user_data
 )
-
-from queries.matches import LikesIn, LikesOut, LikesRepository, MatchOut
-
+from queries.matches import LikesRepository, MatchOut
 from typing import Dict, List
 
+router = APIRouter(tags=["Matches"], prefix="/api")
 
-@router.get("user/matches")
+@router.get("/user/matches")
 def get_user_matches(
     queries: LikesRepository = Depends(),
     user: UserResponse = Depends(try_get_jwt_user_data),
@@ -46,3 +31,22 @@ def get_user_matches(
     matches = queries.get_all_matches(user.id)
     return {"matches": [MatchOut(**match.model_dump()) for match in matches
             if match.logged_in_user == user.id or match.liked_by_user == user.id]}
+    
+# delete a match
+@router.delete("/user/matches/{match_id}")
+def delete_match(
+    match_id: int,
+    queries: LikesRepository = Depends(),
+    user: UserResponse = Depends(try_get_jwt_user_data),
+) -> Response:
+    """
+    Delete a match
+    """
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
+        )
+
+    queries.delete_a_match(match_id)
+    # return a 200 with deleted message
+    return Response(status_code=status.HTTP_200_OK)
