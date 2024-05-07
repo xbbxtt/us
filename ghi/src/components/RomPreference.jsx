@@ -54,10 +54,11 @@ export default function RomanticPref() {
         }
     }, [gendersQuery.data])
 
-    
-
     return (
-        <form className="text-black" onSubmit={handleFormSubmit}>
+        <form
+            className="text-black bg-gray-100 m-auto p-6 rounded-md w-96"
+            onSubmit={handleFormSubmit}
+        >
             <div>
                 <Slider
                     updateSliderValues={updateSliderValues}
@@ -67,6 +68,7 @@ export default function RomanticPref() {
             <select
                 value={genderPref}
                 onChange={(e) => setGenderPref(e.target.value)}
+                className="block w-full mt-4 border border-gray-300 rounded-md p-3 text-lg"
             >
                 <option value="">Select your gender preference</option>
                 {genders.length > 0 &&
@@ -78,7 +80,11 @@ export default function RomanticPref() {
                         )
                     })}
             </select>
-            <button type="submit" onClick={handleFormSubmit}>
+            <button
+                type="submit"
+                onClick={handleFormSubmit}
+                className="mt-4 bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-md text-lg"
+            >
                 Submit
             </button>
         </form>

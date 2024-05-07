@@ -21,9 +21,11 @@ function Slider({ updateSliderValues }) {
     }
 
     return (
-        <div>
-            <h1>What's your age preference?</h1>
-            <div>
+        <div className="mt-4">
+            <h1 className="text-lg font-bold mb-2 text-black mx-3">
+                What's your age preference?
+            </h1>
+            <div className="mt-2">
                 <input
                     type="range"
                     data-id="min"
@@ -31,10 +33,11 @@ function Slider({ updateSliderValues }) {
                     onChange={handleChange}
                     min="18"
                     max="100"
+                    className="mr-2"
                 />
                 <span>{values[0]}</span>
             </div>
-            <div>
+            <div className="mt-2">
                 <input
                     type="range"
                     data-id="max"
@@ -42,6 +45,7 @@ function Slider({ updateSliderValues }) {
                     onChange={handleChange}
                     min="18"
                     max="100"
+                    className="mr-2"
                 />
                 <span>{values[1]}</span>
             </div>
