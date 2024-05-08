@@ -46,7 +46,7 @@ def create_a_preference(
     )
     return PreferencesOut(**new_preference.model_dump())
 
-@router.put("/preferences")
+@router.put("/preferences/<int:id>")
 def update_a_preference(
     preferences: PreferencesIn,
     queries: PreferencesRepository = Depends(),
