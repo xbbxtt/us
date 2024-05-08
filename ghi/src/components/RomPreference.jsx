@@ -71,6 +71,7 @@ export default function RomanticPref() {
                 className="block w-full mt-4 border border-gray-300 rounded-md p-3 text-lg"
             >
                 <option value="">Select your gender preference</option>
+                <option value="4">Show Everyone</option>
                 {genders.length > 0 &&
                     genders.map((gender) => {
                         return (
