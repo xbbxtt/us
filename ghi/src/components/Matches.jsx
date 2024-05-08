@@ -63,7 +63,7 @@ export default function Matches() {
                 matches.map((match) => (
                     <div
                         key={match.id}
-                        className="max-w-sm bg-slate-200 border border-gray-200 rounded-lg shadow-md "
+                        className="max-w-sm bg-slate-200 border border-gray-200 rounded-lg shadow-md m-3 py-3 px-3 flex flex-col justify-between"
                     >
                         {users.map((user) => {
                             if (user.id === match.logged_in_user) {
@@ -77,7 +77,7 @@ export default function Matches() {
                                         <img
                                             src={user.picture_url}
                                             alt={user.first_name}
-                                            className="rounded-t-lg m-2"
+                                            className="rounded max-w-fit items-center justify-center w-full h-64 object-cover object-center"
                                         />
                                         <div>
                                             <p className="text-black">

@@ -87,7 +87,6 @@ export default function GetAllLikes() {
     console.log(filteredUsers)
 
     for (let user in filteredUsers) {
-        // console.log(user.picture_url)
     }
 
     return (
@@ -95,29 +94,27 @@ export default function GetAllLikes() {
             {filteredUsers.length === 0 ? (
                 <p>No likes yet, get to swiping!</p>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ">
                     {likes.map((like) =>
                         filteredUsers.map((currentUser) => {
                             if (currentUser.id === like.liked_by_user) {
                                 return (
                                     <div
                                         key={currentUser.id}
-                                        className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700"
+                                        className="max-w-sm bg-slate-200 border border-gray-200 rounded-lg shadow-md m-3 py-3 px-3 flex flex-col justify-between"
                                     >
-                                        <a href="#">
+                                        <div>
                                             <img
-                                                className="rounded-t-lg"
+                                                className="rounded-t-lg max-w-fit items-center justify-center w-full h-64 object-cover object-center"
                                                 src={currentUser.picture_url}
                                                 alt={currentUser.username}
                                             />
-                                        </a>
+                                        </div>
                                         <div className="p-5">
-                                            <a href="#">
-                                                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                                    {currentUser.first_name} -{' '}
-                                                    {currentUser.age}
-                                                </h5>
-                                            </a>
+                                            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                                {currentUser.first_name} -{' '}
+                                                {currentUser.age}
+                                            </h5>
                                             <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
                                                 {currentUser.description}
                                             </p>
@@ -130,7 +127,7 @@ export default function GetAllLikes() {
                                                             like.id
                                                         )
                                                     }
-                                                    className="flex-1 inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-center text-white bg-green-500 rounded-lg hover:bg-green-600 focus:outline-none"
+                                                    className="flex-1 inline-flex items-center justify-center px-3 py-2 text-sm font-medium rounded-lg text-center bg-pink-500 hover:bg-pink-600 text-white focus:outline-none"
                                                 >
                                                     Like
                                                 </button>
