@@ -1,18 +1,20 @@
 import { Outlet } from 'react-router-dom'
 
 import Nav from './components/Nav'
+import Footer from './components/Footer'
 import './App.css'
 
 function App() {
     return (
-        <div className="App">
+        <div className="App flex flex-col min-h-screen">
             <header className="App-header">
                 <Nav />
             </header>
-            <h1 className="text-3xl font-bold underline">Hello world!</h1>
-            <Outlet />
+            <div className="main-content flex-grow">
+                <Outlet />
+            </div>
             <footer>
-                <h3>Footer....</h3>
+                <Footer />
             </footer>
         </div>
     )
