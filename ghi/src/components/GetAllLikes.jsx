@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
     useGetAllLikesQuery,
     useGetAllUsersQuery,
@@ -10,7 +11,14 @@ export default function GetAllLikes() {
     const [users, setUsers] = useState([])
     const allLikes = useGetAllLikesQuery()
     const allUsers = useGetAllUsersQuery()
+    const navigate = useNavigate()
     const [updateLike, updateLikeStatus] = useUpdateLikeMutation()
+
+
+    useEffect(() => {
+        if (updateLikeStatus.isSuccess){
+                navigate('/likes')
+    }}, [updateLikeStatus, navigate])
 
     useEffect(() => {
         if (allLikes.data) {
@@ -49,9 +57,9 @@ export default function GetAllLikes() {
                 liked_by_user: likedByUser,
                 status: true,
             }
-            const response = updateLike({ id: likeId , body })
-            console.log(updateLikeStatus.isSuccess)
-            console.log('Response:', response)
+            updateLike({ id: likeId , body })
+            const updatedLikes = likes.filter((like) => like.id !== likeId)
+            setLikes(updatedLikes)
             if (response.data && response.data.id) {
                 console.log('Success')
             } else {
@@ -70,14 +78,9 @@ export default function GetAllLikes() {
                 liked_by_user: likedByUser,
                 status: false,
             }
-            const response = updateLike({ id: likeId , body })
-            console.log(updateLikeStatus.isSuccess)
-            console.log('Response:', response)
-            if (response.data && response.data.id) {
-                console.log('Success')
-            } else {
-                console.log('Error sending like')
-            }
+            updateLike({ id: likeId , body })
+            const updatedLikes = likes.filter((like) => like.id !== likeId)
+            setLikes(updatedLikes)
         } catch (error) {
             console.error('Catch Error:', error)
         }
