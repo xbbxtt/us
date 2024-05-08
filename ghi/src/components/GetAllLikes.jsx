@@ -62,6 +62,27 @@ export default function GetAllLikes() {
         }
     }
 
+    function declineLike(loggedInUser, likedByUser, likeId) {
+        console.log(loggedInUser, likedByUser, likeId)
+        try {
+            const body = {
+                logged_in_user: loggedInUser,
+                liked_by_user: likedByUser,
+                status: false,
+            }
+            const response = updateLike({ id: likeId , body })
+            console.log(updateLikeStatus.isSuccess)
+            console.log('Response:', response)
+            if (response.data && response.data.id) {
+                console.log('Success')
+            } else {
+                console.log('Error sending like')
+            }
+        } catch (error) {
+            console.error('Catch Error:', error)
+        }
+    }
+
     const filteredUsers = filterUsers()
     console.log(filteredUsers)
 
@@ -112,7 +133,7 @@ export default function GetAllLikes() {
                                                 </button>
                                                 <button
                                                     onClick={() =>
-                                                        handleDislike(like.id)
+                                                        declineLike(like.logged_in_user, currentUser.id, like.id)
                                                     }
                                                     className="flex-1 inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-center text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none"
                                                 >
