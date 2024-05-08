@@ -1,101 +1,41 @@
-# Module3 Project Gamma
+# Us by Match Makers
 
-## Getting started
+---
 
-You have a project repository, now what? The next section
-lists all of the deliverables that are due at the end of the
-week. Below is some guidance for getting started on the
-tasks for this week.
+-   Sean Lim
+-   D'Angelo DeNiro
+-   Yadriel Ruiz Vega
+-   Michaela Arteberry
 
-## Install Extensions
+## Functionality
 
--   Prettier: <https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode>
--   Black Formatter: <https://marketplace.visualstudio.com/items?itemName=ms-python.black-formatter>
+---
 
-## Deliverables
+Visitors to the site can sign up or sign in to their account. They will set their romantic preferences that will filter the other users on our application, and reveal those filtered users to the current user. The user can make 'swipes'(click and drag), or simply press a like or dislike button on a user card that appears to them. A user can view other users that have given them a like. A user can return a like, or decline a like with a push of a button. A user can view a page that has their matches, users they have likes, who also liked them back.
 
--   [ ] Wire-frame diagrams
--   [ ] API documentation
--   [ ] Project is deployed to Caprover (BE, DB) & GitLab-pages (FE)
--   [ ] GitLab issue board is setup and in use (or project management tool of choice)
--   [ ] Journals
+## Intended Market
 
-## Project layout
+---
 
-The layout of the project is just like all of the projects
-you did with `docker-compose` in module #2. You will create
-a directory in the root of the repository for each service
-that you add to your project just like those previous
-projects were setup.
+We are targeting individuals that want to connect with others, to start a romantic relationship.
 
-### Directories
+## Project Initialization
 
-Several directories have been added to your project. The
-directories `docs` and `journals` are places for you and
-your team-mates to, respectively, put any documentation
-about your project that you create and to put your
-project-journal entries. See the _README.md_ file in each
-directory for more info.
+---
 
-The other directories, `ghi` and `api`, are services, that
-you can start building off of.
+To fully enjoy this application on your local machine, please make sure to follow these steps:
 
-Inside of `ghi` is a minimal React app that has an "under construction" page.
-This app is written using the [Vite](https://vitejs.dev/) bundler. The example
-code is also using [jsdoc](https://jsdoc.app/) to provide type hints for
-JavaScript. You are not required to use JSDoc yourself, and you will be removing
-these examples and providing your own code for `App.jsx`
-
-Inside of `api` is a minimal FastAPI application.
-"Where are all the files?" you might ask? Well, the
-`main.py` file is the whole thing, and go take look inside
-of it... There's not even much in there..., hmm? That is
-FastAPI, we'll learn more about it in the coming days. Can
-you figure out what this little web-application does even
-though you haven't learned about FastAPI yet?
-
-Also in `api` is a directory for your migrations.
-If you choose to use PostgreSQL, then you'll want to use
-migrations to control your database. Unlike Django, where
-migrations were automatically created for you, you'll write
-yours by hand using DDL. Don't worry about not knowing what
-DDL means; we have you covered. There's a sample migration
-in there that creates two tables so you can see what they
-look like.
-
-The Dockerfile and Dockerfile.dev run your migrations
-for you automatically.
-
-### Other files
-
-The following project files have been created as a minimal
-starting point. Please follow the guidance for each one for
-a most successful project.
-
--   `docker-compose.yaml`: there isn't much in here, just a
-    **really** simple UI and FastAPI service. Add services
-    (like a database) to this file as you did with previous
-    projects in module #2.
--   `.gitlab-ci.yml`: This is your "ci/cd" file where you will
-    configure automated unit tests, code quality checks, and
-    the building and deployment of your production system.
-    Currently, all it does is deploy an "under construction"
-    page to your production UI on GitLab and a sample backend
-    to CapRover. We will learn much more about this file.
--   `.gitignore`: This is a file that prevents unwanted files
-    from getting added to your repository, files like
-    `pyc` files, `__pycache__`, etc. We've set it up so that
-    it has a good default configuration for Python projects.
--   `.env.sample`: This file is a template to copy when
-    creating environment variables for your team. Create a
-    copy called `.env` and put your own passwords in here
-    without fear of it being committed to git (see `.env`
-    listed in `.gitignore`). You can also put team related
-    environment variables in here, things like api and signing
-    keys that shouldn't be committed; these should be
-    duplicated in your deployed environments.
+1. Clone the repository down to your local machine
+2. CD into the new project directory
+3. Run docker volume create database_volume
+4. Run docker compose build
+5. Run docker compose up
+6. Run docker exec -it us-api-1 bash
+7. Exit the container's CLI, and enjoy US to its fullest!
 
 ### Installing python dependencies locally
+
+---
 
 In order for VSCode's built in code completion and intelligence to
 work correctly, it needs the dependencies from the requirements.txt file
@@ -123,28 +63,3 @@ pip install -r requirements.txt
 
 Then make sure the venv is selected in VSCode by checking the lower right of the
 VSCode status bar
-
-### Setup GitLab repo/project
-
--   make sure this project is in a group. If it isn't, stop
-    now and move it to a GitLab group
--   remove the fork relationship: In GitLab go to:
-
-    Settings -> General -> Advanced -> Remove fork relationship
-
--   add these GitLab CI/CD variables:
-    -   PUBLIC_URL : this is your gitlab pages URL
-    -   VITE_APP_API_HOST: enter "blank" for now
-
-#### Your GitLab pages URL
-
-You can't find this in GitLab until after you've done a deploy
-but you can figure it out yourself from your GitLab project URL.
-
-If this is your project URL
-
-https://gitlab.com/GROUP_NAME/PROJECT_NAME
-
-then your GitLab pages URL will be
-
-https://GROUP_NAME.gitlab.io/PROJECT_NAME
