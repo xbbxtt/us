@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-function Slider({ updateSliderValues }) {
-    const [values, setValues] = useState([18, 95])
+function Slider({ updateSliderValues, onChange }) {
+    const [values, setValues] = useState([18, 18])
 
     const handleChange = (event) => {
         const newValues = [...values]
@@ -18,6 +18,9 @@ function Slider({ updateSliderValues }) {
         if (updateSliderValues) {
             updateSliderValues(newValues)
         }
+        if (onChange) {
+            onChange(newValues)
+        }
     }
 
     return (
@@ -26,6 +29,7 @@ function Slider({ updateSliderValues }) {
                 What's your age preference?
             </h1>
             <div className="mt-2">
+                <label htmlFor="minAge">Min Age: </label>
                 <input
                     type="range"
                     data-id="min"
@@ -38,6 +42,7 @@ function Slider({ updateSliderValues }) {
                 <span>{values[0]}</span>
             </div>
             <div className="mt-2">
+                <label htmlFor="minAge">Max Age: </label>
                 <input
                     type="range"
                     data-id="max"
