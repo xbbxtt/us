@@ -22,35 +22,14 @@ export default function Matches() {
     useEffect(() => {
         if (Array.isArray(matchData.matches)) {
             setMatches(matchData.matches)
-        } else {
-            setMatches([])
         }
-    }, [matchData])
+    }, [matchData.matches])
 
     useEffect(() => {
         if (Array.isArray(userData)) {
             setUsers(userData)
-        } else {
-            setUsers([])
         }
     }, [userData])
-
-    useEffect(() => {
-        console.log('Matches:', matches)
-    }, [matches])
-
-    function getLikedByUsers() {
-        if (matches.length === 0 || users.length === 0) {
-            return []
-        }
-
-        const likedUserIds = matches.map((match) => match.logged_in_user)
-        const filteredUsers = users.filter((user) =>
-            likedUserIds.includes(user.id)
-        )
-
-        return filteredUsers
-    }
 
     if (isLoadingMatches || isLoadingUsers) {
         return <p>Loading...</p>
@@ -59,8 +38,6 @@ export default function Matches() {
     if (isErrorMatches || isErrorUsers) {
         return <p>Error loading data. Please try again later.</p>
     }
-
-    const likedByUsers = getLikedByUsers()
 
     function handleBreakup(matchId) {
         breakUp({ id: matchId })
@@ -74,19 +51,15 @@ export default function Matches() {
             {matches.length === 0 ? (
                 <p>No matches yet, get to swiping!</p>
             ) : (
-                matches.map((match) => {
-                    console.log('match', match)
-                    if (match.status === match.status) {
-                        console.log('match', match)
-                        console.log('match.status', match.status)
-                        console.log('Rendering match:', match.id)
-                        return (
-                            <div
-                                key={match.id}
-                                className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700"
-                            >
-                                {likedByUsers.map((user) => (
-                                    <div key={user.id}>
+                matches.map((match) => (
+                    <div
+                        key={match.id}
+                        className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700"
+                    >
+                        {users.map((user) => {
+                            if (user.id === match.logged_in_user) {
+                                return (
+                                    <div key={`${user.id}-${match.id}`}>
                                         <h2>
                                             {user.first_name} - {user.age}
                                         </h2>
@@ -106,13 +79,12 @@ export default function Matches() {
                                             </button>
                                         </div>
                                     </div>
-                                ))}
-                            </div>
-                        )
-                    } else {
-                        return null
-                    }
-                })
+                                )
+                            }
+                            return null
+                        })}
+                    </div>
+                ))
             )}
         </div>
     )
