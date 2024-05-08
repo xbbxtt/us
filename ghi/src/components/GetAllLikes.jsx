@@ -41,16 +41,15 @@ export default function GetAllLikes() {
         return filteredUsers
     }
 
-    async function acceptLike(likeId) {
+    function acceptLike(loggedInUser, likedByUser, likeId) {
+        console.log(loggedInUser, likedByUser, likeId)
         try {
-            const data = {
-                logged_in_user: 5,
-                liked_by_user: 6,
+            const body = {
+                logged_in_user: loggedInUser,
+                liked_by_user: likedByUser,
                 status: true,
             }
-            console.log('Data:', data)
-            console.log(likeId)
-            const response = await updateLike({ id: 1, body: data })
+            const response = updateLike({ id: likeId , body })
             console.log(updateLikeStatus.isSuccess)
             console.log('Response:', response)
             if (response.data && response.data.id) {
@@ -61,7 +60,6 @@ export default function GetAllLikes() {
         } catch (error) {
             console.error('Catch Error:', error)
         }
-        setIsLoading(false)
     }
 
     const filteredUsers = filterUsers()
@@ -105,7 +103,8 @@ export default function GetAllLikes() {
                                             <div className="flex space-x-4">
                                                 <button
                                                     onClick={() =>
-                                                        acceptLike(like.id)
+                                                        acceptLike(like.logged_in_user, currentUser.id, like.id)
+
                                                     }
                                                     className="flex-1 inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-center text-white bg-green-500 rounded-lg hover:bg-green-600 focus:outline-none"
                                                 >
