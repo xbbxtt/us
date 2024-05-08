@@ -9,7 +9,6 @@ from queries.matches import GenderOut, GenderRepository
 router = APIRouter(tags=["Gender"], prefix="/api")
 
 
-# get all the genders from the database
 @router.get("/genders")
 async def get_all_gender(
     queries: GenderRepository = Depends(),

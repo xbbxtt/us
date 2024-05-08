@@ -1,6 +1,7 @@
 """
 Pydantic Models for Users.
 """
+
 from pydantic import BaseModel
 
 
@@ -29,6 +30,7 @@ class UserResponse(BaseModel):
     """
     Represents a user, with the password not included
     """
+
     id: int
     username: str
 
@@ -58,4 +60,4 @@ class UserGender(BaseModel):
     last_name: str
     age: int
     gender: int
-    description : str
+    description: str

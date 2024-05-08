@@ -31,7 +31,6 @@ export default function GetAllLikes() {
 
         const standingLikes = allLikes.data.likes
         const standingUsers = allUsers.data
-        console.log(standingUsers)
 
         const likedUserIds = standingLikes.map((like) => like.liked_by_user)
         const filteredUsers = standingUsers.filter((user) =>
@@ -42,7 +41,6 @@ export default function GetAllLikes() {
     }
 
     function acceptLike(loggedInUser, likedByUser, likeId) {
-        console.log(loggedInUser, likedByUser, likeId)
         try {
             const body = {
                 logged_in_user: loggedInUser,
@@ -51,7 +49,6 @@ export default function GetAllLikes() {
             }
             const response = updateLike({ id: likeId, body })
             console.log(updateLikeStatus.isSuccess)
-            console.log('Response:', response)
             if (response.data && response.data.id) {
                 console.log('Success')
             } else {
@@ -72,7 +69,6 @@ export default function GetAllLikes() {
             }
             const response = updateLike({ id: likeId, body })
             console.log(updateLikeStatus.isSuccess)
-            console.log('Response:', response)
             if (response.data && response.data.id) {
                 console.log('Success')
             } else {

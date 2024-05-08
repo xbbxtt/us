@@ -5,13 +5,9 @@ from fastapi import (
     APIRouter,
 )
 
-from models.users import (
-    UserResponse
-)
+from models.users import UserResponse
 
-from utils.authentication import (
-    try_get_jwt_user_data
-)
+from utils.authentication import try_get_jwt_user_data
 
 from queries.preferences import (
     PreferencesRepository,
@@ -23,6 +19,7 @@ from typing import Dict, List
 
 
 router = APIRouter(tags=["Preferences"], prefix="/api")
+
 
 @router.post("/preferences")
 def create_a_preference(
@@ -46,6 +43,7 @@ def create_a_preference(
     )
     return PreferencesOut(**new_preference.model_dump())
 
+
 @router.put("/preferences/<int:id>")
 def update_a_preference(
     preferences: PreferencesIn,
@@ -66,8 +64,9 @@ def update_a_preference(
         preferences.max_age,
         preferences.gender_id,
     )
-    
+
     return PreferencesOut(**updated_preference.model_dump())
+
 
 @router.get("/preferences")
 def get_all_preferences(
