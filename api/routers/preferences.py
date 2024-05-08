@@ -66,9 +66,20 @@ def update_a_preference(
         preferences.max_age,
         preferences.gender_id,
     )
-    # adds the romantic preference id to the user table
-    if updated_preference:
-        queries.add_romantic_pref_id(user.id, updated_preference.id)
-    
     
     return PreferencesOut(**updated_preference.model_dump())
+
+@router.get("/preferences")
+def get_all_preferences(
+    queries: PreferencesRepository = Depends(),
+    user: UserResponse = Depends(try_get_jwt_user_data),
+) -> List[PreferencesOut]:
+    """
+    Get all preferences
+    """
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
+        )
+    preferences = queries.get_all_preferences()
+    return [preference.model_dump() for preference in preferences]

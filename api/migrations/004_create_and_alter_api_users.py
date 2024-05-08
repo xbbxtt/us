@@ -11,7 +11,7 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE gender;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -28,7 +28,7 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE romantic_pref;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -45,7 +45,7 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE likes;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -61,7 +61,7 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE matches;
-        """
+        """,
     ],
     [
         # "Up" SQL statement

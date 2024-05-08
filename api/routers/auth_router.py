@@ -13,6 +13,11 @@ from fastapi import (
 from queries.user_queries import (
     UserQueries,
 )
+from queries.preferences import (
+    PreferencesRepository,
+    PreferencesIn,
+    PreferencesOut,
+)
 
 from utils.exceptions import UserDatabaseException
 from models.users import (
@@ -154,7 +159,7 @@ async def signin(
 @router.get("/authenticate")
 async def authenticate(
     user: UserResponse = Depends(try_get_jwt_user_data),
-) -> UserResponse:
+) -> UserResponse | None:
     """
     This function returns the user if the user is logged in.
 
@@ -166,10 +171,7 @@ async def authenticate(
     This can be used in your frontend to determine if a user
     is logged in or not
     """
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Not logged in"
-        )
+
     return user
 
 
@@ -206,39 +208,39 @@ async def get_all_users(
     return [UserGender(**user.model_dump()) for user in users]
 
 
-@router.get("/preferences")
-def filter_by_preferences(
-    gender: int,
-    min_age: int,
-    max_age: int,
-    queries: UserQueries = Depends(),
-    user: UserResponse = Depends(try_get_jwt_user_data),
-) -> list[UserGender]:
-    """
-    Gets users by gender if a user is authenticated
-    """
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
-        )
-    get_all_users = queries.get_all()
-    
-    if gender == 4:
-        return [
-            username
-            for username in get_all_users
-            if username.id != user.id
-            and min_age <= username.age <= max_age
-        ]
+# @router.get("/preferences")
+# def filter_by_preferences(
+#     gender: int,
+#     min_age: int,
+#     max_age: int,
+#     queries: UserQueries = Depends(),
+#     user: UserResponse = Depends(try_get_jwt_user_data),
+# ) -> list[UserGender]:
+#     """
+#     Gets users by gender if a user is authenticated
+#     """
+#     if not user:
+#         raise HTTPException(
+#             status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
+#         )
+#     get_all_users = queries.get_all()
 
-    # if the user preferences is 0 then return all users else return users if user.gender == gender id
-    return [
-        username
-        for username in get_all_users
-        if username.gender == gender
-        and username.id != user.id
-        and min_age <= username.age <= max_age
-    ]
+#     if gender == 4:
+#         return [
+#             username
+#             for username in get_all_users
+#             if username.id != user.id
+#             and min_age <= username.age <= max_age
+#         ]
+
+#     # if the user preferences is 0 then return all users else return users if user.gender == gender id
+#     return [
+#         username
+#         for username in get_all_users
+#         if username.gender == gender
+#         and username.id != user.id
+#         and min_age <= username.age <= max_age
+#     ]
 
 
 # if where adding the user2 to the likes table of user that is authenticated its a post request
@@ -266,6 +268,9 @@ def update_like_status(
     )
     if likes.status:
         queries.create_a_match(likes.logged_in_user, likes.liked_by_user)
+        queries.delete_a_like(likes.id)
+    else:
+        queries.delete_a_like(likes.id)
 
     return LikesOut(**likes.model_dump())
 
@@ -292,3 +297,49 @@ def get_user_matches(
             or match.liked_by_user == user.id
         ]
     }
+
+
+# if the user id matches the user1_id in the romantic_pref table filter all users using the romatic_pref table
+
+
+@router.get("/preferences")
+def filter_by_preferences(
+    preferences: PreferencesRepository = Depends(),
+    queries: UserQueries = Depends(),
+    user: UserResponse = Depends(try_get_jwt_user_data),
+) -> list[UserGender]:
+    """
+    Get all users
+    """
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
+        )
+    get_all_users = queries.get_all()
+    get_all_pref = preferences.get_all_preferences()
+    gender = 0
+    min_age = 0
+    max_age = 0
+    for pref in get_all_pref:
+        if pref.user1_id == user.id:
+            gender = pref.gender_id
+            min_age = pref.min_age
+            max_age = pref.max_age
+
+    if gender == 4:
+        return [
+            username
+            for username in get_all_users
+            if username.id != user.id and min_age <= username.age <= max_age
+        ]
+
+    return [
+        username
+        for username in get_all_users
+        if username.gender == gender
+        and username.id != user.id
+        and min_age <= username.age <= max_age
+    ]
+
+
+

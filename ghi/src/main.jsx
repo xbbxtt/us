@@ -5,12 +5,16 @@ import { Provider } from 'react-redux'
 
 import SignInForm from './components/SignInForm'
 import SignUpForm from './components/SignUpForm'
+import RomanticPref from './components/RomPreference'
 import App from './App'
-import Homepage from './components/Homepage.jsx'
+import GetAllLikes from './components/GetAllLikes.jsx'
+import RomanticPreferences from './components/Swiping'
+import Matches from './components/Matches'
 
 import { store } from './app/store.js'
 
 import './index.css'
+import Construct from './components/Construct'
 
 const BASE_URL = import.meta.env.BASE_URL
 if (!BASE_URL) {
@@ -25,7 +29,7 @@ const router = createBrowserRouter(
             children: [
                 {
                     index: true,
-                    element: <Homepage />,
+                    element: <Construct />,
                 },
                 {
                     path: 'signup',
@@ -34,6 +38,22 @@ const router = createBrowserRouter(
                 {
                     path: 'signin',
                     element: <SignInForm />,
+                },
+                {
+                    path: 'romantic-pref',
+                    element: <RomanticPref />,
+                },
+                {
+                    path: 'likes',
+                    element: <GetAllLikes />,
+                },
+                {
+                    path: 'romantic-preferences',
+                    element: <RomanticPreferences />,
+                },
+                {
+                    path: 'matches',
+                    element: <Matches />,
                 },
             ],
         },

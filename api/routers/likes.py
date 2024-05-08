@@ -21,7 +21,7 @@ def create_a_like(
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
         )
-    likes.logged_in_user = user.id
+    likes.liked_by_user = user.id
     likes = queries.create_a_like(
         likes.logged_in_user,
         likes.liked_by_user,
@@ -51,3 +51,4 @@ def get_all_likes(
             if like.logged_in_user == user.id
         ]
     }
+    

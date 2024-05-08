@@ -9,6 +9,7 @@ from typing import Optional
 from models.users import UserWithPw
 from utils.exceptions import UserDatabaseException
 
+
 DATABASE_URL = os.environ.get("DATABASE_URL")
 if not DATABASE_URL:
     raise ValueError("DATABASE_URL environment variable is not set")
@@ -157,4 +158,3 @@ class UserQueries:
             print(e)
             raise UserDatabaseException("Error getting all users")
         return users
-    
