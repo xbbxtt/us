@@ -38,7 +38,7 @@ def get_user_matches(
     }
 
 
-@router.delete("/user/matches/{match_id}")
+@router.delete("/user/matches/<int:id>")
 def delete_match(
     match_id: int,
     queries: LikesRepository = Depends(),
