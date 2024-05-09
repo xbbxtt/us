@@ -7,43 +7,45 @@ Each team member is required to keep a development journal, which should be a si
 Recommended naming convention is `first_last.md`.
 
 
-# Database Model Documentation
+## Database Models
 
-## gender TABLE:
-### Summary: Database holds information for available genders a user can designate as their own, for example: Male, Female etc. This database table is intended to grow and shrink in accordance with societal norms.
-    id              - SERIAL Given automatically when a gender is added to the table
-    gender_name     - VARCHAR(20) the string representation of the specific gender, and how it will appear for the user within the application
+Tables:
 
-## romantic_pref TABLE
-### Summary: Database holds information for a user's romantic preferences in order to display appropriate potential users that are appropraitely able to be matched with the logged-in user.
-    id              - SERIAL given automatically to identify the instance of the romantic preferences table
-    user1_id        - INT the user's ID that this set of romantic preferences belongs to. Foreign key of user TABLE
-    min_age         - INT the minimum age that the user is seeking
-    max_age         - INT the maximum age that the user is seeking
-    gender_id       - INT the gender the user is seeking. Foreign key of gender TABLE
+    gender - Houses genders to include 3 premade genders (Male, Female, Non-Binary). More maybe inserted into the table via migration.
+        SERIAL PRIMARY KEY NOT NULL      - id                  - The unique identifier of each gender
+        VARCHAR(20) NOT NULL             - gender_name         - The name of the gender as the user expects it (IE 'Male' or 'Female')
 
-## likes TABLE
-### Summary: Database holds information for every instance a user using the appplication has "liked" another user
-    id              - SERIAL given automatically to identify the instance of a user "liking" another user
-    logged_in_user  - INT the ID of the user who initially liked another user. Foreign key of user TABLE
-    liked_by_user   - INT the ID of the user who may, or may not have liked them back. Foreign key of the user TABLE
-    status          - BOOLEAN whether both of the users have liked each other. NULL is assigned whenever the liked_by_user has not yet made a decision with the logged_in_users profile, FALSE is used when they dislike it
+    Pre inserted genders:
+        id = 1, gender_name = Male
+        id = 2, gender_name = Female
+        id = 3, gender_name = Non-Binary
 
-## Match TABLE:
-Summary: Upon acceptance of a like, the user who sent the like is then moved to a matches array where there profile can be listed.
-    User_1: This will be the column in which the user who sent the like will be stored.
 
-## User_Information TABLE:
-### Summary: A collection of information to be stored under a User table which will be used to create an User Profile where they can meet and match with other people that can lead to a potential romantic relationship.
-    User ID: An unique identifier for each user instance created in the Database
-    First_Name: First name of the user
-    Last_Name: Last name of the user
-    Password: A protected string known only to the user and administrators
-    Location: The vicinity in which the user is located/would like to be shown
-    Gender: A foreign key that organizes a user by their gender
-    Picture_Url: A photo of the user
-    Matches: A list of their matches
-    Preferences: The gender that the user is interested in which will be used to display other potential users on the likes page.
+    romantic_pref - Houses all users romantic preferences as designated by the user when finalizing their profile.
+        SERIAL PRIMARY KEY NOT NULL      - id                  - The unique identifier of each user's romantic preference
+        INT NOT NULL                     - user1_id            - The user this set of romantic preferences belongs to (Foreign Key of 'id' in users table)
+        INT NOT NULL                     - min_age             - The minimum age the user wants to interact with 
+        INT NOT NULL                     - max_age             - The maximum age the user wants to interact with
+        INT NOT NULL                     - gender_id           - The gender the user wants to interact with (Foreign Key of 'id' in gender table)        
+
+
+    likes - Houses all of the instinces in which one user has 'liked' another user.
+        SERIAL PRIMARY KEY NOT NULL      - id                  - The unique identifier of each like instance
+        INT NOT NULL                     - logged_in_user      - The user who is recieving the like (Foreign Key of 'id' in users table)   
+        INT NOT NULL                     - liked_by_user       - The user who is giving the like (Foreign Key of 'id' in users table)
+
+
+    users - Houses all of the users who have created an account on the site.
+        SERIAL PRIMARY KEY NOT NULL      - id                  - The unique identifier of each user instance
+        VARCHAR(100)                     - username            - The username the user designated for themselves upon account creation
+        VARCHAR(256)                     - password            - The password the user designated for themselves upon account creation
+        VARCHAR(100)                     - first_name          - The first name the user designated for themselves upon account creation
+        VARCHAR(100)                     - last_name           - The last name the user designated for themselves upon account creation
+        VARCHAR(50)                      - location            - The location the user designated for themselves upon account creation
+        INT                              - gender              - The gender the user designated for themselves upon account creation (Foreign Key of 'id' in gender table)
+        INT                              - age                 - The age the user designated for themselves upon account creation
+        VARCHAR(1000)                    - description         - The self description the user designated for themselves upon account creation
+        VARCHAR(256)                     - picture_url         - The picture's url the user designated for themselves upon account creation
 
 
 ## API DOCUMENTATION 
@@ -181,3 +183,8 @@ get_all() -> list[UserWithPw]: Gets all users from the database.
 These queries are used to interact with the Users table in the database.
 They handle user retrieval, creation, and fetching all users.
 Exceptions are raised if any database operation fails.
+
+
+
+
+
