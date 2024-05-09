@@ -13,13 +13,13 @@
 .testing {
     display: flex;
     position: relative;
-    margin-right: 10px;
+    margin-right: 260px;
 }
 
 .deck {
     position: absolute;
     width: 300px;
-    height: 200px;
+    height: 250px;
     will-change: transform;
     display: flex;
     margin-top: 75px;
@@ -43,12 +43,16 @@
     background-repeat: no-repeat;
     background-position: center center;
 
-    width: 45vh;
+    width: 50vh;
     max-width: 300px;
-    height: 85vh;
-    max-height: 480px;
+    height: 150vh;
+    max-height: 560px;
     will-change: transform;
     border-radius: 10px;
     box-shadow: 0 12.5px 100px -10px rgba(50, 50, 73, 0.4),
         0 10px 10px -10px rgba(50, 50, 73, 0.3);
+}
+
+.deck > button {
+    margin: 20px;
 }
