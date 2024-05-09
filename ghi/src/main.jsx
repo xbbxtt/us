@@ -10,6 +10,7 @@ import App from './App'
 import GetAllLikes from './components/GetAllLikes.jsx'
 import RomanticPreferences from './components/Swiping'
 import Matches from './components/Matches'
+import Deck from './components/Deck'
 
 import { store } from './app/store.js'
 
@@ -55,6 +56,10 @@ const router = createBrowserRouter(
                     path: 'matches',
                     element: <Matches />,
                 },
+                {
+                    path: 'construct',
+                    element: <Deck />,
+                }
             ],
         },
     ],

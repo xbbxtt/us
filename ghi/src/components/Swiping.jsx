@@ -59,7 +59,7 @@ export default function RomanticPreferences() {
                 {potentialLikes.map((like) => (
                     <div className="tinder--card" key={like.id}>
                         <img
-                            src={like.picture}
+                            src={like.picture_url}
                             alt={like.username}
                             className="rounded-t-lg"
                         />
