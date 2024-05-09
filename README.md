@@ -61,13 +61,13 @@ Tables:
         VARCHAR(1000)                    - description         - The self description the user designated for themselves upon account creation
         VARCHAR(256)                     - picture_url         - The picture's url the user designated for themselves upon account creation
 
-API DOCUMENTATION
+## API DOCUMENTATION
 The application uses APIs to connect to a database for user management. Users can create profiles and verify connections to interact with others. They can set preferences such as gender and age range to swipe on potential matches.
 User Authentication
 Summary
 Contains API routes and database queries for user authentication.
 
-API Routes
+# API Routes
 POST /api/auth/signup: Creates a new user when someone submits the signup form
 
 - Expected input:
