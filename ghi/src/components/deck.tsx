@@ -158,27 +158,32 @@ export default function Deck() {
                                 alt="profile"
                                 className="rounded max-w-fit items-center justify-center w-full h-64 object-cover object-center"
                             />
-                            <h2>{cards[i].first_name}</h2>
-                            <p>Age: {cards[i].age}</p>
-                            <p>
-                                Gender:
-                                {genders.map((gender) => {
-                                    if (gender.id === cards[i].gender) {
-                                        return gender.gender_name
-                                    }
-                                    return null
-                                })}
-                            </p>
-                            <p>Bio: {cards[i].description}</p>
-                            <div className="buttons">
-                                <button onClick={() => handleDislike(i)}>
-                                    Dislike
-                                </button>
-                                <button
-                                    onClick={() => handleLike(cards[i].id, i)}
-                                >
-                                    Like
-                                </button>
+                            <div className='info--card'>
+                                <h2>{cards[i].first_name}</h2>
+                                <p>Age: {cards[i].age}</p>
+                                <p>
+                                    Gender:
+                                    {genders.map((gender) => {
+                                        if (gender.id === cards[i].gender) {
+                                            return gender.gender_name
+                                        }
+                                        return null
+                                    })}
+                                </p>
+                                <p>Bio: {cards[i].description}</p>
+                                <div className="buttons">
+                                    <button className='dislike' onClick={() => handleDislike(i)}>
+                                        Dislike 💔
+                                    </button>
+                                    <button className='like'
+                                        onClick={() =>
+                                            handleLike(cards[i].id, i)
+                                        }
+                                    >
+                                        Like ❤️
+
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </animated.div>
