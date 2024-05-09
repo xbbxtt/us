@@ -33,3 +33,8 @@ We changed all of our components to have hooks through redux, cleared up ubiquit
 Fixed the buttons!!! We now can update a like status and delete a match. We are working
 on getting the cards to look like tinder's and also make sure everything is restful like our update preferences url.
 I will be rereading the unit test portion to prepare for that part of the grade.
+
+
+05/08/2024
+
+When doing unit tests, in matches.py line 3 must be commented out for test to run successfully
