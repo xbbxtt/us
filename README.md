@@ -11,13 +11,48 @@
 
 ---
 
-Visitors to the site can sign up or sign in to their account. They will set their romantic preferences that will filter the other users on our application, and reveal those filtered users to the current user. The user can make 'swipes'(click and drag), or simply press a like or dislike button on a user card that appears to them. A user can view other users that have given them a like. A user can return a like, or decline a like with a push of a button. A user can view a page that has their matches, users they have likes, who also liked them back.
+New users can create an account by signing up or an existing user may sign in to their account. They will set their romantic preferences that will filter the other users on our application, and reveal those filtered users to the current user. The user can make 'swipes'(click and drag), or simply press a like or dislike button on a user card that appears to them. A user can view other users that have given them a like. A user can return a like, or decline a like with a push of a button. A user can view a page that has their matches, users they have likes, who also liked them back.
+
+    Scenario: User visits page for the first time
+        Given the user is signing up for our application
+        When the user enters valid form entries
+        And clicks on the submit button
+        Then the User is redirected to establish his/hers/their romantic preferences
+        And then should be redirected to the swiping page to get started on making relationships
+
+        ### User Accounts
+            - User Signup/Login
+            - Setting Preferences
+
+        ### Matching System
+            - Filtering Algorithm
+            - User Actions (Likes/Dislikes, Viewing Profiles)
+            - Matches Page
 
 ## Intended Market
 
 ---
 
 We are targeting individuals that want to connect with others, to start a romantic relationship.
+
+## Stretch Goals
+
+---
+
+Nice to have functionalities would be a chat room function for matched users, and allowing users to include interests such as hobbies or favorite music to a users profile. Incorporating a third party Api to use location as a factor in match making algorithm.
+
+## Technologies used in our project
+
+---
+
+-   Postgresql
+-   FastApi
+-   React
+-   Redux
+-   Tailwind
+-   Typescript
+-   Custom CSS
+-   Docker
 
 ## Project Initialization
 

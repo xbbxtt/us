@@ -9,6 +9,7 @@ class PreferencesIn(BaseModel):
     max_age: int
     gender_id: int
 
+
 class PreferencesOut(BaseModel):
     id: int
     user1_id: int
@@ -26,9 +27,9 @@ class PreferencesRepository:
                 cur.execute(
                     """
                     INSERT INTO romantic_pref (
-                        user1_id, 
-                        min_age, 
-                        max_age, 
+                        user1_id,
+                        min_age,
+                        max_age,
                         gender_id
                         ) VALUES (
                             %s, %s, %s, %s
@@ -48,7 +49,7 @@ class PreferencesRepository:
                 return PreferencesOut(**data_dict)
 
     def update_a_preference(
-        self, user1_id:int, min_age: int, max_age: int, gender_id: int
+        self, user1_id: int, min_age: int, max_age: int, gender_id: int
     ) -> PreferencesOut:
         with pool.connection() as conn:
             with conn.cursor() as cur:
@@ -61,7 +62,7 @@ class PreferencesRepository:
                     WHERE user1_id = %s
                     RETURNING *;
                     """,
-                    [min_age, max_age, gender_id, user1_id]
+                    [min_age, max_age, gender_id, user1_id],
                 )
                 result = cur.fetchone()
                 data_dict = {
@@ -83,34 +84,12 @@ class PreferencesRepository:
                 )
                 result = []
                 for record in cur:
-                    preference = PreferencesOut(id=record[0], user1_id=record[1],
-                                                    min_age=record[2], max_age=record[3],
-                                                    gender_id=record[4])
+                    preference = PreferencesOut(
+                        id=record[0],
+                        user1_id=record[1],
+                        min_age=record[2],
+                        max_age=record[3],
+                        gender_id=record[4],
+                    )
                     result.append(preference)
                 return result
-
-
-
-
-
-
-
-
-
-
-        #     if gender == 4:
-#         return [
-#             username
-#             for username in get_all_users
-#             if username.id != user.id
-#             and min_age <= username.age <= max_age
-#         ]
-
-#     # if the user preferences is 0 then return all users else return users if user.gender == gender id
-#     return [
-#         username
-#         for username in get_all_users
-#         if username.gender == gender
-#         and username.id != user.id
-#         and min_age <= username.age <= max_age
-#     ]

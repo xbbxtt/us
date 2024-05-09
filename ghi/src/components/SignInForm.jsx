@@ -37,6 +37,7 @@ export default function SignInForm() {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="Enter Username"
+                    autoComplete='username'
                 />
             </div>
             <div className="mb-6">
@@ -54,6 +55,7 @@ export default function SignInForm() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter Password"
+                    autoComplete='current-password'
                 />
             </div>
             <div className="flex items-center justify-between">

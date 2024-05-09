@@ -93,6 +93,6 @@ steps = [
             DROP COLUMN age,
             DROP COLUMN description,
             DROP COLUMN picture_url
-        """
-    ]
+        """,
+    ],
 ]

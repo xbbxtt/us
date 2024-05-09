@@ -6,13 +6,7 @@ from queries.user_queries import (
     UserQueries,
 )
 
-from models.users import (
-    UserGender
-)
-
-
-
-
+from models.users import UserGender
 
 
 @router.get("/users")
@@ -24,5 +18,3 @@ async def get_all_users(
     """
     users = queries.get_all()
     return [UserGender(**user.model_dump()) for user in users]
-
-

@@ -7,13 +7,12 @@ from fastapi import (
 )
 from models.users import UserResponse
 
-from utils.authentication import (
-    try_get_jwt_user_data
-)
+from utils.authentication import try_get_jwt_user_data
 from queries.matches import LikesRepository, MatchOut
 from typing import Dict, List
 
 router = APIRouter(tags=["Matches"], prefix="/api")
+
 
 @router.get("/user/matches")
 def get_user_matches(
@@ -29,10 +28,16 @@ def get_user_matches(
         )
 
     matches = queries.get_all_matches(user.id)
-    return {"matches": [MatchOut(**match.model_dump()) for match in matches
-            if match.logged_in_user == user.id or match.liked_by_user == user.id]}
-    
-# delete a match
+    return {
+        "matches": [
+            MatchOut(**match.model_dump())
+            for match in matches
+            if match.logged_in_user == user.id
+            or match.liked_by_user == user.id
+        ]
+    }
+
+
 @router.delete("/user/matches/{match_id}")
 def delete_match(
     match_id: int,
@@ -48,5 +53,4 @@ def delete_match(
         )
 
     queries.delete_a_match(match_id)
-    # return a 200 with deleted message
     return Response(status_code=status.HTTP_200_OK)

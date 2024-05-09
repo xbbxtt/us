@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Slider from './ReactSlider'
 import { useRomPrefMutation, useGendersQuery } from '../app/apiSlice'
+import { useNavigate } from 'react-router-dom'
 
 export default function RomanticPref() {
     const [minAge, setMinAge] = useState('')
@@ -10,6 +11,7 @@ export default function RomanticPref() {
     const [isLoading, setIsLoading] = useState(false)
 
     const [updatePost, result] = useRomPrefMutation()
+    const navigate = useNavigate()
 
     const gendersQuery = useGendersQuery()
 
@@ -36,9 +38,9 @@ export default function RomanticPref() {
         setIsLoading(true)
         try {
             const response = await updatePost(data)
-            console.log('Response:', response)
             if (response.data && response.data.id) {
                 console.log('Success')
+                navigate('/romantic-preferences')
             } else {
                 console.log('Error sending preferences')
             }
@@ -71,6 +73,7 @@ export default function RomanticPref() {
                 className="block w-full mt-4 border border-gray-300 rounded-md p-3 text-lg"
             >
                 <option value="">Select your gender preference</option>
+                <option value="4">Show Everyone</option>
                 {genders.length > 0 &&
                     genders.map((gender) => {
                         return (
