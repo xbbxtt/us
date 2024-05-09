@@ -20,6 +20,166 @@ tasks for this week.
 -   [ ] GitLab issue board is setup and in use (or project management tool of choice)
 -   [ ] Journals
 
+
+# Wireframe
+![Alt text](Home-us.png)
+![Alt text](<Sign up-Us.png>)
+![Alt text](<Sign In-Us.png>)
+![Alt text](<Us-Romantic Preference.png>)
+![Alt text](Likes-Us.png)
+![Alt text](Swiping.png)
+![Alt text](Matches-Us.png)
+
+## Database Models
+Tables:
+    gender - Houses genders to include 3 premade genders (Male, Female, Non-Binary). More maybe inserted into the table via migration.
+        SERIAL PRIMARY KEY NOT NULL      - id                  - The unique identifier of each gender
+        VARCHAR(20) NOT NULL             - gender_name         - The name of the gender as the user expects it (IE 'Male' or 'Female')
+    Pre inserted genders:
+        id = 1, gender_name = Male
+        id = 2, gender_name = Female
+        id = 3, gender_name = Non-Binary
+    romantic_pref - Houses all users romantic preferences as designated by the user when finalizing their profile.
+        SERIAL PRIMARY KEY NOT NULL      - id                  - The unique identifier of each user's romantic preference
+        INT NOT NULL                     - user1_id            - The user this set of romantic preferences belongs to (Foreign Key of 'id' in users table)
+        INT NOT NULL                     - min_age             - The minimum age the user wants to interact with
+        INT NOT NULL                     - max_age             - The maximum age the user wants to interact with
+        INT NOT NULL                     - gender_id           - The gender the user wants to interact with (Foreign Key of 'id' in gender table)
+    likes - Houses all of the instinces in which one user has 'liked' another user.
+        SERIAL PRIMARY KEY NOT NULL      - id                  - The unique identifier of each like instance
+        INT NOT NULL                     - logged_in_user      - The user who is recieving the like (Foreign Key of 'id' in users table)
+        INT NOT NULL                     - liked_by_user       - The user who is giving the like (Foreign Key of 'id' in users table)
+    users - Houses all of the users who have created an account on the site.
+        SERIAL PRIMARY KEY NOT NULL      - id                  - The unique identifier of each user instance
+        VARCHAR(100)                     - username            - The username the user designated for themselves upon account creation
+        VARCHAR(256)                     - password            - The password the user designated for themselves upon account creation
+        VARCHAR(100)                     - first_name          - The first name the user designated for themselves upon account creation
+        VARCHAR(100)                     - last_name           - The last name the user designated for themselves upon account creation
+        VARCHAR(50)                      - location            - The location the user designated for themselves upon account creation
+        INT                              - gender              - The gender the user designated for themselves upon account creation (Foreign Key of 'id' in gender table)
+        INT                              - age                 - The age the user designated for themselves upon account creation
+        VARCHAR(1000)                    - description         - The self description the user designated for themselves upon account creation
+        VARCHAR(256)                     - picture_url         - The picture's url the user designated for themselves upon account creation
+
+API DOCUMENTATION
+The application uses APIs to connect to a database for user management. Users can create profiles and verify connections to interact with others. They can set preferences such as gender and age range to swipe on potential matches.
+User Authentication
+Summary
+Contains API routes and database queries for user authentication.
+
+API Routes
+POST /api/auth/signup: Creates a new user when someone submits the signup form
+
+- Expected input:
+    {
+"username": "string",
+"password": "string",
+"first_name": "string",
+"last_name": "string",
+"location": "string",
+"gender": 0,
+"age": 0,
+"description": "string",
+"picture_url": "string"
+    }
+
+- Expected Output:
+{
+"id": 0,
+"username": "string"
+}
+
+
+POST /api/auth/signin: Signs the user in when they use the Sign In form
+
+- Expected Input:
+{
+"username": "string",
+"password": "string"
+}
+
+Expected Output:
+{
+"id": 0,
+"username": "string"
+}   
+
+
+GET /api/auth/authenticate: Returns the user if the user is logged in
+
+- Expected Response:
+{
+"id": 0,
+"username": "string"
+}
+
+
+DELETE /api/auth/signout: Signs the user out by deleting their JWT Cookie
+
+- Expected Output:
+"Signed out successfully"
+
+
+GET /api/auth/api/users: Get all users
+
+- Expected Output:
+[
+    {
+    "id": 0,
+    "username": "string",
+    "first_name": "string",
+    "last_name": "string",
+    "age": 0,
+    "gender": 0
+    }
+]
+
+
+GET /api/auth/api/users/gender: Gets users by gender if a user is authenticated
+
+- Expected Output:
+[
+    {
+    "id": 0,
+    "username": "string",
+    "first_name": "string",
+    "last_name": "string",
+    "age": 0,
+    "gender": 0
+    }
+]
+
+
+POST /api/auth/api/users/likes: Adds a like from one user to another
+
+- Expected Input:
+{
+"logged_in_user": 1,
+"liked_by_user": 2,
+"status": true
+}
+
+- Expected Output:
+{
+"id": 1,
+"logged_in_user": 1,
+"liked_by_user": 2,
+"status": true
+}
+
+
+GET /api/auth/api/users/matches: Retrieves a list of matches for a user
+
+- Expected Output:
+
+[
+    {
+    "id": 1,
+    "logged_in_user": 5,
+    "liked_by_user": 5,
+    "status": true
+    }
+]
 ## Project layout
 
 The layout of the project is just like all of the projects
