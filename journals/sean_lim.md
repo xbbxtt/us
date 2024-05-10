@@ -23,6 +23,10 @@ that the liked user will see. Once the liked user returns a like, both ids of th
 We fixed our Databases and added a likes feature to our Wireframe where the user can see the likes they have received and then choose to accept or decline.
 We are catching up on our documentation as well today.
 
+05/03/2024
+
+Went through learning the hooks for redux and etc. But wrote out the front components out successfuly using fetch and react logic.
+
 
 05/06/2024
 
@@ -38,3 +42,7 @@ I will be rereading the unit test portion to prepare for that part of the grade.
 05/08/2024
 
 When doing unit tests, in matches.py line 3 must be commented out for test to run successfully
+
+05/09/2024
+
+Finished swiping and Read me, did reading on CI/CD and making sure that pipeline ran successfully after not working out a few times.
