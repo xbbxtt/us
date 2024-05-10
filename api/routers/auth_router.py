@@ -13,11 +13,7 @@ from fastapi import (
 from queries.user_queries import (
     UserQueries,
 )
-from queries.preferences import (
-    PreferencesRepository,
-    PreferencesIn,
-    PreferencesOut,
-)
+
 
 from utils.exceptions import UserDatabaseException
 from models.users import (
@@ -33,17 +29,6 @@ from utils.authentication import (
     generate_jwt,
     verify_password,
 )
-
-from queries.matches import (
-    LikesIn,
-    LikesOut,
-    LikesRepository,
-    MatchOut,
-    GenderRepository,
-    GenderOut,
-)
-
-from typing import Dict, List
 
 
 router = APIRouter(tags=["Authentication"], prefix="/api/auth")
@@ -74,7 +59,7 @@ async def signup(
             description=new_user.description,
             picture_url=new_user.picture_url,
         )
-    except UserDatabaseException as e:
+    except UserDatabaseException:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
 
     token = generate_jwt(user)
@@ -189,95 +174,3 @@ async def get_all_users(
     """
     users = queries.get_all()
     return [UserGender(**user.model_dump()) for user in users]
-
-
-@router.put("/likes/<int:id>")
-def update_like_status(
-    id: int,
-    likes: LikesIn,
-    queries: LikesRepository = Depends(),
-    user: UserResponse = Depends(try_get_jwt_user_data),
-) -> LikesOut:
-    """
-    Update the status of a like
-    """
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
-        )
-    likes.logged_in_user = user.id
-    likes = queries.update_like_status(
-        id,
-        likes.status,
-    )
-    if likes.status:
-        queries.create_a_match(likes.logged_in_user, likes.liked_by_user)
-        queries.delete_a_like(likes.id)
-    else:
-        queries.delete_a_like(likes.id)
-
-    return LikesOut(**likes.model_dump())
-
-
-@router.get("/matches")
-def get_user_matches(
-    queries: LikesRepository = Depends(),
-    user: UserResponse = Depends(try_get_jwt_user_data),
-) -> Dict[str, List[MatchOut]]:
-    """
-    Get all matches
-    """
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
-        )
-
-    matches = queries.get_all_matches(user.id)
-    return {
-        "matches": [
-            MatchOut(**match.model_dump())
-            for match in matches
-            if match.logged_in_user == user.id
-            or match.liked_by_user == user.id
-        ]
-    }
-
-
-@router.get("/preferences")
-def filter_by_preferences(
-    preferences: PreferencesRepository = Depends(),
-    queries: UserQueries = Depends(),
-    user: UserResponse = Depends(try_get_jwt_user_data),
-) -> list[UserGender]:
-    """
-    Get all users
-    """
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
-        )
-    get_all_users = queries.get_all()
-    get_all_pref = preferences.get_all_preferences()
-    gender = 0
-    min_age = 0
-    max_age = 0
-    for pref in get_all_pref:
-        if pref.user1_id == user.id:
-            gender = pref.gender_id
-            min_age = pref.min_age
-            max_age = pref.max_age
-
-    if gender == 4:
-        return [
-            username
-            for username in get_all_users
-            if username.id != user.id and min_age <= username.age <= max_age
-        ]
-
-    return [
-        username
-        for username in get_all_users
-        if username.gender == gender
-        and username.id != user.id
-        and min_age <= username.age <= max_age
-    ]

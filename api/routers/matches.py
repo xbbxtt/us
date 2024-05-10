@@ -6,17 +6,18 @@ from fastapi import (
     APIRouter,
 )
 from models.users import UserResponse
-
-from utils.authentication import try_get_jwt_user_data
-from queries.matches import LikesRepository, MatchOut
 from typing import Dict, List
+from utils.authentication import try_get_jwt_user_data
+from queries.matches import MatchesRepository
+from models.matches import MatchOut
+
 
 router = APIRouter(tags=["Matches"], prefix="/api")
 
 
-@router.get("/user/matches")
+@router.get("/matches")
 def get_user_matches(
-    queries: LikesRepository = Depends(),
+    matches: MatchesRepository = Depends(),
     user: UserResponse = Depends(try_get_jwt_user_data),
 ) -> Dict[str, List[MatchOut]]:
     """
@@ -27,7 +28,7 @@ def get_user_matches(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in"
         )
 
-    matches = queries.get_all_matches(user.id)
+    matches = matches.get_all_matches(user.id)
     return {
         "matches": [
             MatchOut(**match.model_dump())
@@ -41,7 +42,7 @@ def get_user_matches(
 @router.delete("/user/matches/<int:id>")
 def delete_match(
     match_id: int,
-    queries: LikesRepository = Depends(),
+    queries: MatchesRepository = Depends(),
     user: UserResponse = Depends(try_get_jwt_user_data),
 ) -> Response:
     """
