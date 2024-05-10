@@ -24,14 +24,14 @@ Tables:
     romantic_pref - Houses all users romantic preferences as designated by the user when finalizing their profile.
         SERIAL PRIMARY KEY NOT NULL      - id                  - The unique identifier of each user's romantic preference
         INT NOT NULL                     - user1_id            - The user this set of romantic preferences belongs to (Foreign Key of 'id' in users table)
-        INT NOT NULL                     - min_age             - The minimum age the user wants to interact with 
+        INT NOT NULL                     - min_age             - The minimum age the user wants to interact with
         INT NOT NULL                     - max_age             - The maximum age the user wants to interact with
-        INT NOT NULL                     - gender_id           - The gender the user wants to interact with (Foreign Key of 'id' in gender table)        
+        INT NOT NULL                     - gender_id           - The gender the user wants to interact with (Foreign Key of 'id' in gender table)
 
 
     likes - Houses all of the instinces in which one user has 'liked' another user.
         SERIAL PRIMARY KEY NOT NULL      - id                  - The unique identifier of each like instance
-        INT NOT NULL                     - logged_in_user      - The user who is recieving the like (Foreign Key of 'id' in users table)   
+        INT NOT NULL                     - logged_in_user      - The user who is recieving the like (Foreign Key of 'id' in users table)
         INT NOT NULL                     - liked_by_user       - The user who is giving the like (Foreign Key of 'id' in users table)
 
 
@@ -48,7 +48,7 @@ Tables:
         VARCHAR(256)                     - picture_url         - The picture's url the user designated for themselves upon account creation
 
 
-## API DOCUMENTATION 
+## API DOCUMENTATION
 
 The application uses APIs to connect to a database for user management. Users can create profiles and verify connections to interact with others. They can set preferences such as gender and age range to swipe on potential matches.
 
@@ -58,6 +58,7 @@ Contains API routes and database queries for user authentication.
 
 ## API Routes
 
+### Auth Routers
 **POST** /api/auth/signup: Creates a new user when someone submits the signup form
 
     - Expected input:
@@ -92,7 +93,7 @@ Contains API routes and database queries for user authentication.
     {
     "id": 0,
     "username": "string"
-    }   
+    }
 
 **GET** /api/auth/authenticate: Returns the user if the user is logged in
 
@@ -121,22 +122,80 @@ Contains API routes and database queries for user authentication.
         }
     ]
 
-**GET** /api/auth/api/users/gender: Gets users by gender if a user is authenticated
+**PUT** /api/auth/likes/<int:id>: Update Like Status
+
+    - Expected Input:
+        - ID
+        - {
+        "logged_in_user": 0,
+        "liked_by_user": 0,
+        "status": true
+        }
+        or
+        - {
+        "logged_in_user": 0,
+        "liked_by_user": 0,
+        "status": false
+        }
+
+    - Expected Output:
+        - {
+        "logged_in_user": 0,
+        "liked_by_user": 0,
+        "status": true
+        }
+        or
+        - {
+        "logged_in_user": 0,
+        "liked_by_user": 0,
+        "status": false
+        }
+
+**GET** /api/auth/matches: Get User Matches
+
+    - Expected Output:
+        - {
+        "additionalProp1": [
+        {
+        "id": 1,
+        "logged_in_user": 1,
+        "liked_by_user": 2
+            }
+        ],
+        }
+
+
+**GET** /api/auth/preferences: Filter by preferences
+
+    - Expected output:
+        - [
+        {
+            "id": 0,
+            "picture_url": "string",
+            "username": "string",
+            "first_name": "string",
+            "last_name": "string",
+            "age": 0,
+            "gender": 0,
+            "description": "string"
+        }
+        ]
+
+### Genders
+
+**GET** /api/gender: Get all genders
 
     - Expected Output:
     [
         {
         "id": 0,
-        "username": "string",
-        "first_name": "string",
-        "last_name": "string",
-        "age": 0,
-        "gender": 0
+        "gender_name": 0
         }
     ]
 
+### Likes
 
-**POST** /api/auth/api/users/likes: Adds a like from one user to another
+**POST** /api/likes: Create a like
 
     - Expected Input:
     {
@@ -153,19 +212,110 @@ Contains API routes and database queries for user authentication.
     "status": true
     }
 
+**GET**  /api/likes: Get all likes
 
-**GET** /api/auth/api/users/matches: Retrieves a list of matches for a user
+    - Expected Output
+    {
+    "additionalProp1": [
+    {
+      "id": 0,
+      "logged_in_user": 0,
+      "liked_by_user": 0,
+      "status": true
+    }
+  ]
+  }
 
-    - Expected Output:
-    
-    [
+
+### Preferences
+
+**POST** /api/preferecnes: Create a preference
+
+    - Expected input:
         {
-        "id": 1,
-        "logged_in_user": 5,
-        "liked_by_user": 5,
-        "status": true
+        "user1_id": 0,
+        "min_age": 0,
+        "max_age": 0,
+        "gender_id": 0
         }
-    ]
+
+    - Expected output:
+        {
+        "id": 0,
+        "user1_id": 0,
+        "min_age": 0,
+        "max_age": 0,
+        "gender_id": 0
+        }
+
+**GET** /api/preferences: Get all preferences
+
+    - Expected output:
+        [
+        {
+        "id": 0,
+        "user1_id": 0,
+        "min_age": 0,
+        "max_age": 0,
+        "gender_id": 0
+        }
+        ]
+
+**PUT** /api/preferences/<int:id>: Update a preference
+
+    - Expected input:
+        {
+        "user1_id": 0,
+        "min_age": 0,
+        "max_age": 0,
+        "gender_id": 0
+        }
+
+    - Expected output:
+        {
+        "id": 0,
+        "user1_id": 0,
+        "min_age": 0,
+        "max_age": 0,
+        "gender_id": 0
+        }
+
+
+
+### Matches
+
+**GET** - /api/user/matches - returns an array of all the matches that belong to the logged in user
+        Expected Output:
+        {
+        "additionalProp1": [
+            {
+            "id": 0,
+            "logged_in_user": 0,
+            "liked_by_user": 0
+            }
+        ],
+        "additionalProp2": [
+            {
+            "id": 0,
+            "logged_in_user": 0,
+            "liked_by_user": 0
+            }
+        ],
+        "additionalProp3": [
+            {
+            "id": 0,
+            "logged_in_user": 0,
+            "liked_by_user": 0
+            }
+        ]
+        }
+
+**DELETE** - /api/user/matches/{match_id} - deletes a match belonging to the user at id=match_id
+        Expected Output:
+        "string"
+
+
+
 
 
 ## Database Queries
@@ -174,7 +324,7 @@ get_by_username(username: str) -> Optional[UserWithPw]: Gets a user from the dat
 
 get_by_id(id: int) -> Optional[UserWithPw]: Gets a user from the database by user id. Returns None if the user isn't found.
 
-create_user(username: str, hashed_password: str, first_name: str, last_name: str, location: str, gender: int, age: int, description: str, picture_url: str) -> 
+create_user(username: str, hashed_password: str, first_name: str, last_name: str, location: str, gender: int, age: int, description: str, picture_url: str) ->
 UserWithPw: Creates a new user in the database. Raises a UserDatabaseException if creating the user fails.
 
 get_all() -> list[UserWithPw]: Gets all users from the database.
@@ -183,8 +333,3 @@ get_all() -> list[UserWithPw]: Gets all users from the database.
 These queries are used to interact with the Users table in the database.
 They handle user retrieval, creation, and fetching all users.
 Exceptions are raised if any database operation fails.
-
-
-
-
-
