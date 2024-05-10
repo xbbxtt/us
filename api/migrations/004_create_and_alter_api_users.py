@@ -79,7 +79,7 @@ steps = [
         INSERT INTO users (username, password, first_name, last_name, location, gender, age, description, picture_url)
         VALUES ('dangelodeniro', 'string', 'D''Angelo', 'DeNiro', 'Colorado', 1, 28, 'string', 'string'),
                ('yadrielruiz', 'string', 'Yadriel', 'Ruiz', 'Texas', 1, 26, 'string', 'string'),
-               ('keygomez', 'string', 'Key', 'Gomez', 'Texas', 3, 25, 'string', 'string'),
+               ('seanlim', 'string', 'Sean', 'Lim', 'New York', 1, 25, 'string', 'string'),
                ('michaelaarteberry', 'string', 'Michaela', 'Arteberry', 'Texas', 2, 25, 'string', 'string');
         """,
         # "Down" SQL statement

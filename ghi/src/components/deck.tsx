@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useSprings, animated, to as interpolate } from '@react-spring/web'
 import { useDrag } from 'react-use-gesture'
 import {
@@ -58,18 +58,16 @@ export default function Deck() {
             direction: [xDir],
             velocity,
         }) => {
-            console.log('direction:', xDir)
 
-            const trigger = velocity > 0.2 // If you flick hard enough it should trigger the card to fly out
-            const dir = xDir < 0 ? -1 : 1 // Direction should either point left or right
+            const trigger = velocity > 0.2
+            const dir = xDir < 0 ? -1 : 1
 
-            // Animation logic
             const isGone = gone.has(index)
-            const x = isGone ? (200 + window.innerWidth) * dir : down ? mx : 0 // When a card is gone it flies out left or right, otherwise goes back to zero
-            const rot = mx / 100 + (isGone ? dir * 10 * velocity : 0) // How much the card tilts, flicking it harder makes it rotate faster
-            const scale = down ? 1.1 : 1 // Active cards lift up a bit
+            const x = isGone ? (200 + window.innerWidth) * dir : down ? mx : 0
+            const rot = mx / 100 + (isGone ? dir * 10 * velocity : 0)
+            const scale = down ? 1.1 : 1
             api.start((i) => {
-                if (index !== i) return // We're only interested in changing spring-data for the current spring
+                if (index !== i) return
                 return {
                     x,
                     rot,
@@ -82,14 +80,11 @@ export default function Deck() {
                 }
             })
 
-            // Handle like/dislike
             if (!down && trigger) {
-                setGone((prev) => new Set(prev.add(index))) // If button/finger's up and trigger velocity is reached, we flag the card ready to fly out
+                setGone((prev) => new Set(prev.add(index)))
                 if (dir > 0.5) {
-                    // Only trigger like action if swiping right
-                    handleLike(cards[index].id, index) // Swipe right
+                    handleLike(cards[index].id, index)
                 }
-                // Wait for the animation duration before removing the card from the UI
                 setTimeout(() => {
                     setCards((prevCards) =>
                         prevCards.filter((_, i) => i !== index)
@@ -107,15 +102,11 @@ export default function Deck() {
                 liked_by_user: 1,
                 status: null,
             }
-            console.log('Data:', data)
+
             const response = await createLike(data)
-            console.log('Response:', response)
+
             if ('data' in response && response.data && response.data.id) {
-                // Remove the liked card from UI by filtering out the card from the state
                 setCards(cards.filter((_, i) => i !== index))
-                console.log('Success')
-            } else {
-                console.log('Error sending like')
             }
         } catch (error) {
             console.error('Catch Error:', error)
@@ -124,7 +115,7 @@ export default function Deck() {
     }
 
     async function handleDislike(index) {
-        // Remove the disliked card from UI by filtering out the card from the state
+
         setCards(cards.filter((_, i) => i !== index))
     }
 
@@ -137,7 +128,7 @@ export default function Deck() {
                     style={{
                         x,
                         y,
-                        display: gone.has(i) ? 'none' : 'block', // Hide the card if its index is in the gone state
+                        display: gone.has(i) ? 'none' : 'block',
                     }}
                 >
                     <animated.div

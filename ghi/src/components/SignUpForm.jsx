@@ -51,7 +51,6 @@ export default function SignInForm() {
         getGender()
         handleChange()
         if (signupStatus.isSuccess) {
-            console.log('success')
             signin({ username, password })
             navigate('/romantic-pref')
         }

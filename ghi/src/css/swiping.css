@@ -30,7 +30,6 @@
     color: black;
 }
 .deck img {
-    /* give designated section for the images to populate while centering in the card*/
     width: 100%;
     margin: auto;
 }
@@ -56,7 +55,6 @@
 }
 
 .deck .info--card {
-    /* allows the information to be at the lowest point of the card */
     position: relative;
     bottom: 0;
 }
@@ -72,7 +70,6 @@
 }
 
 .deck .like {
-    /* makes the button be a heart */
     background-color: rgb(194, 242, 198);
     border: none;
     padding: 10px 20px;

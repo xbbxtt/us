@@ -22,6 +22,7 @@ app.include_router(likes.router)
 app.include_router(preferences.router)
 app.include_router(matches.router)
 
+
 @app.get("/api/launch-details")
 def launch_details():
     return {

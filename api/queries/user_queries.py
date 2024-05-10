@@ -49,8 +49,7 @@ class UserQueries:
                     user = cur.fetchone()
                     if not user:
                         return None
-        except psycopg.Error as e:
-            print(e)
+        except psycopg.Error:
             raise UserDatabaseException(f"Error getting user {username}")
         return user
 
@@ -75,8 +74,7 @@ class UserQueries:
                     user = cur.fetchone()
                     if not user:
                         return None
-        except psycopg.Error as e:
-            print(e)
+        except psycopg.Error:
             raise UserDatabaseException(f"Error getting user with id {id}")
 
         return user
@@ -136,10 +134,8 @@ class UserQueries:
                         raise UserDatabaseException(
                             f"Could not create user with username {username} 1"
                         )
-        except psycopg.Error as e:
-            raise UserDatabaseException(
-                print(e),
-            )
+        except psycopg.Error:
+            raise UserDatabaseException()
         return user
 
     def get_all(self):
@@ -157,7 +153,6 @@ class UserQueries:
                             """
                     )
                     users = cur.fetchall()
-        except psycopg.Error as e:
-            print(e)
+        except psycopg.Error:
             raise UserDatabaseException("Error getting all users")
         return users

@@ -122,7 +122,7 @@ const Tinder = () => {
         }
     }, [])
 
-    return <div>{/* Your JSX content here */}</div>
+    return <div>{}</div>
 }
 
 export default Tinder

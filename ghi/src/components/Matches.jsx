@@ -49,9 +49,7 @@ export default function Matches() {
                 (match) => match.id !== matchId
             )
             setMatches(updatedMatches)
-            console.log('Dislike:', matchId)
-        } else {
-            console.log('Breakup Cancelled')
+
         }
     }
 

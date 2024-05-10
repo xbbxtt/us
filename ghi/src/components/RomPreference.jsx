@@ -39,10 +39,7 @@ export default function RomanticPref() {
         try {
             const response = await updatePost(data)
             if (response.data && response.data.id) {
-                console.log('Success')
                 navigate('/romantic-preferences')
-            } else {
-                console.log('Error sending preferences')
             }
         } catch (error) {
             console.error('Catch Error:', error)
