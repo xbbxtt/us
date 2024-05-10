@@ -8,8 +8,8 @@ import SignUpForm from './components/SignUpForm'
 import RomanticPref from './components/RomPreference'
 import App from './App'
 import GetAllLikes from './components/GetAllLikes.jsx'
-import RomanticPreferences from './components/Swiping'
 import Matches from './components/Matches'
+import Deck from './components/Deck'
 
 import { store } from './app/store.js'
 
@@ -48,12 +48,12 @@ const router = createBrowserRouter(
                     element: <GetAllLikes />,
                 },
                 {
-                    path: 'romantic-preferences',
-                    element: <RomanticPreferences />,
-                },
-                {
                     path: 'matches',
                     element: <Matches />,
+                },
+                {
+                    path: 'romantic-preferences',
+                    element: <Deck />,
                 },
             ],
         },
@@ -67,9 +67,6 @@ const rootElement = document.getElementById('root')
 if (!rootElement) {
     throw new Error('root element was not found!')
 }
-
-// Log out the environment variables while you are developing and deploying
-// This will help debug things
 console.table(import.meta.env)
 
 const root = ReactDOM.createRoot(rootElement)

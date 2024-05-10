@@ -3,13 +3,13 @@ from fastapi import (
     APIRouter,
 )
 from typing import List
-from queries.matches import GenderOut, GenderRepository
+from queries.gender import GenderRepository
+from models.matches import GenderOut
 
 
 router = APIRouter(tags=["Gender"], prefix="/api")
 
 
-# get all the genders from the database
 @router.get("/genders")
 async def get_all_gender(
     queries: GenderRepository = Depends(),

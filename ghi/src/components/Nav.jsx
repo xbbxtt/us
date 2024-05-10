@@ -5,7 +5,6 @@ import { useEffect } from 'react'
 const Nav = () => {
     const navigate = useNavigate()
     const { data: user } = useAuthenticateQuery()
-
     const [signout, signoutStatus] = useSignoutMutation()
 
     useEffect(() => {

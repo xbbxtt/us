@@ -40,10 +40,17 @@ export default function Matches() {
     }
 
     function handleBreakup(matchId) {
-        breakUp({ id: matchId })
-        const updatedMatches = matches.filter((match) => match.id !== matchId)
-        setMatches(updatedMatches)
-        console.log('Dislike:', matchId)
+        const confirmation = window.confirm(
+            'Danger! Are you sure you want to break up?'
+        )
+        if (confirmation) {
+            breakUp({ id: matchId })
+            const updatedMatches = matches.filter(
+                (match) => match.id !== matchId
+            )
+            setMatches(updatedMatches)
+
+        }
     }
 
     return (
@@ -54,26 +61,33 @@ export default function Matches() {
                 matches.map((match) => (
                     <div
                         key={match.id}
-                        className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700"
+                        className="max-w-sm bg-slate-200 border border-gray-200 rounded-lg shadow-md m-3 py-3 px-3 flex flex-col justify-between"
                     >
                         {users.map((user) => {
                             if (user.id === match.logged_in_user) {
                                 return (
                                     <div key={`${user.id}-${match.id}`}>
-                                        <h2>
-                                            {user.first_name} - {user.age}
-                                        </h2>
+                                        <div>
+                                            <h1 className="text-black">
+                                                {user.first_name} - {user.age}
+                                            </h1>
+                                        </div>
                                         <img
                                             src={user.picture_url}
                                             alt={user.first_name}
-                                            className="rounded-t-lg"
+                                            className="rounded max-w-fit items-center justify-center w-full h-64 object-cover object-center"
                                         />
+                                        <div>
+                                            <p className="text-black">
+                                                {user.description}
+                                            </p>
+                                        </div>
                                         <div className="flex space-x-4">
                                             <button
                                                 onClick={() =>
                                                     handleBreakup(match.id)
                                                 }
-                                                className="flex-1 inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-center text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none"
+                                                className="flex-1 inline-flex justify-center px-3 py-2 text-sm font-medium text-center text-white bg-red-400 rounded-lg hover:bg-red-600 focus:outline-none"
                                             >
                                                 Break Up
                                             </button>
