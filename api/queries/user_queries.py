@@ -1,6 +1,7 @@
 """
 Database Queries for Users
 """
+
 import os
 import psycopg
 from psycopg_pool import ConnectionPool
@@ -48,8 +49,7 @@ class UserQueries:
                     user = cur.fetchone()
                     if not user:
                         return None
-        except psycopg.Error as e:
-            print(e)
+        except psycopg.Error:
             raise UserDatabaseException(f"Error getting user {username}")
         return user
 
@@ -74,22 +74,23 @@ class UserQueries:
                     user = cur.fetchone()
                     if not user:
                         return None
-        except psycopg.Error as e:
-            print(e)
+        except psycopg.Error:
             raise UserDatabaseException(f"Error getting user with id {id}")
 
         return user
 
-    def create_user(self, username: str,
-                    hashed_password: str,
-                    first_name: str,
-                    last_name: str,
-                    location: str,
-                    gender: int,
-                    age: int,
-                    description: str,
-                    picture_url: str,
-                    ) -> UserWithPw:
+    def create_user(
+        self,
+        username: str,
+        hashed_password: str,
+        first_name: str,
+        last_name: str,
+        location: str,
+        gender: int,
+        age: int,
+        description: str,
+        picture_url: str,
+    ) -> UserWithPw:
         """
         Creates a new user in the database
 
@@ -110,7 +111,7 @@ class UserQueries:
                             age,
                             description,
                             picture_url
-                            
+
                         ) VALUES (
                             %s, %s, %s, %s, %s, %s, %s, %s, %s
                         )
@@ -125,7 +126,7 @@ class UserQueries:
                             gender,
                             age,
                             description,
-                            picture_url
+                            picture_url,
                         ],
                     )
                     user = cur.fetchone()
@@ -133,12 +134,10 @@ class UserQueries:
                         raise UserDatabaseException(
                             f"Could not create user with username {username} 1"
                         )
-        except psycopg.Error as e:
-            raise UserDatabaseException(
-                print(e),
-            )
+        except psycopg.Error:
+            raise UserDatabaseException()
         return user
-    
+
     def get_all(self):
         """
         Gets all users from the database
@@ -154,7 +153,6 @@ class UserQueries:
                             """
                     )
                     users = cur.fetchall()
-        except psycopg.Error as e:
-            print(e)
+        except psycopg.Error:
             raise UserDatabaseException("Error getting all users")
         return users

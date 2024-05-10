@@ -7,46 +7,48 @@ Each team member is required to keep a development journal, which should be a si
 Recommended naming convention is `first_last.md`.
 
 
-# Database Model Documentation
+## Database Models
 
-## gender TABLE:
-### Summary: Database holds information for available genders a user can designate as their own, for example: Male, Female etc. This database table is intended to grow and shrink in accordance with societal norms.
-    id              - SERIAL Given automatically when a gender is added to the table
-    gender_name     - VARCHAR(20) the string representation of the specific gender, and how it will appear for the user within the application
+Tables:
 
-## romantic_pref TABLE
-### Summary: Database holds information for a user's romantic preferences in order to display appropriate potential users that are appropraitely able to be matched with the logged-in user.
-    id              - SERIAL given automatically to identify the instance of the romantic preferences table
-    user1_id        - INT the user's ID that this set of romantic preferences belongs to. Foreign key of user TABLE
-    min_age         - INT the minimum age that the user is seeking
-    max_age         - INT the maximum age that the user is seeking
-    gender_id       - INT the gender the user is seeking. Foreign key of gender TABLE
+    gender - Houses genders to include 3 premade genders (Male, Female, Non-Binary). More maybe inserted into the table via migration.
+        SERIAL PRIMARY KEY NOT NULL      - id                  - The unique identifier of each gender
+        VARCHAR(20) NOT NULL             - gender_name         - The name of the gender as the user expects it (IE 'Male' or 'Female')
 
-## likes TABLE
-### Summary: Database holds information for every instance a user using the appplication has "liked" another user
-    id              - SERIAL given automatically to identify the instance of a user "liking" another user
-    logged_in_user  - INT the ID of the user who initially liked another user. Foreign key of user TABLE
-    liked_by_user   - INT the ID of the user who may, or may not have liked them back. Foreign key of the user TABLE
-    status          - BOOLEAN whether both of the users have liked each other. NULL is assigned whenever the liked_by_user has not yet made a decision with the logged_in_users profile, FALSE is used when they dislike it
-
-## Match TABLE:
-Summary: Upon acceptance of a like, the user who sent the like is then moved to a matches array where there profile can be listed.
-    User_1: This will be the column in which the user who sent the like will be stored.
-
-## User_Information TABLE:
-### Summary: A collection of information to be stored under a User table which will be used to create an User Profile where they can meet and match with other people that can lead to a potential romantic relationship.
-    User ID: An unique identifier for each user instance created in the Database
-    First_Name: First name of the user
-    Last_Name: Last name of the user
-    Password: A protected string known only to the user and administrators
-    Location: The vicinity in which the user is located/would like to be shown
-    Gender: A foreign key that organizes a user by their gender
-    Picture_Url: A photo of the user
-    Matches: A list of their matches
-    Preferences: The gender that the user is interested in which will be used to display other potential users on the likes page.
+    Pre inserted genders:
+        id = 1, gender_name = Male
+        id = 2, gender_name = Female
+        id = 3, gender_name = Non-Binary
 
 
-## API DOCUMENTATION 
+    romantic_pref - Houses all users romantic preferences as designated by the user when finalizing their profile.
+        SERIAL PRIMARY KEY NOT NULL      - id                  - The unique identifier of each user's romantic preference
+        INT NOT NULL                     - user1_id            - The user this set of romantic preferences belongs to (Foreign Key of 'id' in users table)
+        INT NOT NULL                     - min_age             - The minimum age the user wants to interact with
+        INT NOT NULL                     - max_age             - The maximum age the user wants to interact with
+        INT NOT NULL                     - gender_id           - The gender the user wants to interact with (Foreign Key of 'id' in gender table)
+
+
+    likes - Houses all of the instinces in which one user has 'liked' another user.
+        SERIAL PRIMARY KEY NOT NULL      - id                  - The unique identifier of each like instance
+        INT NOT NULL                     - logged_in_user      - The user who is recieving the like (Foreign Key of 'id' in users table)
+        INT NOT NULL                     - liked_by_user       - The user who is giving the like (Foreign Key of 'id' in users table)
+
+
+    users - Houses all of the users who have created an account on the site.
+        SERIAL PRIMARY KEY NOT NULL      - id                  - The unique identifier of each user instance
+        VARCHAR(100)                     - username            - The username the user designated for themselves upon account creation
+        VARCHAR(256)                     - password            - The password the user designated for themselves upon account creation
+        VARCHAR(100)                     - first_name          - The first name the user designated for themselves upon account creation
+        VARCHAR(100)                     - last_name           - The last name the user designated for themselves upon account creation
+        VARCHAR(50)                      - location            - The location the user designated for themselves upon account creation
+        INT                              - gender              - The gender the user designated for themselves upon account creation (Foreign Key of 'id' in gender table)
+        INT                              - age                 - The age the user designated for themselves upon account creation
+        VARCHAR(1000)                    - description         - The self description the user designated for themselves upon account creation
+        VARCHAR(256)                     - picture_url         - The picture's url the user designated for themselves upon account creation
+
+
+## API DOCUMENTATION
 
 The application uses APIs to connect to a database for user management. Users can create profiles and verify connections to interact with others. They can set preferences such as gender and age range to swipe on potential matches.
 
@@ -56,6 +58,7 @@ Contains API routes and database queries for user authentication.
 
 ## API Routes
 
+### Auth Routers
 **POST** /api/auth/signup: Creates a new user when someone submits the signup form
 
     - Expected input:
@@ -90,7 +93,7 @@ Contains API routes and database queries for user authentication.
     {
     "id": 0,
     "username": "string"
-    }   
+    }
 
 **GET** /api/auth/authenticate: Returns the user if the user is logged in
 
@@ -119,22 +122,80 @@ Contains API routes and database queries for user authentication.
         }
     ]
 
-**GET** /api/auth/api/users/gender: Gets users by gender if a user is authenticated
+**PUT** /api/auth/likes/<int:id>: Update Like Status
+
+    - Expected Input:
+        - ID
+        - {
+        "logged_in_user": 0,
+        "liked_by_user": 0,
+        "status": true
+        }
+        or
+        - {
+        "logged_in_user": 0,
+        "liked_by_user": 0,
+        "status": false
+        }
+
+    - Expected Output:
+        - {
+        "logged_in_user": 0,
+        "liked_by_user": 0,
+        "status": true
+        }
+        or
+        - {
+        "logged_in_user": 0,
+        "liked_by_user": 0,
+        "status": false
+        }
+
+**GET** /api/auth/matches: Get User Matches
+
+    - Expected Output:
+        - {
+        "additionalProp1": [
+        {
+        "id": 1,
+        "logged_in_user": 1,
+        "liked_by_user": 2
+            }
+        ],
+        }
+
+
+**GET** /api/auth/preferences: Filter by preferences
+
+    - Expected output:
+        - [
+        {
+            "id": 0,
+            "picture_url": "string",
+            "username": "string",
+            "first_name": "string",
+            "last_name": "string",
+            "age": 0,
+            "gender": 0,
+            "description": "string"
+        }
+        ]
+
+### Genders
+
+**GET** /api/gender: Get all genders
 
     - Expected Output:
     [
         {
         "id": 0,
-        "username": "string",
-        "first_name": "string",
-        "last_name": "string",
-        "age": 0,
-        "gender": 0
+        "gender_name": 0
         }
     ]
 
+### Likes
 
-**POST** /api/auth/api/users/likes: Adds a like from one user to another
+**POST** /api/likes: Create a like
 
     - Expected Input:
     {
@@ -151,19 +212,110 @@ Contains API routes and database queries for user authentication.
     "status": true
     }
 
+**GET**  /api/likes: Get all likes
 
-**GET** /api/auth/api/users/matches: Retrieves a list of matches for a user
+    - Expected Output
+    {
+    "additionalProp1": [
+    {
+      "id": 0,
+      "logged_in_user": 0,
+      "liked_by_user": 0,
+      "status": true
+    }
+  ]
+  }
 
-    - Expected Output:
-    
-    [
+
+### Preferences
+
+**POST** /api/preferecnes: Create a preference
+
+    - Expected input:
         {
-        "id": 1,
-        "logged_in_user": 5,
-        "liked_by_user": 5,
-        "status": true
+        "user1_id": 0,
+        "min_age": 0,
+        "max_age": 0,
+        "gender_id": 0
         }
-    ]
+
+    - Expected output:
+        {
+        "id": 0,
+        "user1_id": 0,
+        "min_age": 0,
+        "max_age": 0,
+        "gender_id": 0
+        }
+
+**GET** /api/preferences: Get all preferences
+
+    - Expected output:
+        [
+        {
+        "id": 0,
+        "user1_id": 0,
+        "min_age": 0,
+        "max_age": 0,
+        "gender_id": 0
+        }
+        ]
+
+**PUT** /api/preferences/<int:id>: Update a preference
+
+    - Expected input:
+        {
+        "user1_id": 0,
+        "min_age": 0,
+        "max_age": 0,
+        "gender_id": 0
+        }
+
+    - Expected output:
+        {
+        "id": 0,
+        "user1_id": 0,
+        "min_age": 0,
+        "max_age": 0,
+        "gender_id": 0
+        }
+
+
+
+### Matches
+
+**GET** - /api/user/matches - returns an array of all the matches that belong to the logged in user
+        Expected Output:
+        {
+        "additionalProp1": [
+            {
+            "id": 0,
+            "logged_in_user": 0,
+            "liked_by_user": 0
+            }
+        ],
+        "additionalProp2": [
+            {
+            "id": 0,
+            "logged_in_user": 0,
+            "liked_by_user": 0
+            }
+        ],
+        "additionalProp3": [
+            {
+            "id": 0,
+            "logged_in_user": 0,
+            "liked_by_user": 0
+            }
+        ]
+        }
+
+**DELETE** - /api/user/matches/{match_id} - deletes a match belonging to the user at id=match_id
+        Expected Output:
+        "string"
+
+
+
 
 
 ## Database Queries
@@ -172,7 +324,7 @@ get_by_username(username: str) -> Optional[UserWithPw]: Gets a user from the dat
 
 get_by_id(id: int) -> Optional[UserWithPw]: Gets a user from the database by user id. Returns None if the user isn't found.
 
-create_user(username: str, hashed_password: str, first_name: str, last_name: str, location: str, gender: int, age: int, description: str, picture_url: str) -> 
+create_user(username: str, hashed_password: str, first_name: str, last_name: str, location: str, gender: int, age: int, description: str, picture_url: str) ->
 UserWithPw: Creates a new user in the database. Raises a UserDatabaseException if creating the user fails.
 
 get_all() -> list[UserWithPw]: Gets all users from the database.

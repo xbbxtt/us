@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import {
     useGetAllLikesQuery,
     useGetAllUsersQuery,
@@ -11,14 +10,7 @@ export default function GetAllLikes() {
     const [users, setUsers] = useState([])
     const allLikes = useGetAllLikesQuery()
     const allUsers = useGetAllUsersQuery()
-    const navigate = useNavigate()
     const [updateLike, updateLikeStatus] = useUpdateLikeMutation()
-
-
-    useEffect(() => {
-        if (updateLikeStatus.isSuccess){
-                navigate('/likes')
-    }}, [updateLikeStatus, navigate])
 
     useEffect(() => {
         if (allLikes.data) {
@@ -39,8 +31,6 @@ export default function GetAllLikes() {
 
         const standingLikes = allLikes.data.likes
         const standingUsers = allUsers.data
-        console.log(standingUsers)
-
         const likedUserIds = standingLikes.map((like) => like.liked_by_user)
         const filteredUsers = standingUsers.filter((user) =>
             likedUserIds.includes(user.id)
@@ -50,93 +40,78 @@ export default function GetAllLikes() {
     }
 
     function acceptLike(loggedInUser, likedByUser, likeId) {
-        console.log(loggedInUser, likedByUser, likeId)
-        try {
             const body = {
                 logged_in_user: loggedInUser,
                 liked_by_user: likedByUser,
                 status: true,
             }
-            updateLike({ id: likeId , body })
+            updateLike({ id: likeId, body })
             const updatedLikes = likes.filter((like) => like.id !== likeId)
             setLikes(updatedLikes)
-            if (response.data && response.data.id) {
-                console.log('Success')
-            } else {
-                console.log('Error sending like')
-            }
-        } catch (error) {
-            console.error('Catch Error:', error)
-        }
     }
 
     function declineLike(loggedInUser, likedByUser, likeId) {
-        console.log(loggedInUser, likedByUser, likeId)
-        try {
             const body = {
                 logged_in_user: loggedInUser,
                 liked_by_user: likedByUser,
                 status: false,
             }
-            updateLike({ id: likeId , body })
-            const updatedLikes = likes.filter((like) => like.id !== likeId)
-            setLikes(updatedLikes)
-        } catch (error) {
-            console.error('Catch Error:', error)
-        }
+        updateLike({ id: likeId, body })
+        const updatedLikes = likes.filter((like) => like.id !== likeId)
+        setLikes(updatedLikes)
     }
 
     const filteredUsers = filterUsers()
-    console.log(filteredUsers)
-
-    for (let user in filteredUsers) {
-        // console.log(user.picture_url)
-    }
 
     return (
         <div>
             {filteredUsers.length === 0 ? (
                 <p>No likes yet, get to swiping!</p>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ">
                     {likes.map((like) =>
                         filteredUsers.map((currentUser) => {
                             if (currentUser.id === like.liked_by_user) {
                                 return (
                                     <div
                                         key={currentUser.id}
-                                        className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700"
+                                        className="max-w-sm bg-slate-200 border border-gray-200 rounded-lg shadow-md m-3 py-3 px-3 flex flex-col justify-between"
                                     >
-                                        <a href="#">
+                                        <div>
                                             <img
-                                                className="rounded-t-lg"
+                                                className="rounded-t-lg max-w-fit items-center justify-center w-full h-64 object-cover object-center"
                                                 src={currentUser.picture_url}
                                                 alt={currentUser.username}
                                             />
-                                        </a>
+                                        </div>
                                         <div className="p-5">
-                                            <a href="#">
-                                                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                                    {currentUser.first_name} -{' '}
-                                                    {currentUser.age}
-                                                </h5>
-                                            </a>
+                                            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                                {currentUser.first_name} -{' '}
+                                                {currentUser.age}
+                                            </h5>
                                             <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
                                                 {currentUser.description}
                                             </p>
                                             <div className="flex space-x-4">
                                                 <button
                                                     onClick={() =>
-                                                        acceptLike(like.logged_in_user, currentUser.id, like.id)
-
+                                                        acceptLike(
+                                                            like.logged_in_user,
+                                                            currentUser.id,
+                                                            like.id
+                                                        )
                                                     }
-                                                    className="flex-1 inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-center text-white bg-green-500 rounded-lg hover:bg-green-600 focus:outline-none"
+                                                    className="flex-1 inline-flex items-center justify-center px-3 py-2 text-sm font-medium rounded-lg text-center bg-pink-500 hover:bg-pink-600 text-white focus:outline-none"
                                                 >
                                                     Like
                                                 </button>
                                                 <button
                                                     onClick={() =>
-                                                        declineLike(like.logged_in_user, currentUser.id, like.id)
+                                                        declineLike(
+                                                            like.logged_in_user,
+                                                            currentUser.id,
+                                                            like.id
+                                                        )
                                                     }
                                                     className="flex-1 inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-center text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none"
                                                 >
