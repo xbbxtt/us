@@ -1,21 +1,6 @@
-from pydantic import BaseModel
 from queries.pool import pool
 from typing import List
-
-
-class PreferencesIn(BaseModel):
-    user1_id: int
-    min_age: int
-    max_age: int
-    gender_id: int
-
-
-class PreferencesOut(BaseModel):
-    id: int
-    user1_id: int
-    min_age: int
-    max_age: int
-    gender_id: int
+from models.matches import PreferencesOut
 
 
 class PreferencesRepository:

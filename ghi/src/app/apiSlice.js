@@ -48,7 +48,7 @@ export const usApi = createApi({
         }),
         getAllMatches: builder.query({
             query: () => ({
-                url: '/api/auth/matches',
+                url: '/api/matches',
             }),
         }),
         romPref: builder.mutation({
@@ -59,13 +59,13 @@ export const usApi = createApi({
             }),
         }),
         genders: builder.query({
-            query: (body) => ({
+            query: () => ({
                 url: '/api/genders/',
             }),
         }),
         getAllPotentialLikes: builder.query({
             query: () => ({
-                url: '/api/auth/preferences',
+                url: '/api/filtered-preferences',
             }),
         }),
         createLike: builder.mutation({
@@ -77,14 +77,14 @@ export const usApi = createApi({
         }),
         updateLike: builder.mutation({
             query: ({ body, id }) => ({
-                url: `/api/auth/likes/<int:id>?id=${id}`,
+                url: `/api/likes/<int:id>?id=${id}`,
                 method: 'PUT',
                 body,
             }),
         }),
         breakUp: builder.mutation({
             query: ({ body, id }) => ({
-                url: `/api/user/matches/${id}`,
+                url: `/api/user/matches/<int:id>?match_id=${id}`,
                 method: 'DELETE',
                 body,
             }),

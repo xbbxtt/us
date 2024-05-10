@@ -15,7 +15,7 @@ class MockLikesRepository:
     def get_all_likes(self) -> List[LikesOut]:
         return [
             LikesOut(id=1, logged_in_user=1, liked_by_user=2, status=True),
-            LikesOut(id=2, logged_in_user=2, liked_by_user=1, status=False)
+            LikesOut(id=2, logged_in_user=2, liked_by_user=1, status=False),
         ]
 
 
@@ -35,7 +35,7 @@ def test_get_all_likes():
     assert response.status_code == 200
     assert response.json() == [
         {"id": 1, "logged_in_user": 1, "liked_by_user": 2, "status": True},
-        {"id": 2, "logged_in_user": 2, "liked_by_user": 1, "status": False}
+        {"id": 2, "logged_in_user": 2, "liked_by_user": 1, "status": False},
     ]
 
 

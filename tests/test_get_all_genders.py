@@ -15,7 +15,7 @@ class MockGenderRepository:
         return [
             GenderOut(id=1, gender_name="Male"),
             GenderOut(id=2, gender_name="Female"),
-            GenderOut(id=3, gender_name="Non-binary")
+            GenderOut(id=3, gender_name="Non-binary"),
         ]
 
 
@@ -36,7 +36,7 @@ def test_get_all_genders():
     assert response.json() == [
         {"id": 1, "gender_name": "Male"},
         {"id": 2, "gender_name": "Female"},
-        {"id": 3, "gender_name": "Non-binary"}
+        {"id": 3, "gender_name": "Non-binary"},
     ]
 
 
