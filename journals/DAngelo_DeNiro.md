@@ -1,3 +1,15 @@
+10MAY2024:
+Project finalization.
+
+
+09MAY2024:
+Completed assigned unit test. Was very difficult however I understand it now.
+
+
+08MAY2024:
+Restfulized preferences endpoint, fixed DOM properties error on SignIn Page.
+
+
 07MAY2024:
 I finished the cards for the GetAllLikes page however the buttons are not functional, nor connected to any kind of EventListener.
 

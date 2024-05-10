@@ -29,3 +29,6 @@ Installed some Tailwind plugins in the tailwind config file. Got the matches tab
 
 week of 29 April - 2 May:
 updated the api slice, and the store js. Working on getting the pages done and authenticated. Running into errors being 401 and 422 as we are going. We are able to login now through the front end.
+
+Last week of project:
+updated the apis, and reconfigured the swipe deck using typescrpit, added custom css, got the read me updated, redid the wire frames to match the final product.
