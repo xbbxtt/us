@@ -31,7 +31,6 @@ export default function GetAllLikes() {
 
         const standingLikes = allLikes.data.likes
         const standingUsers = allUsers.data
-
         const likedUserIds = standingLikes.map((like) => like.liked_by_user)
         const filteredUsers = standingUsers.filter((user) =>
             likedUserIds.includes(user.id)
@@ -63,10 +62,6 @@ export default function GetAllLikes() {
     }
 
     const filteredUsers = filterUsers()
-    console.log(filteredUsers)
-
-    for (let user in filteredUsers) {
-    }
 
     return (
         <div>

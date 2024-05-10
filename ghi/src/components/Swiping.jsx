@@ -35,11 +35,8 @@ export default function RomanticPreferences() {
                 liked_by_user: 1,
                 status: null,
             }
-            console.log('Data:', data)
             const response = await createLike(data)
-            console.log('Response:', response)
             if (response.data && response.data.id) {
-                // Filter out the liked card from the potentialLikes array
                 setPotentialLikes(
                     potentialLikes.filter((like) => like.id !== likedUserId)
                 )
